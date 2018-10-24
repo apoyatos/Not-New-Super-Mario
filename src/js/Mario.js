@@ -1,23 +1,22 @@
-function Point(x, y) {
-    this.x = x;
-    this.y = y;
-}
-
-function Mario(position,velocity,jumpHeight,life)
+function Mario(game,x,y,name)
 {
-    this._position=position;
-    this._life=life;
-    this._velocity=velocity;
-    this._jumpHeight=jumpHeight;
+    this._x=x;
+    this._y=y;
+    this._life=3;
+    this._velocity=1;
+    this._jumpHeight=2;
+    Phaser.Sprite.call(this,game,x,y,name);
 }
+Mario.prototype=Object.create(Phaser.Sprite.prototype);
+Mario.constructor=Mario;
 
-Mario.prototype.Move=function()
+Mario.prototype.Move=function(dir)
 {
-    this._position.x+=this._velocity;
+    this._x+=dir*this._velocity;
 }
 Mario.prototype.Jump=function()
 {
-    this._position.y+=this._jumpHeight;
+    this._y-=this._jumpHeight;
 }
 Mario.prototype.Die=function()
 {
@@ -30,3 +29,4 @@ Mario.prototype.Hurt=function()
     else
     Mario.Muerto();
 }
+module.exports=Mario;

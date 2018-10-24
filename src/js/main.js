@@ -3,6 +3,7 @@
 var PlayScene = require('./play_scene.js');
 
 
+
 var BootScene = {
   preload: function () {
     // load here assets required for the loading screen
@@ -17,12 +18,15 @@ var BootScene = {
 
 var PreloaderScene = {
   preload: function () {
+
     this.loadingBar = this.game.add.sprite(0, 240, 'preloader_bar');
     this.loadingBar.anchor.setTo(0, 0.5);
     this.load.setPreloadSprite(this.loadingBar);
 
     // TODO: load here the assets for the game
+    this.game.load.image('Mario', 'images/Mario.png');
     this.game.load.image('logo', 'images/phaser.png');
+
   },
 
   create: function () {
