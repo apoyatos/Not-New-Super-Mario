@@ -14,7 +14,7 @@ var Player;
     {
       Player.Move(1);
     }
-    else if(this.teclas.right.isDown)
+    else if(this.teclas.left.isDown)
     {
       Player.Move(-1);
     }
@@ -22,6 +22,7 @@ var Player;
     {
       Player.Jump();
     }
+
 
   },
   render: function()
