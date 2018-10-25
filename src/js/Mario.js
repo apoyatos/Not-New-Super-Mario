@@ -5,18 +5,26 @@ function Mario(game,x,y,name)
     this._life=3;
     this._velocity=1;
     this._jumpHeight=2;
+    this._jumping=false;
     Phaser.Sprite.call(this,game,x,y,name);
+    this.game.physics.arcade.enable(this);
 }
 Mario.prototype=Object.create(Phaser.Sprite.prototype);
 Mario.constructor=Mario;
-
 Mario.prototype.Move=function(dir)
 {
-    this._x+=dir*this._velocity;
+    this.body.velocity.x=dir*200;
 }
 Mario.prototype.Jump=function()
 {
-    this._y-=this._jumpHeight;
+    console.log(this.body.velocity.y) 
+    if(!this._jumping )
+    {    
+        this.body.velocity.y=-200;
+        this._jumping=true;
+    }
+    else if(this.body.velocity.y>=0)
+         this._jumping=false;
 }
 Mario.prototype.Die=function()
 {
@@ -28,5 +36,9 @@ Mario.prototype.Hurt=function()
     this._life--;
     else
     Mario.Muerto();
+}
+Mario.prototype.update()
+{
+  
 }
 module.exports=Mario;
