@@ -5,13 +5,14 @@ var player;
   var PlayScene = {
   create: function () {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
-    this.game.physics.arcade.gravity.y=300;
+    this.game.physics.arcade.gravity.y=400;
     this.teclas = this.game.input.keyboard.createCursorKeys();
     this.saltar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
 
-    player=new Mario(this.game,0,400,'Mario')
-    player.body.collideWorldBounds = true
+    player=new Mario(this.game,0,450,'Mario');
+    player.scale.setTo(0.7,0.7)
+    player.body.collideWorldBounds = true;
     this.game.world.addChild(player);  
     this.game.camera.follow(player);
   },
@@ -27,14 +28,28 @@ var player;
     }
     else
     {
-      player.body.velocity.x=0;
+      player.NotMoving();
     }
-    //salto
+
+    //Salto
     if (this.saltar.isDown)
     {
       player.Jump();
     }
+    if(this.teclas.up.isDown)
+    {
+      player.BombJump();
+    }
 
+    //Agacharse
+    if(this.teclas.down.isDown)
+    {
+      player.Crouch();
+    }
+    if(this.teclas.down.isUp)
+    {
+      player.NotCrouching();
+    }
 
   },
   render: function()
