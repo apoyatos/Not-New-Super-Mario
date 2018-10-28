@@ -2,7 +2,6 @@
 
 var PlayScene = require('./play_scene.js');
 
-
 var BootScene = {
   preload: function () {
     // load here assets required for the loading screen
@@ -23,6 +22,7 @@ var PreloaderScene = {
 
     // TODO: load here the assets for the game
     this.game.load.image('logo', 'images/phaser.png');
+    this.game.load.image('goomba', 'images/Goomba.png');
   },
 
   create: function () {
