@@ -10,11 +10,10 @@ var player;
     this.saltar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
 
-    player=new Mario(this.game,0,450,'Mario');
-    player.scale.setTo(0.7,0.7)
+    player=new Mario(this.game,0,450,'spritesMario');
+    player.scale.setTo(2,2);
     player.body.collideWorldBounds = true;
     this.game.world.addChild(player);  
-    this.game.camera.follow(player);
   },
   update: function(){
     //Movimiento
@@ -34,7 +33,7 @@ var player;
     //Salto
     if (this.saltar.isDown)
     {
-      player.Jump();
+      player.Swim();
     }
     if(this.teclas.up.isDown)
     {

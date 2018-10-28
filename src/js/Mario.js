@@ -6,10 +6,26 @@ function Mario(game,x,y,name)
     this._velocity=200;
     this._jumpHeight=400;
     this._crouching=false;
-    this._bombJumps=1;
+    this._bombJumps=0;
+    this._swimming=false;
     this._facing=1;//1 derecha, -1 izquierda
     Phaser.Sprite.call(this,game,x,y,name);
+    this.frame=5;
     this.game.physics.arcade.enable(this);
+    this.animations.add('runLeft',[4,3,2],8,true);
+    this.animations.add('runRight',[5,6,7],8,true);
+    this.animations.add('jumpLeft',[1],10,false);
+    this.animations.add('jumpRight',[8],10,false);
+    this.animations.add('idleLeft',[4],10,false);
+    this.animations.add('idleRight',[5],10,false);
+    this.animations.add('crouchLeft',[0],10,false);
+    this.animations.add('crouchRight',[9],10,false);
+    this.animations.add('bombLeft',[32],10,false);
+    this.animations.add('bombRight',[37],10,false);
+    this.animations.add('swimLeft',[33,32,31],8,true);
+    this.animations.add('swimRight',[36,37,38],8,true);
+    this.animations.add('downLeft',[12],10,false);
+    this.animations.add('downRight',[17],10,false);
 }
 Mario.prototype=Object.create(Phaser.Sprite.prototype);
 Mario.constructor=Mario;
@@ -18,19 +34,56 @@ Mario.prototype.Move=function(dir)
 {
     this._facing=dir;
     this.body.velocity.x=this._facing*this._velocity;
+    if(this.body.onFloor()||this._swimming)
+    {
+        if(this._facing==1)
+        {
+            if(this._swimming)
+                this.animations.play('swimRight');
+            else
+                this.animations.play('runRight');
+        }
+        else
+        {
+            if(this._swimming)
+                this.animations.play('swimLeft');
+            else
+                this.animations.play('runLeft');
+        }
+    }
 }
 Mario.prototype.NotMoving=function()
 {
-    this.body.velocity.x=0;
+    this.body.velocity.x=0;    
+    if(this.body.onFloor())
+    {
+        if(this._facing==1)
+        {
+            this.animations.stop();
+            this.animations.play('idleRight');
+        }
+        else
+        {
+            this.animations.stop();
+            this.animations.play('idleLeft');
+        }
+    }
 }
 
 Mario.prototype.Jump=function()
 {
+    //this.animations.stop();
+    this._swimming=false;
     this.game.physics.arcade.gravity.y=400;
     if(this.body.onFloor())
-    {    
+    {   
         this._bombJumps=1;
         this.body.velocity.y=-this._jumpHeight;
+
+        if(this._facing==1)
+            this.animations.play('jumpRight');
+        else
+            this.animations.play('jumpLeft');            
     }
 }
 Mario.prototype.BombJump=function()
@@ -40,17 +93,38 @@ Mario.prototype.BombJump=function()
         this.body.velocity.y=-this._jumpHeight/2;
         this.body.velocity.x=this._facing*(this._velocity/2);
         this._bombJumps--;
+
+        if(this._facing==1)
+            this.animations.play('bombRight');
+        else
+            this.animations.play('bombLeft');   
     }
 }
 
 Mario.prototype.Crouch=function()
 {
-    if(this.body.onFloor())
-        this._crouching=true;
-    else
+    if(!this._swimming)
     {
-        this.body.velocity.y=600;
-        this._bombJumps=0;
+        if(this.body.onFloor())
+        {
+            this._crouching=true;
+
+            if(this._facing==1)
+                this.animations.play('crouchRight');
+            else
+                this.animations.play('crouchLeft');   
+        }
+        else
+        {
+            this.body.velocity.y=600;
+            this._bombJumps=0;
+
+            if(this._facing==1)
+                this.animations.play('downRight');
+            else
+                this.animations.play('downLeft');   
+
+        }
     }
 }
 Mario.prototype.NotCrouching=function()
@@ -60,11 +134,16 @@ Mario.prototype.NotCrouching=function()
 
 Mario.prototype.Swim=function()
 {
+    this._swimming=true;
     this.game.physics.arcade.gravity.y=600;
     if(this.body.velocity.y>= 0)
     {     
         this.body.velocity.y=-200;
-    }
+    } 
+    if(this._facing==1)
+        this.animations.play('swimRight');
+    else
+        this.animations.play('swimLeft');
 }
 
 Mario.prototype.Die=function()
@@ -78,5 +157,6 @@ Mario.prototype.Hurt=function()
     else
     Mario.Muerto();
 }
+
 
 module.exports=Mario;
