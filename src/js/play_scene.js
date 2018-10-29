@@ -33,11 +33,11 @@ var player;
     //Salto
     if (this.saltar.isDown)
     {
-      player.Swim();
+      player.Jump();
     }
     if(this.teclas.up.isDown)
     {
-      player.BombJump();
+      player.Tackle();
     }
 
     //Agacharse
