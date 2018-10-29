@@ -19,6 +19,7 @@ var PreloaderScene = {
   preload: function () {
     // TODO: load here the assets for the game
     this.game.load.image('logo', 'images/logo.png');
+    this.game.load.image('cappy', 'images/cappy.png');
     this.game.load.spritesheet('spritesMario', 'images/mario2.png',40.5,41);//altura y anchura de cada frame
 
   },

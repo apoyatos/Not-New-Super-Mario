@@ -8,12 +8,10 @@ var player;
     this.game.physics.arcade.gravity.y=400;
     this.teclas = this.game.input.keyboard.createCursorKeys();
     this.saltar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+    this.lanzar=this.game.input.keyboard.addKey(Phaser.Keyboard.Z);
 
 
-    player=new Mario(this.game,0,450,'spritesMario');
-    player.scale.setTo(2,2);
-    player.body.collideWorldBounds = true;
-    this.game.world.addChild(player);  
+    player=new Mario(this.game,0,450,'spritesMario','cappy');
   },
   update: function(){
     //Movimiento
@@ -49,6 +47,14 @@ var player;
     {
       player.NotCrouching();
     }
+
+    //Lanzar Cappy
+    if(this.lanzar.isDown)
+    {
+      player.ThrowCappy();
+    }
+    player.CheckCappy();
+    player.CappyCollision();
 
   },
   render: function()
