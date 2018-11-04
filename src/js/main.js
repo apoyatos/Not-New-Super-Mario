@@ -23,6 +23,7 @@ var PreloaderScene = {
     // TODO: load here the assets for the game
     this.game.load.image('logo', 'images/phaser.png');
     this.game.load.spritesheet('goomba', 'images/goomba.png', 25, 23, 3);
+    this.game.load.spritesheet('shot', 'images/shot.png', 9, 9, 4);
   },
 
   create: function () {
