@@ -5,11 +5,8 @@ function Cappy(game,x,y,name,dir)
     frame=0;
     Phaser.Sprite.call(this,game,x,y,name);
     this.scale.setTo(2,2);
-    this.checkWorldBounds = true;
-    this.outOfBoundsKill = true;
     this.game.world.addChild(this);  
     this.game.physics.arcade.enable(this);
-    this.body.collideWorldBounds = true;
     this.body.allowGravity=false;
 }
 

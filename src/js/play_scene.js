@@ -12,9 +12,11 @@ var player;
 
 
     player=new Mario(this.game,0,450,'spritesMario','cappy');
+
+    this.game.camera.follow(player);
   },
   update: function(){
-    //Movimiento
+    //Movimientoz
     if(this.teclas.right.isDown)
     {
       player.Move(1);
@@ -53,9 +55,11 @@ var player;
     {
       player.ThrowCappy();
     }
+    else
+      player.CappyReleased();
+
     player.CheckCappy();
     player.CappyCollision();
-
   },
   render: function()
   {

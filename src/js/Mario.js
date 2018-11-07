@@ -7,6 +7,12 @@ function Mario(game,x,y,name,cappyName)
     this.cappyName=cappyName;
     this._cappyTime=50;
     this._cappyTimer=0;
+    this._cappyHoldTime=70;
+    this._cappyStopTime=30;
+    this._cappyStopTimer=0;
+    this._cappyHoldTimer=0;
+    this._cappyCooldown=0.5;
+    this._cappyCooldownTimer=0;
 
     this._life=3;
 
@@ -23,6 +29,8 @@ function Mario(game,x,y,name,cappyName)
     this._moving=false;
     this._thrown=false;
     this._cappyStopped=false;
+    this._cappyReturning=false;
+    this._cappyHold=false;
 
     Phaser.Sprite.call(this,game,x,y,name);
     this.scale.setTo(2,2);
@@ -138,37 +146,60 @@ Mario.prototype.Swim=function()
 
 Mario.prototype.ThrowCappy=function()
 {
-    if(!this._thrown)
+    if(!this._thrown && this.game.time.totalElapsedSeconds()>this._cappyCooldownTimer && !this._crouching && !this._tackling && !this._bombJump)
     {
-        this.cappy=new Cappy(this.game,this.body.x+45,this.body.y,this.cappyName,this._facing);
+        this.cappy=new Cappy(this.game,this.body.x,this.body.y,this.cappyName,this._facing);
         this.cappy.Throw();
         this._thrown=true;
+        this._cappyHold=true;
     }
 }
 Mario.prototype.CheckCappy=function()
 {
-    if(this._thrown&&!this._cappyStopped)
+    if(this._thrown && !this._cappyStopped)
     {
-        if(this._cappyTimer<this._cappyTime)
-            this._cappyTimer++;
-        else
+        if(this._cappyTimer>this._cappyTime)
         {
             this.cappy.Stop();
             this._cappyStopped=true;            
         }
+        else
+        this._cappyTimer++;
     }
     else if(this._cappyStopped)
-    this.game.physics.arcade.moveToObject(this.cappy,this,500);
+    {
+        if((this._cappyHold && this._cappyHoldTimer>this._cappyHoldTime) ||(!this._cappyHold && this._cappyStopTimer>this._cappyStopTime))
+        {
+            this.game.physics.arcade.moveToObject(this.cappy,this,500);
+            this._cappyReturning=true;
+        }
+        else
+        {
+            this._cappyStopTimer++;
+            this._cappyHoldTimer++;
+        }
+    }
+           
+    
 }
 Mario.prototype.CappyCollision=function()
 {
-    if(this.game.physics.arcade.overlap(this.cappy,this) && this._cappyStopped)
+    if(this.game.physics.arcade.overlap(this.cappy,this) && this._cappyReturning)
     {        
         this._cappyStopped=false;
         this._thrown=false;
-        this._cappyTimer=0;
+        this._cappyReturning=false;
         this.cappy.kill();
+
+        this._cappyCooldownTimer=this.game.time.totalElapsedSeconds()+this._cappyCooldown;
+        this._cappyHoldTimer=0;
+        this._cappyTimer=0;
+        this._cappyStopTimer=0;
     }
+}
+Mario.prototype.CappyReleased=function()
+{
+    this._cappyHold=false;
 }
     
 
