@@ -1,10 +1,10 @@
 'use strict';
 var Cappy= require('./Cappy.js');
 
-function Mario(game,x,y,name,a)
+function Mario(game,x,y,name,cappyName)
 {
-    this.cappyName=a;
     this.cappy=null;
+    this.cappyName=cappyName;
     this._cappyTime=50;
     this._cappyTimer=0;
 
@@ -27,7 +27,7 @@ function Mario(game,x,y,name,a)
     Phaser.Sprite.call(this,game,x,y,name);
     this.scale.setTo(2,2);
     this.game.world.addChild(this);
-    
+
     this.game.physics.arcade.enable(this);
     this.body.collideWorldBounds = true;
   
@@ -140,7 +140,7 @@ Mario.prototype.ThrowCappy=function()
 {
     if(!this._thrown)
     {
-        this.cappy=new Cappy(this.game,this.body.x+50,this.body.y,this.cappyName,this._facing);
+        this.cappy=new Cappy(this.game,this.body.x+45,this.body.y,this.cappyName,this._facing);
         this.cappy.Throw();
         this._thrown=true;
     }
@@ -154,22 +154,20 @@ Mario.prototype.CheckCappy=function()
         else
         {
             this.cappy.Stop();
-            this._cappyStopped=true;
-            this.CappyReturn();
+            this._cappyStopped=true;            
         }
     }
-}
-Mario.prototype.CappyReturn=function()
-{
-    this.game.physics.arcade.moveToObject(this.cappy,this,200);
+    else if(this._cappyStopped)
+    this.game.physics.arcade.moveToObject(this.cappy,this,500);
 }
 Mario.prototype.CappyCollision=function()
 {
-    if(this.game.physics.arcade.overlap(this.cappy,this)&&this._cappyStopped)
-    {
-        this.cappy.destroy();
+    if(this.game.physics.arcade.overlap(this.cappy,this) && this._cappyStopped)
+    {        
         this._cappyStopped=false;
         this._thrown=false;
+        this._cappyTimer=0;
+        this.cappy.kill();
     }
 }
     

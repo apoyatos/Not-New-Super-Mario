@@ -2,11 +2,12 @@ function Cappy(game,x,y,name,dir)
 {
     this._dir=dir;
     this._velocity=150;
-    
+    frame=0;
     Phaser.Sprite.call(this,game,x,y,name);
+    this.scale.setTo(2,2);
+    this.checkWorldBounds = true;
+    this.outOfBoundsKill = true;
     this.game.world.addChild(this);  
-    this.scale.setTo(0.2,0.2);
-
     this.game.physics.arcade.enable(this);
     this.body.collideWorldBounds = true;
     this.body.allowGravity=false;
