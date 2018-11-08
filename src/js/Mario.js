@@ -5,10 +5,10 @@ function Mario(game,x,y,name,cappyName)
 {
     this.cappy=null;
     this.cappyName=cappyName;
-    this._cappyTime=50;
+    this._cappyTime=1.5;
     this._cappyTimer=0;
-    this._cappyHoldTime=70;
-    this._cappyStopTime=30;
+    this._cappyHoldTime=2;
+    this._cappyStopTime=1;
     this._cappyStopTimer=0;
     this._cappyHoldTimer=0;
     this._cappyCooldown=0.5;
@@ -49,10 +49,10 @@ function Mario(game,x,y,name,cappyName)
     this.animations.add('idleRight',[5],10,false);
     this.animations.add('crouchLeft',[0],10,false);
     this.animations.add('crouchRight',[9],10,false);
-    this.animations.add('tackleLeft',[32],10,false);
-    this.animations.add('tackleRight',[37],10,false);
-    this.animations.add('swimLeft',[33,32,31],8,true);
-    this.animations.add('swimRight',[36,37,38],8,true);
+    this.animations.add('tackleLeft',[23],10,false);
+    this.animations.add('tackleRight',[26],10,false);
+    this.animations.add('swimLeft',[24,23,22],8,true);
+    this.animations.add('swimRight',[35,36,37],8,true);
     this.animations.add('bombLeft',[12],10,false);
     this.animations.add('bombRight',[17],10,false);
 }
@@ -152,32 +152,29 @@ Mario.prototype.ThrowCappy=function()
         this.cappy.Throw();
         this._thrown=true;
         this._cappyHold=true;
+        this._cappyTimer=this.game.time.totalElapsedSeconds()+this._cappyTime;
     }
 }
 Mario.prototype.CheckCappy=function()
 {
     if(this._thrown && !this._cappyStopped)
     {
-        if(this._cappyTimer>this._cappyTime)
+        if(this.game.time.totalElapsedSeconds()>this._cappyTimer)
         {
             this.cappy.Stop();
-            this._cappyStopped=true;            
+            this._cappyStopped=true;  
+            this._cappyHoldTimer=this.game.time.totalElapsedSeconds()+this._cappyHoldTime;          
+            this._cappyStopTimer=this.game.time.totalElapsedSeconds()+this._cappyStopTime;
         }
-        else
-        this._cappyTimer++;
     }
     else if(this._cappyStopped)
     {
-        if((this._cappyHold && this._cappyHoldTimer>this._cappyHoldTime) ||(!this._cappyHold && this._cappyStopTimer>this._cappyStopTime))
+        if((this._cappyHold && this.game.time.totalElapsedSeconds()>this._cappyHoldTimer) ||(!this._cappyHold && this.game.time.totalElapsedSeconds()>this._cappyStopTimer))
         {
             this.game.physics.arcade.moveToObject(this.cappy,this,500);
             this._cappyReturning=true;
         }
-        else
-        {
-            this._cappyStopTimer++;
-            this._cappyHoldTimer++;
-        }
+
     }
            
     
@@ -192,9 +189,6 @@ Mario.prototype.CappyCollision=function()
         this.cappy.kill();
 
         this._cappyCooldownTimer=this.game.time.totalElapsedSeconds()+this._cappyCooldown;
-        this._cappyHoldTimer=0;
-        this._cappyTimer=0;
-        this._cappyStopTimer=0;
     }
 }
 Mario.prototype.CappyReleased=function()
