@@ -60,6 +60,7 @@ var player;
 
     player.CheckCappy();
     player.CappyCollision();
+    player.checkOnFloor();
   },
   render: function()
   {

@@ -1,7 +1,7 @@
 function Cappy(game,x,y,name,dir)
 {
     this._dir=dir;
-    this._velocity=150;
+    this._velocity=400;
     frame=0;
 
     Phaser.Sprite.call(this,game,x,y,name);
