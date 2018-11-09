@@ -1,5 +1,19 @@
-function Mario(game,x,y,name)
+'use strict';
+var Cappy= require('./Cappy.js');
+
+function Mario(game,x,y,name,cappyName)
 {
+    this.cappy=null;
+    this.cappyName=cappyName;
+    this._cappyTime=0.5;
+    this._cappyTimer=0;
+    this._cappyHoldTime=3;
+    this._cappyStopTime=1;
+    this._cappyStopTimer=0;
+    this._cappyHoldTimer=0;
+    this._cappyCooldown=1;
+    this._cappyCooldownTimer=0;
+
     this._life=3;
 
     this._velocity=200;
@@ -14,9 +28,18 @@ function Mario(game,x,y,name)
     this._crouching=false;
     this._moving=false;
 
+    this._thrown=false;
+    this._cappyStopped=false;
+    this._cappyReturning=false;
+    this._cappyHold=false;
+
     Phaser.Sprite.call(this,game,x,y,name);
+    this.scale.setTo(2,2);
+    this.game.world.addChild(this);
 
     this.game.physics.arcade.enable(this);
+    this.body.collideWorldBounds = true;
+  
 
     this.frame=5;
     this.animations.add('runLeft',[4,3,2],8,true);
@@ -27,16 +50,24 @@ function Mario(game,x,y,name)
     this.animations.add('idleRight',[5],10,false);
     this.animations.add('crouchLeft',[0],10,false);
     this.animations.add('crouchRight',[9],10,false);
-    this.animations.add('tackleLeft',[32],10,false);
-    this.animations.add('tackleRight',[37],10,false);
-    this.animations.add('swimLeft',[33,32,31],8,true);
-    this.animations.add('swimRight',[36,37,38],8,true);
+    this.animations.add('tackleLeft',[23],10,false);
+    this.animations.add('tackleRight',[26],10,false);
+    this.animations.add('swimLeft',[24,23,22],8,true);
+    this.animations.add('swimRight',[35,36,37],8,true);
     this.animations.add('bombLeft',[12],10,false);
     this.animations.add('bombRight',[17],10,false);
 }
 Mario.prototype=Object.create(Phaser.Sprite.prototype);
 Mario.constructor=Mario;
 
+Mario.prototype.checkOnFloor=function()
+{
+    if(this.body.onFloor())
+    {
+        this._tackling=false;
+        this._bombJump=false;
+    }
+}
 Mario.prototype.Move=function(dir)
 {
     this._facing=dir;
@@ -64,7 +95,6 @@ Mario.prototype.Jump=function()
         this._swimming=false;
         this.game.physics.arcade.gravity.y=400;
 
-        this._tackling=false;
         this._tackles=1;
         this.body.velocity.y=-this._jumpVelocity;
 
@@ -121,6 +151,66 @@ Mario.prototype.Swim=function()
 
     this.handleAnimations();
 }
+
+Mario.prototype.ThrowCappy=function()
+{
+    if(!this._thrown && this.game.time.totalElapsedSeconds()>this._cappyCooldownTimer && !this._crouching && !this._tackling && !this._bombJump)
+    {     
+        this.cappy=new Cappy(this.game,this.body.x,this.body.y,this.cappyName,this._facing);
+        this.cappy.Throw();
+        this._thrown=true;
+        this._cappyHold=true;
+        this._cappyTimer=this.game.time.totalElapsedSeconds()+this._cappyTime;
+    }
+}
+Mario.prototype.CheckCappy=function()
+{
+    if(this._thrown && !this._cappyStopped)
+    {
+        if(this.game.time.totalElapsedSeconds()>this._cappyTimer)
+        {
+            this.cappy.Stop();
+            this._cappyStopped=true;  
+            this._cappyHoldTimer=this.game.time.totalElapsedSeconds()+this._cappyHoldTime;          
+            this._cappyStopTimer=this.game.time.totalElapsedSeconds()+this._cappyStopTime;
+        }
+    }
+    else if(this._cappyStopped)
+    {
+        if((this._cappyHold && this.game.time.totalElapsedSeconds()>this._cappyHoldTimer) ||(!this._cappyHold && this.game.time.totalElapsedSeconds()>this._cappyStopTimer))
+        {
+            this.game.physics.arcade.moveToObject(this.cappy,this,500);
+            this._cappyReturning=true;
+        }
+
+    }
+           
+    
+}
+Mario.prototype.CappyCollision=function()
+{
+    if(this.game.physics.arcade.overlap(this.cappy,this) && this._cappyReturning)
+    {        
+        this._cappyStopped=false;
+        this._thrown=false;
+        this._cappyReturning=false;
+        this.cappy.kill();
+
+        this._cappyCooldownTimer=this.game.time.totalElapsedSeconds()+this._cappyCooldown;
+    }
+    else if(this.game.physics.arcade.overlap(this.cappy,this) && this._cappyStopped)
+       { 
+           this.body.velocity.y=-this._jumpVelocity;
+           this._tackling=false;
+           this._tackles=1; 
+       }
+}
+Mario.prototype.CappyReleased=function()
+{
+    this._cappyHold=false;
+}
+    
+
 
 Mario.prototype.Die=function()
 {
