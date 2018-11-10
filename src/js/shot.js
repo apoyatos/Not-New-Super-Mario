@@ -11,9 +11,12 @@ Shot.constructor = Shot;
 Shot.prototype.AddAnimation = function (name, frames, speed) {
   this.animations.add(name, frames, speed, true);
 }
-Shot.prototype.Shoot = function () {
-    this.body.velocity.y = -100;
+Shot.prototype.Shoot = function (target, speed) {
+    this.game.physics.arcade.moveToObject(this, target, speed);
     this.animations.play('shoot');
+}
+Shot.prototype.RemoveShot = function () {
+  this.destroy();
 }
 
 module.exports = Shot;

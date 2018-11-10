@@ -28,11 +28,11 @@ Enemy.prototype.Move = function () {
     this.animations.play('walk');
   }
   else {
-    this.time = 0;
+    this.timeMoving = 0;
     this.speed = -this.speed;
   }
 }
-Enemy.prototype.Shoot = function () {
+Enemy.prototype.Shoot = function (target) {
   if(this.timeShooting < this.shooting)
     this.timeShooting++;
   else {
@@ -40,8 +40,11 @@ Enemy.prototype.Shoot = function () {
     this.game.world.addChild(shot);
     shot.scale.setTo( 2, 2);
     shot.AddAnimation('shoot', [0, 1, 2, 3], 5);
-    shot.Shoot();
+    shot.Shoot(target, this.shooting * 2);
     this.timeShooting = 0;
+    
+    shot.checkWorldBounds = true;
+    shot.events.onOutOfBounds.add(shot.RemoveShot, shot);
   }
 }
 
