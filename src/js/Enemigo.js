@@ -1,6 +1,6 @@
 'use strict';
 
-var Shot = require('./shot.js');
+var Shot = require('./Disparo.js');
 
 function Enemy(game, x, y, sprite, frame, speed, moving, shooting) {
   Phaser.Sprite.call(this, game, x, y, sprite, frame);
@@ -36,7 +36,7 @@ Enemy.prototype.Shoot = function (target) {
   if(this.timeShooting < this.shooting)
     this.timeShooting++;
   else {
-    var shot = new Shot(this.game, this.x, this.y, 'shot', 0);
+    var shot = new Shot(this.game, this.x, this.y, 'bala', 0);
     this.game.world.addChild(shot);
     shot.scale.setTo( 2, 2);
     shot.AddAnimation('shoot', [0, 1, 2, 3], 5);

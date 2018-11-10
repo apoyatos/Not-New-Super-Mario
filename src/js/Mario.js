@@ -1,5 +1,5 @@
 'use strict';
-var Cappy= require('./Cappy.js');
+var Cappy = require('./Cappy.js');
 
 function Mario(game,x,y,name,cappyName)
 {
@@ -17,7 +17,7 @@ function Mario(game,x,y,name,cappyName)
     this._life=3;
 
     this._velocity=200;
-    this._facing=1;//1 derecha, -1 izquierda
+    this._facing=1; //1 derecha, -1 izquierda
 
     this._jumpVelocity=400;
     this._tackles=0;
@@ -39,7 +39,7 @@ function Mario(game,x,y,name,cappyName)
 
     this.game.physics.arcade.enable(this);
     this.body.collideWorldBounds = true;
-  
+    this.body.gravity.y = 400;
 
     this.frame=5;
     this.animations.add('runLeft',[4,3,2],8,true);
@@ -71,12 +71,12 @@ Mario.prototype.checkOnFloor=function()
 Mario.prototype.Move=function(dir)
 {
     this._facing=dir;
-    if(!this._bombJump)//en el salto bomba no hay movimiento
+    if(!this._bombJump) //en el salto bomba no hay movimiento
     {
         this._moving=true;
-        if(!this._crouching)//si no esta agachado se mueve normal
+        if(!this._crouching) //si no esta agachado se mueve normal
             this.body.velocity.x=this._facing*this._velocity;
-        else//si esta agachado la velocidd es n tercio de la original
+        else //si esta agachado la velocidd es n tercios de la original
             this.body.velocity.x=this._facing*(this._velocity/3);
     }
     this.handleAnimations();
@@ -87,10 +87,9 @@ Mario.prototype.NotMoving=function()
     this._moving=false;
     this.handleAnimations();
 }
-
 Mario.prototype.Jump=function()
 {
-    if(this.body.onFloor()&&!this._crouching)//si esta en el suelo y no esta agachado puede saltar
+    if(this.body.onFloor()&&!this._crouching) //si esta en el suelo y no esta agachado puede saltar
     {   
         this._swimming=false;
         this.game.physics.arcade.gravity.y=400;
@@ -114,10 +113,9 @@ Mario.prototype.Tackle=function()
         this.handleAnimations();
     }
 }
-
 Mario.prototype.Crouch=function()
 {
-    if(!this._swimming)//solo puede agacharse o hacer salto bomba si no esta nadando
+    if(!this._swimming) //solo puede agacharse o hacer salto bomba si no esta nadando
     {
         if(this.body.onFloor())
         {
@@ -130,7 +128,6 @@ Mario.prototype.Crouch=function()
             this._tackles=0;
             this._bombJump=true;  
         }
-
         this.handleAnimations();
     }
 }
@@ -138,7 +135,6 @@ Mario.prototype.NotCrouching=function()
 {
     this._crouching=false;
 }
-
 Mario.prototype.Swim=function()
 {
     this._swimming=true;
@@ -147,11 +143,9 @@ Mario.prototype.Swim=function()
     if(this.body.velocity.y>= 0)
     {     
         this.body.velocity.y=-200;
-    } 
-
+    }
     this.handleAnimations();
 }
-
 Mario.prototype.ThrowCappy=function()
 {
     if(!this._thrown && this.game.time.totalElapsedSeconds()>this._cappyCooldownTimer && !this._crouching && !this._tackling && !this._bombJump)
@@ -182,10 +176,7 @@ Mario.prototype.CheckCappy=function()
             this.game.physics.arcade.moveToObject(this.cappy,this,500);
             this._cappyReturning=true;
         }
-
     }
-           
-    
 }
 Mario.prototype.CappyCollision=function()
 {
@@ -209,29 +200,24 @@ Mario.prototype.CappyReleased=function()
 {
     this._cappyHold=false;
 }
-    
-
-
 Mario.prototype.Die=function()
 {
     console.log("Muerto");
 }
-
 Mario.prototype.Hurt=function()
 {
     if(this._life>1)
-    this._life--;
+        this._life--;
     else
-    Mario.Muerto();
+        Mario.Muerto();
 }
-
 Mario.prototype.handleAnimations=function()
 {
-    if(this._facing==1)//animaciones Derecha
+    if(this._facing==1) //animaciones Derecha
     {
-        if(this._swimming)//Animaciones cuando esta nadando
+        if(this._swimming) //animaciones cuando esta nadando
             this.animations.play('swimRight');
-        else if(this.body.onFloor())//Animaciones cuando esta en el suelo
+        else if(this.body.onFloor()) //animaciones cuando esta en el suelo
         {
             this._bombJump=false;
             if(this._crouching)
@@ -241,7 +227,7 @@ Mario.prototype.handleAnimations=function()
             else
                 this.animations.play('idleRight');
         }
-        else //Animaciones cuando esta en el aire
+        else //animaciones cuando esta en el aire
         {
             if(this._bombJump)
                 this.animations.play('bombRight');
@@ -251,7 +237,7 @@ Mario.prototype.handleAnimations=function()
                 this.animations.play('jumpRight');
         }
     }
-    else//Animaciones Izquierda
+    else //animaciones Izquierda
     {
         if(this._swimming)
             this.animations.play('swimLeft');
@@ -277,4 +263,5 @@ Mario.prototype.handleAnimations=function()
         }
     }
 }
+
 module.exports=Mario;
