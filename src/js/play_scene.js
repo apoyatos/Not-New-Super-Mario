@@ -16,7 +16,7 @@ var PlayScene = {
     player = new Mario(this.game, 0, 450, 'mario', 'cappy');
     this.game.camera.follow(player);
 
-    goomba = new Enemy(this.game, this.game.width / 4, this.game.height, 'goomba', 0, 100, 150, 100);
+    goomba = new Enemy(this.game, this.game.width / 2, this.game.height, 'goomba', 0, 100, 2,200, 2);
     this.game.world.addChild(goomba);
     goomba.scale.setTo( 2, 2);
     goomba.AddAnimation('walk', [0, 1], 5);
@@ -57,7 +57,10 @@ var PlayScene = {
     player.checkOnFloor();
 
     goomba.Move();
-    goomba.Shoot(targetExample);
+    goomba.Shoot(player);
+
+    //meter todos los enemigos en un grupo y llamar a esta funcion para cada uno
+    player.EnemyCollision(goomba);
   }
 };
 

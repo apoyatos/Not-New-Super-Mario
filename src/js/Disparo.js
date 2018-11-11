@@ -4,6 +4,7 @@ function Shot(game, x, y, sprite, frame) {
   Phaser.Sprite.call(this, game, x, y, sprite, frame);
 
   this.game.physics.arcade.enable(this);
+  this.body.allowGravity=false;
 }
 Shot.prototype = Object.create(Phaser.Sprite.prototype);
 Shot.constructor = Shot;
@@ -18,5 +19,7 @@ Shot.prototype.Shoot = function (target, speed) {
 Shot.prototype.RemoveShot = function () {
   this.destroy();
 }
+
+
 
 module.exports = Shot;

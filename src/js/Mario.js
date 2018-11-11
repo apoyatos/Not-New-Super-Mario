@@ -22,6 +22,10 @@ function Mario(game,x,y,name,cappyName)
     this._jumpVelocity=400;
     this._tackles=0;
 
+    this.hurtTime=1;
+    this.hurtTimer=0;
+    this._hurt=false
+    
     this._bombJump=false;
     this._tackling=false;
     this._swimming=false;
@@ -32,6 +36,9 @@ function Mario(game,x,y,name,cappyName)
     this._cappyStopped=false;
     this._cappyReturning=false;
     this._cappyHold=false;
+
+    this._spawnX=x;
+    this._spawnY=y;
 
     Phaser.Sprite.call(this,game,x,y,name);
     this.scale.setTo(2,2);
@@ -56,6 +63,8 @@ function Mario(game,x,y,name,cappyName)
     this.animations.add('swimRight',[35,36,37],8,true);
     this.animations.add('bombLeft',[12],10,false);
     this.animations.add('bombRight',[17],10,false);
+    this.animations.add('hurtingLeft',[16,4],8,true);
+    this.animations.add('hurtingRight',[16,5],8,true);
 }
 Mario.prototype=Object.create(Phaser.Sprite.prototype);
 Mario.constructor=Mario;
@@ -185,7 +194,7 @@ Mario.prototype.CappyCollision=function()
         this._cappyStopped=false;
         this._thrown=false;
         this._cappyReturning=false;
-        this.cappy.kill();
+        this.cappy.destroy();
 
         this._cappyCooldownTimer=this.game.time.totalElapsedSeconds()+this._cappyCooldown;
     }
@@ -195,21 +204,37 @@ Mario.prototype.CappyCollision=function()
            this._tackling=false;
            this._tackles=1; 
        }
-}
+
+    }
+
 Mario.prototype.CappyReleased=function()
 {
     this._cappyHold=false;
 }
+
+Mario.prototype.EnemyCollision=function(enemy)
+{
+    if(this.game.physics.arcade.overlap(enemy,this)&&!this._hurt)
+        this.Hurt();
+    if(this.game.time.totalElapsedSeconds()>this.hurtTimer)
+        this._hurt=false;
+}
+
 Mario.prototype.Die=function()
 {
-    console.log("Muerto");
+    this.reset(this._spawnX,this._spawnY);
 }
+
 Mario.prototype.Hurt=function()
 {
     if(this._life>1)
+    {
         this._life--;
+        this._hurt=true;
+        this.hurtTimer=this.game.time.totalElapsedSeconds()+this.hurtTime;
+    }
     else
-        Mario.Muerto();
+        this.Die();
 }
 Mario.prototype.handleAnimations=function()
 {
@@ -217,6 +242,8 @@ Mario.prototype.handleAnimations=function()
     {
         if(this._swimming) //animaciones cuando esta nadando
             this.animations.play('swimRight');
+        else if(this._hurt)
+            this.animations.play('hurtingRight');
         else if(this.body.onFloor()) //animaciones cuando esta en el suelo
         {
             this._bombJump=false;
@@ -241,6 +268,8 @@ Mario.prototype.handleAnimations=function()
     {
         if(this._swimming)
             this.animations.play('swimLeft');
+        else if(this._hurt)
+            this.animations.play('hurtingLeft');
         else if(this.body.onFloor())
         {
             this._bombJump=false;
