@@ -1,6 +1,7 @@
 'use strict';
 var Mario = require('./Mario.js');
 var Enemy = require('./Enemigo.js');
+var Capturable=require('./Capturable.js');
 
 var player;
 var goomba;
@@ -13,12 +14,13 @@ var PlayScene = {
     this.saltar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     this.lanzar = this.game.input.keyboard.addKey(Phaser.Keyboard.Z);
     
-    this.enemies=this.game.add.group();
+    this.enemies=[];
+    this.capturables=[];
 
     player = new Mario(this.game, 0, 450, 'mario', 'cappy');
     this.game.camera.follow(player);
  
-    goomba = new Enemy(this.game, this.game.width / 2, this.game.height, 'goomba', 0, 100, 2,200, 4 );
+    goomba = new Capturable(this.game, this.game.width / 2, this.game.height, 'goomba', 0, 100, 2,200, 4,0,400);
     this.game.world.addChild(goomba);
     goomba.scale.setTo( 2, 2);
     goomba.AddAnimation('walk', [0, 1], 5);
@@ -27,8 +29,12 @@ var PlayScene = {
     this.game.world.addChild(targetExample);
     targetExample.scale.setTo( 2, 2);
 
-    this.enemies.add(goomba);
-    this.enemies.add(targetExample);
+    this.capturables.push(goomba);
+
+    this.enemies.push(goomba);
+    this.enemies.push(targetExample);
+    console.log(this.capturables);
+    console.log(this.enemies);
   },
   update: function(){
     //Movimiento
@@ -60,15 +66,22 @@ var PlayScene = {
     player.CheckCappy();
     player.CappyCollision();
     player.checkOnFloor();
-
-    goomba.Move();
-    var shot=goomba.Shoot(player);
-    if(shot!=undefined)
-      this.enemies.add(shot);
+    
+    if(goomba.alive)
+    {
+      goomba.Move();
+      var shot=goomba.Shoot(player);
+      if(shot!=undefined)
+        this.enemies.push(shot);
+    }
 
     //meter todos los enemigos en un grupo y llamar a esta funcion para cada uno
     this.enemies.forEach(function(item){
       player.EnemyCollision(item);
+    });
+
+    this.capturables.forEach(function(item){
+      player.CappyCapture(item)
     });
   }
 };
