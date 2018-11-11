@@ -13,10 +13,12 @@ var PlayScene = {
     this.saltar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     this.lanzar = this.game.input.keyboard.addKey(Phaser.Keyboard.Z);
     
+    this.enemies=this.game.add.group();
+
     player = new Mario(this.game, 0, 450, 'mario', 'cappy');
     this.game.camera.follow(player);
-
-    goomba = new Enemy(this.game, this.game.width / 2, this.game.height, 'goomba', 0, 100, 2,200, 2);
+ 
+    goomba = new Enemy(this.game, this.game.width / 2, this.game.height, 'goomba', 0, 100, 2,200, 4 );
     this.game.world.addChild(goomba);
     goomba.scale.setTo( 2, 2);
     goomba.AddAnimation('walk', [0, 1], 5);
@@ -24,6 +26,9 @@ var PlayScene = {
     targetExample = new Enemy(this.game, this.game.width, this.game.height, 'goomba', 0, 0, 0, 0);
     this.game.world.addChild(targetExample);
     targetExample.scale.setTo( 2, 2);
+
+    this.enemies.add(goomba);
+    this.enemies.add(targetExample);
   },
   update: function(){
     //Movimiento
@@ -57,10 +62,14 @@ var PlayScene = {
     player.checkOnFloor();
 
     goomba.Move();
-    goomba.Shoot(player);
+    var shot=goomba.Shoot(player);
+    if(shot!=undefined)
+      this.enemies.add(shot);
 
     //meter todos los enemigos en un grupo y llamar a esta funcion para cada uno
-    player.EnemyCollision(goomba);
+    this.enemies.forEach(function(item){
+      player.EnemyCollision(item);
+    });
   }
 };
 

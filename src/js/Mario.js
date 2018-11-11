@@ -223,6 +223,8 @@ Mario.prototype.EnemyCollision=function(enemy)
 Mario.prototype.Die=function()
 {
     this.reset(this._spawnX,this._spawnY);
+    this._life=3;
+    
 }
 
 Mario.prototype.Hurt=function()

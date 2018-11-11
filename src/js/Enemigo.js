@@ -44,6 +44,7 @@ Enemy.prototype.Shoot = function (target) {
     
     shot.checkWorldBounds = true;
     shot.events.onOutOfBounds.add(shot.RemoveShot, shot);
+    return shot;
   }
 }
 
