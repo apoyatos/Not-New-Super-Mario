@@ -9,14 +9,33 @@ function Capturable(game, x, y, sprite, frame, speed, moving, shootingVel, shoot
 Capturable.prototype = Object.create(Enemy.prototype);
 Capturable.constructor = Capturable;
 
-Capturable.prototype.MoveGoomba = function (player) {
-    player.body.velocity.x = player._facing * player._velocity;
+Capturable.prototype.Move = function (player) 
+{
+    console.log( player._velocity)
+    switch(player.enemyType)
+    {
+        case(0):
+            player.body.velocity.x = player._facing * player._velocity;
+            break;
+   }
 }
-Capturable.prototype.NotMovingGoomba = function (player) {
-    player.body.velocity.x = 0;
+Capturable.prototype.NotMoving = function (player) 
+{
+    switch(player.enemyType)
+    {
+        case(0):
+            player.body.velocity.x = 0;
+            break;
+    }
 }
-Capturable.prototype.JumpGoomba = function (player) {
-    player.body.velocity.y = -player._jumpVelocity / 2;
+Capturable.prototype.Jump = function (player) 
+{
+    switch(player.enemyType)
+    {
+        case(0):
+        player.body.velocity.y = -player._jumpVelocity / 2;
+            break;
+    } 
 }
 
 module.exports = Capturable;

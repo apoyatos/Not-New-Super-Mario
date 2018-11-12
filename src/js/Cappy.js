@@ -22,7 +22,6 @@ function Cappy(game, x, y, name, player, dir) {
     this._cappyStopTimer = 0;
 
     this._cappyCooldownTime = 1;
-    this._cappyCooldownTimer = 0;
 
     this.game.world.addChild(this);  
     this.game.physics.arcade.enable(this);
@@ -43,7 +42,7 @@ Cappy.prototype.Released = function() {
 Cappy.prototype.Throw = function() {
     if(!this.cappyCapture && !this._player.capture)
     {
-        if(!this._player._thrown && this.game.time.totalElapsedSeconds() > this._cappyCooldownTimer && !this._player._crouching && !this._player._tackling && !this._player._bombJump)
+        if(!this._player._thrown && !this._player._crouching && !this._player._tackling && !this._player._bombJump)
         {
             this.body.velocity.x = this._velocity * this._dir;
             this.animations.play("Thrown");
@@ -76,7 +75,6 @@ Cappy.prototype.Check = function() {
 Cappy.prototype.Collision = function() {
     if(this.game.physics.arcade.overlap(this._player.cappy, this._player) && this._cappyReturning)
     {
-        this._cappyCooldownTimer = this.game.time.totalElapsedSeconds() + this._cappyCooldown;
         this.Reset();
     }
     else if(this.game.physics.arcade.overlap(this._player.cappy, this._player) && this._cappyStopped)
@@ -87,6 +85,7 @@ Cappy.prototype.Collision = function() {
     }
 }
 Cappy.prototype.Reset = function() {
+    this._player._cappyCooldownTimer = this.game.time.totalElapsedSeconds() + this._cappyCooldownTime;
     this._player._thrown = false;
     this._cappyStopped = false;
     this._cappyReturning = false;
@@ -95,6 +94,7 @@ Cappy.prototype.Reset = function() {
 Cappy.prototype.Capture = function(enemy) {
     if(this.game.physics.arcade.overlap(this._player.cappy, enemy))
     {
+        
         enemy.kill();
         this.cappyCapture = true;
         this._player.capture = true;

@@ -7,6 +7,7 @@ function Mario(game, x, y, name) {
     Phaser.Sprite.call(this, game, x, y, name);
 
     this.cappy = null;
+    this._cappyCooldownTimer = 0;
     this._thrown = false;
 
     this._life = 3;
@@ -54,10 +55,15 @@ function Mario(game, x, y, name) {
     this.animations.add('bombRight', [17], 10, false);
     this.animations.add('hurtingLeft',[ 16, 4], 8, true);
     this.animations.add('hurtingRight', [16, 5], 8, true);
+    
+    this.animations.add('goombaWalk',[34,35],8,true);
+    this.animations.add('goombaIdle',[34],8,false)
+    this.animations.add('goombaHurting',[33,34],8,true);
 }
 Mario.prototype = Object.create(Phaser.Sprite.prototype);
 Mario.constructor = Mario;
 
+//MOVIMIENTOS
 Mario.prototype.CheckOnFloor = function() {
     if(this.body.onFloor())
     {
@@ -80,30 +86,20 @@ Mario.prototype.Move = function(dir) {
     }
     else
     {
-        switch(this.enemyType)
-        {
-            case(0):
-                Capturable.prototype.MoveGoomba(this);
-                break;
-       }
+        this._moving=true;
+        Capturable.prototype.Move(this);
     }
-    this.handleAnimations();
 }
 Mario.prototype.NotMoving = function() {
     if(!this.capture)
     {
         this.body.velocity.x = 0;    
         this._moving = false;
-        this.handleAnimations();
     }
     else
     {
-        switch(this.type)
-        {
-            case(0):
-            Capturable.prototype.NotMovingGoomba(this);
-                break;
-        } 
+        this._moving = false;
+        Capturable.prototype.NotMoving(this);
     }
 }
 Mario.prototype.Jump = function() {
@@ -113,20 +109,14 @@ Mario.prototype.Jump = function() {
         {   
             this._swimming = false;
             this._tackles = 1;
-            this.body.velocity.y = -this._jumpVelocity;
-            this.handleAnimations();            
+            this.body.velocity.y = -this._jumpVelocity;         
         }
     }
     else 
     {
-        switch(this.type)
-        {
-            case(0):
-                if(this.body.onFloor())
-                Capturable.prototype.JumpGoomba(this);
-                break;
-        } 
-    }
+        if(this.body.onFloor());
+            Capturable.prototype.Jump(this);
+    } 
 }
 Mario.prototype.Tackle = function() {
     if(!this.capture)
@@ -138,12 +128,11 @@ Mario.prototype.Tackle = function() {
 
             this._tackles--;
             this._tackling = true;
-            this.handleAnimations();
         }
     }
     else 
     {
-        switch(this.type)
+        switch(this.enemyType)
         {
             case(0):
                 break;
@@ -165,13 +154,12 @@ Mario.prototype.Crouch = function() {
                 this.body.velocity.x = 0;
                 this._tackles = 0;
                 this._bombJump = true;  
-            }
-            this.handleAnimations();
+            }            
         }
     }
     else 
     {
-        switch(this.type)
+        switch(this.enemyType)
         {
             case(0):
                 break;
@@ -192,14 +180,15 @@ Mario.prototype.Swim  = function() {
     }
     else 
     {
-        switch(this.type)
+        switch(this.enemyType)
         {
             case(0):
                 break;
         }
     }
-    this.handleAnimations();
 }
+
+//DAÑO
 Mario.prototype.EnemyCollision = function(enemy) {
     if(this.game.physics.arcade.overlap(enemy, this) && !this._hurt)
         this.Hurt();
@@ -220,75 +209,127 @@ Mario.prototype.Die = function() {
     this.reset(this._spawnX, this._spawnY);
     this._life = 3;
 }
+
+//CAPPY
 Mario.prototype.ThrowCappy = function() {
-    if(this.cappy == null)
+    if(this.game.time.totalElapsedSeconds() > this._cappyCooldownTimer)
     {
-        this.cappy = new Cappy(this.game, this.body.x ,this.body.y, 'cappy', this, this._facing);
-        this.cappy.Throw();
+        if(this.cappy == null)
+        {
+            this.cappy = new Cappy(this.game, this.body.x ,this.body.y, 'cappy', this, this._facing);
+            this.cappy.Throw();
+        }
+        else if(this.cappy != null && !this.cappy.alive && !this.capture)
+        {
+            this.cappy.destroy();
+            this.cappy = new Cappy(this.game, this.body.x ,this.body.y, 'cappy', this, this._facing);
+            this.cappy.Throw();
+        }
+        else if(this.capture)
+        {   
+            this.cappy.Reset()
+            this.capture = false;
+            this.cappy.cappyCapture = false;
+        }
     }
-    else if(this.cappy != null && !this.cappy.alive && !this.capture)
+    
+}
+
+//ANIMACIONES
+Mario.prototype.MarioAnims=function(dir)//string con la direccion
+{
+    if(this._swimming) //animaciones cuando esta nadando
+        this.animations.play('swim'+dir);
+    else if(this._hurt)
+        this.animations.play('hurting'+dir);
+    else if(this.body.onFloor()) //animaciones cuando esta en el suelo
     {
-        this.cappy.destroy();
-        this.cappy = new Cappy(this.game, this.body.x ,this.body.y, 'cappy', this, this._facing);
-        this.cappy.Throw();
+        this._bombJump = false;
+        if(this._crouching)
+            this.animations.play('crouch'+dir);
+        else if(this._moving)
+            this.animations.play('run'+dir);
+        else
+            this.animations.play('idle'+dir);
     }
-    else
+    else //animaciones cuando esta en el aire
     {
-        this.capture = false;
-        this.cappy.cappyCapture = false;
+        if(this._bombJump)
+            this.animations.play('bomb'+dir);
+        else if(this._tackling)
+            this.animations.play('tackle'+dir);
+        else
+            this.animations.play('jump'+dir);
     }
 }
-Mario.prototype.handleAnimations = function() {
-    if(this._facing == 1) //animaciones Derecha
+
+Mario.prototype.EnemyAnims=function(dir)//Animaciones cuando hay un enemigo capturado
+{
+    if(this._swimming) //animaciones cuando esta nadando
     {
-        if(this._swimming) //animaciones cuando esta nadando
-            this.animations.play('swimRight');
-        else if(this._hurt)
-            this.animations.play('hurtingRight');
-        else if(this.body.onFloor()) //animaciones cuando esta en el suelo
+
+    }
+    else if(this._hurt)
+    {
+        switch(this.type)
         {
-            this._bombJump = false;
-            if(this._crouching)
-                this.animations.play('crouchRight');
-            else if(this._moving)
-                this.animations.play('runRight');
-            else
-                this.animations.play('idleRight');
-        }
-        else //animaciones cuando esta en el aire
-        {
-            if(this._bombJump)
-                this.animations.play('bombRight');
-            else if(this._tackling)
-                this.animations.play('tackleRight');
-            else
-                this.animations.play('jumpRight');
+            case(0):
+            this.animations.play('goombaHurting');
+            break;
         }
     }
-    else //animaciones Izquierda
+    else if(this.body.onFloor()) //animaciones cuando esta en el suelo
     {
-        if(this._swimming)
-            this.animations.play('swimLeft');
-        else if(this._hurt)
-            this.animations.play('hurtingLeft');
-        else if(this.body.onFloor())
+        if(this._crouching)
         {
-            this._bombJump = false;
-            if(this._crouching)
-                this.animations.play('crouchLeft');
-            else if(this._moving)
-                this.animations.play('runLeft');
-            else
-                this.animations.play('idleLeft');
+
+        }
+        else if(this._moving)
+        {
+            switch(this.type)
+            {
+                case(0):
+                this.animations.play('goombaWalk');
+                break;
+            }
         }
         else
         {
-            if(this._bombJump)
-                this.animations.play('bombLeft');  
-            else if(this._tackling)
-                this.animations.play('tackleLeft');
-            else
-                this.animations.play('jumpLeft');
+            switch(this.type)
+            {
+                case(0):
+                this.animations.play('goombaIdle');
+                break;
+            }
+        }
+    }
+    else //animaciones cuando esta en el aire
+    {
+        
+    }
+}
+
+Mario.prototype.handleAnimations = function() {
+    if(!this.capture)//si no hay enemigo capturado se ponen las animaciones de mario
+    {
+        if(this._facing == 1) //animaciones Derecha
+        {
+            this.MarioAnims('Right');
+        }
+        else //animaciones Izquierda
+        {
+            this.MarioAnims('Left');
+        }
+    }
+    else//Cuando hay enemigo capturado
+    {
+        if(this._facing == 1) //animaciones Derecha
+        {
+            this.EnemyAnims('Right');
+        }
+        else
+        {
+            this.EnemyAnims('Left');
         }
     }
 }

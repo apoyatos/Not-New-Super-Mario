@@ -23,7 +23,7 @@ Enemy.prototype.AddAnimation = function (name, frames, speed) {
   this.animations.add(name, frames, speed, true);
   return name;
 }
-Enemy.prototype.Move = function (anim) {
+Enemy.prototype.EnemyMove = function (anim) {
   if(this.game.time.totalElapsedSeconds() < this.timeMoving) {
     this.body.velocity.x = this.speed;
     this.animations.play(anim);
@@ -33,7 +33,7 @@ Enemy.prototype.Move = function (anim) {
     this.speed = -this.speed;
   }
 }
-Enemy.prototype.Shoot = function (target) {
+Enemy.prototype.EnemyShoot = function (target) {
   if(this.game.time.totalElapsedSeconds() > this.timeShooting)
   {
     var shot = new Shot(this.game, this.x, this.y, 'bala', 0);

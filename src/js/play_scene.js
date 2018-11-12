@@ -26,9 +26,6 @@ var PlayScene = {
 
     this.enemies.push(goomba);
     this.capturables.push(goomba);
-
-    console.log(this.capturables);
-    console.log(this.enemies);
   },
   update: function(){
     //Movimiento
@@ -55,6 +52,8 @@ var PlayScene = {
       player.cappy.Released();
 
     player.CheckOnFloor();
+    player.handleAnimations();
+
     if(player.cappy != null) {
       player.cappy.Check();
       player.cappy.Collision();
@@ -62,8 +61,8 @@ var PlayScene = {
     
     if(goomba.alive)
     {
-      goomba.Move(animGoomba);
-      var shot = goomba.Shoot(player);
+      goomba.EnemyMove(animGoomba);
+      var shot = goomba.EnemyShoot(player);
       if(shot != undefined)
         this.enemies.push(shot);
     }
