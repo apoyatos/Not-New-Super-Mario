@@ -42,7 +42,7 @@ Cappy.prototype.Released = function() {
 Cappy.prototype.Throw = function() {
     if(!this.cappyCapture && !this._player.capture)
     {
-        if(!this._player._thrown && !this._player._crouching && !this._player._tackling && !this._player._bombJump)
+        if(!this._player._thrown)
         {
             this.body.velocity.x = this._velocity * this._dir;
             this.animations.play("Thrown");

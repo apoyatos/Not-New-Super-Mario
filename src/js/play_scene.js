@@ -19,7 +19,7 @@ var PlayScene = {
     player = new Mario(this.game, 0, 450, 'mario');
     this.game.camera.follow(player);
  
-    goomba = new Capturable(this.game, this.game.width / 2, this.game.height, 'goomba', 0, 100, 2, 200, 4, 0, 400);
+    goomba = new Capturable(this.game, this.game.width, this.game.height, 'goomba', 0, 100, 2, 200, 4, 0, 400);
     this.game.world.addChild(goomba);
     goomba.scale.setTo( 2, 2);
     animGoomba = goomba.AddAnimation('walk', [0, 1], 5);

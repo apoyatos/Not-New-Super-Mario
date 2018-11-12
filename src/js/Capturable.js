@@ -11,7 +11,6 @@ Capturable.constructor = Capturable;
 
 Capturable.prototype.Move = function (player) 
 {
-    console.log( player._velocity)
     switch(player.enemyType)
     {
         case(0):
@@ -33,7 +32,8 @@ Capturable.prototype.Jump = function (player)
     switch(player.enemyType)
     {
         case(0):
-        player.body.velocity.y = -player._jumpVelocity / 2;
+        if(player.body.onFloor())
+            player.body.velocity.y = -player._jumpVelocity / 2;
             break;
     } 
 }
