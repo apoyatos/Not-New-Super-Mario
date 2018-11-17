@@ -13,12 +13,12 @@ var BootScene = {
 
 var PreloaderScene = {
   preload: function () {
-    // TODO: load here the assets for the game
+    // load here the assets for the game
     this.game.load.image('logo', 'images/Logo.png');
-    this.game.load.spritesheet('mario', 'images/Mario.png', 25.39, 29);
-    this.game.load.spritesheet('cappy', 'images/Gorra.png', 15.3 ,8.5);
-    this.game.load.spritesheet('goomba', 'images/Goomba.png', 25, 23, 3);
-    this.game.load.spritesheet('bala', 'images/Bala.png', 9, 9, 4);
+    this.game.load.spritesheet('mario', 'images/Mario.png', 24, 28);
+    this.game.load.spritesheet('cappy', 'images/Gorra.png', 14, 8);
+    this.game.load.spritesheet('goomba', 'images/Goomba.png', 24, 24);
+    this.game.load.spritesheet('disparo-fuego', 'images/Disparo-Fuego.png', 9, 9);
   },
   create: function () {
     this.game.state.start('play');

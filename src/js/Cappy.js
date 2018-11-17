@@ -2,104 +2,97 @@
 
 function Cappy(game, x, y, name, player, dir) {
     Phaser.Sprite.call(this, game, x, y, name);
-
-    this._player = player;
-    this._dir = dir;
-    this._velocity = 400;
-
-    this._cappyHold = false;
-    this._cappyStopped = false;
-    this._cappyReturning = false;
-    this._cappyCapture = false;
-
-    this._cappyTime = 0.5;
-    this._cappyTimer = 0;
-
-    this._cappyHoldTime = 3;
-    this._cappyHoldTimer = 0;
-
-    this._cappyStopTime = 1;
-    this._cappyStopTimer = 0;
-
-    this._cappyCooldownTime = 1;
-
-    this.game.world.addChild(this);  
+    //Mario
+    this.player = player;
+    //Movimiento
+    this.dir = dir;
+    this.velocity = 400;
+    //Acciones
+    this.cappyHold = false;
+    this.cappyStopped = false;
+    this.cappyReturning = false;
+    this.cappyCapture = false;
+    //Temporizadores
+    this.cappyTime = 0.5;
+    this.cappyTimer = 0;
+    this.cappyHoldTime = 3;
+    this.cappyHoldTimer = 0;
+    this.cappyStopTime = 1;
+    this.cappyStopTimer = 0;
+    this.cappyCooldownTime = 1;
+    //Propiedades
+    this.game.world.addChild(this);
     this.game.physics.arcade.enable(this);
     this.body.allowGravity = false;
-
+    //Sprite y animaciones
     this.scale.setTo(2, 2);
     this.animations.add("Thrown", [0, 1, 2], 8, true);
 }
 Cappy.prototype = Object.create(Phaser.Sprite.prototype);
 Cappy.constructor = Cappy;
 
-Cappy.prototype.Returning = function() {
-    this.body.velocity.x =this._velocity * (this._dir * -1);
-}
-Cappy.prototype.Released = function() {
-    this._cappyHold = false;
-}
-Cappy.prototype.Throw = function() {
-    if(!this.cappyCapture && !this._player.capture)
+//Movimiento al lanzarse
+Cappy.prototype.Throw = function () {
+    if (!this.cappyCapture && !this.player.capture) //Si es Mario
     {
-        if(!this._player._thrown)
-        {
-            this.body.velocity.x = this._velocity * this._dir;
+        if (!this.player.thrown) {
+            this.body.velocity.x = this.velocity * this.dir;
             this.animations.play("Thrown");
-            this._player._thrown = true;
-            this._cappyHold = true;
-            this._cappyTimer = this.game.time.totalElapsedSeconds() + this._cappyTime;
+            this.player.thrown = true;
+            this.cappyHold = true;
+            this.cappyTimer = this.game.time.totalElapsedSeconds() + this.cappyTime;
         }
     }
 }
-Cappy.prototype.Check = function() {
-    if(this._player._thrown && !this._cappyStopped)
+//Manejo de lanzamiento
+Cappy.prototype.Check = function () {
+    if (this.player.thrown && !this.cappyStopped) //Si se ha lanzado y no se ha mantenido en su posición
     {
-        if(this.game.time.totalElapsedSeconds() > this._cappyTimer)
-        {
+        if (this.game.time.totalElapsedSeconds() > this.cappyTimer) {
             this.body.velocity.x = 0;
-            this._cappyStopped = true;  
-            this._cappyHoldTimer = this.game.time.totalElapsedSeconds() + this._cappyHoldTime;          
-            this._cappyStopTimer = this.game.time.totalElapsedSeconds() + this._cappyStopTime;
+            this.cappyStopped = true;
+            this.cappyHoldTimer = this.game.time.totalElapsedSeconds() + this.cappyHoldTime;
+            this.cappyStopTimer = this.game.time.totalElapsedSeconds() + this.cappyStopTime;
         }
     }
-    else if(this._cappyStopped)
+    else if (this.cappyStopped) //Tras mantenerse en su posición
     {
-        if((this._cappyHold && this.game.time.totalElapsedSeconds() > this._cappyHoldTimer) || (!this._cappyHold && this.game.time.totalElapsedSeconds() > this._cappyStopTimer))
-        {
-            this.game.physics.arcade.moveToObject(this._player.cappy, this._player, 500);
-            this._cappyReturning = true;
+        if ((this.cappyHold && this.game.time.totalElapsedSeconds() > this.cappyHoldTimer) || (!this.cappyHold && this.game.time.totalElapsedSeconds() > this.cappyStopTimer)) {
+            this.game.physics.arcade.moveToObject(this.player.cappy, this.player, 500);
+            this.cappyReturning = true;
         }
     }
 }
-Cappy.prototype.Collision = function() {
-    if(this.game.physics.arcade.overlap(this._player.cappy, this._player) && this._cappyReturning)
+//Manejo de colisiones
+Cappy.prototype.Collision = function () {
+    if (this.game.physics.arcade.overlap(this.player.cappy, this.player) && this.cappyReturning) //Se reinicia al volver a Mario
     {
         this.Reset();
     }
-    else if(this.game.physics.arcade.overlap(this._player.cappy, this._player) && this._cappyStopped)
-    { 
-        this._player.body.velocity.y = -this._player._jumpVelocity;
-        this._player._tackling = false;
-        this._player._tackles = 1;
+    else if (this.game.physics.arcade.overlap(this.player.cappy, this.player) && this.cappyStopped) //Se reinicia después de que Mario salte sobre ella
+    {
+        this.player.body.velocity.y = -this.player.jumpVelocity;
+        this.player.tackling = false;
+        this.player.tackles = 1;
+        this.Reset();
     }
 }
-Cappy.prototype.Reset = function() {
-    this._player._cappyCooldownTimer = this.game.time.totalElapsedSeconds() + this._cappyCooldownTime;
-    this._player._thrown = false;
-    this._cappyStopped = false;
-    this._cappyReturning = false;
-    this._player.cappy.kill();
+//Reinicia el estado de Cappy
+Cappy.prototype.Reset = function () {
+    this.player.cappyCooldownTimer = this.game.time.totalElapsedSeconds() + this.cappyCooldownTime;
+    this.player.thrown = false;
+    this.cappyStopped = false;
+    this.cappyReturning = false;
+    this.player.cappy.kill();
 }
-Cappy.prototype.Capture = function(enemy) {
-    if(this.game.physics.arcade.overlap(this._player.cappy, enemy))
-    {
-        
+//Captura al enemigo con Cappy
+Cappy.prototype.Capture = function (enemy) {
+    if (this.game.physics.arcade.overlap(this.player.cappy, enemy)) {
+
         enemy.kill();
         this.cappyCapture = true;
-        this._player.capture = true;
-        this._player.enemyType = enemy.type;
-        this._player.reset(enemy.body.position.x, enemy.body.position.y);
+        this.player.capture = true;
+        this.player.reset(enemy.body.position.x, enemy.body.position.y);
         this.Reset();
     }
 }

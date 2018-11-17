@@ -1,22 +1,25 @@
 'use strict';
 
-function Shot(game, x, y, sprite, frame) {
+function Shot(game, x, y, sprite, frame, animName, animFrames, animSpeed) {
   Phaser.Sprite.call(this, game, x, y, sprite, frame);
-
+  //Propiedades
+  this.game.world.addChild(shot);
   this.game.physics.arcade.enable(this);
   this.body.allowGravity = false;
+  //Sprite y animaciones
+  this.animName = animName;
+  this.scale.setTo(2, 2);
+  this.animations.add(this.animName, animFrames, animSpeed, true);
 }
 Shot.prototype = Object.create(Phaser.Sprite.prototype);
 Shot.constructor = Shot;
 
-Shot.prototype.AddAnimation = function (name, frames, speed) {
-  this.animations.add(name, frames, speed, true);
-  return name;
+//Disparo
+Shot.prototype.Shoot = function (target, speed) {
+  this.game.physics.arcade.moveToObject(this, target, speed);
+  this.animations.play(this.animName);
 }
-Shot.prototype.Shoot = function (target, speed, anim) {
-    this.game.physics.arcade.moveToObject(this, target, speed);
-    this.animations.play(anim);
-}
+//Destrucción
 Shot.prototype.RemoveShot = function () {
   this.destroy();
 }
