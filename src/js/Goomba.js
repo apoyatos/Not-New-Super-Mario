@@ -11,7 +11,7 @@ function Goomba(game, x, y, sprite, frame, speed, movingTime) {
     this.movingTime = movingTime;
     this.movingTimer = 0;
     //Sprites y animaciones
-    this.scale.setTo(1.5, 1.5);
+    this.scale.setTo(2, 2);
     this.animations.add('walk', [0, 1], 5);
 }
 Goomba.prototype = Object.create(Enemy.prototype);

@@ -26,7 +26,7 @@ var PlayScene = {
     this.capturables = [];
 
     this.player = new Mario(this.game, 0, 450, 'mario', 5);
-    this.goomba = new Goomba(this.game, this.game.width, this.game.height, 'goomba', 0, 100, 2, this.player);
+    this.goomba = new Goomba(this.game, 1400,200 , 'goomba', 0, 100, 2, this.player);
     this.game.camera.follow(this.player);
 
     this.enemies.push(this.goomba);
@@ -34,6 +34,7 @@ var PlayScene = {
   },
   update: function () {
     this.game.physics.arcade.collide(this.player,this.collisions);
+    this.game.physics.arcade.collide(this.goomba,this.collisions);
 
     //Movimiento
     if (this.teclas.right.isDown)
