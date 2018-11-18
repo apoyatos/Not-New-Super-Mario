@@ -19,6 +19,9 @@ var PreloaderScene = {
     this.game.load.spritesheet('cappy', 'images/Gorra.png', 14, 8);
     this.game.load.spritesheet('goomba', 'images/Goomba.png', 24, 24);
     this.game.load.spritesheet('disparo-fuego', 'images/Disparo-Fuego.png', 9, 9);
+
+    this.game.load.tilemap('mario','tilemaps/super_mario.json',null,Phaser.Tilemap.TILED_JSON);
+    this.game.load.image('tiles','tilemaps/super_mario.png');
   },
   create: function () {
     this.game.state.start('play');

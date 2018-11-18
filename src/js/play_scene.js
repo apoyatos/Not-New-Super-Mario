@@ -10,6 +10,18 @@ var PlayScene = {
     this.saltar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     this.lanzar = this.game.input.keyboard.addKey(Phaser.Keyboard.Z);
 
+    this.game.stage.backgroundColor = '#787878';
+    this.map = this.game.add.tilemap('mario');
+    this.map.addTilesetImage('SuperMarioBros-World1-1', 'tiles');
+
+    this.layer=this.map.createLayer('World1');
+    this.layer.setScale(2.5,2.5)
+    this.layer.resizeWorld();
+
+    this.collisions=this.map.createLayer('Colisiones');
+    this.collisions.setScale(2.5,2.5);
+    this.map.setCollisionBetween(1,999,true,'Colisiones')
+
     this.enemies = [];
     this.capturables = [];
 
@@ -21,6 +33,8 @@ var PlayScene = {
     this.capturables.push(this.goomba);
   },
   update: function () {
+    this.game.physics.arcade.collide(this.player,this.collisions);
+
     //Movimiento
     if (this.teclas.right.isDown)
       this.player.Move(1);
