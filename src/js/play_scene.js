@@ -11,7 +11,7 @@ var PlayScene = {
     this.lanzar = this.game.input.keyboard.addKey(Phaser.Keyboard.Z);
 
     this.game.stage.backgroundColor = '#787878';
-    this.map = this.game.add.tilemap('mario');
+    this.map = this.game.add.tilemap('map');
     this.map.addTilesetImage('SuperMarioBros-World1-1', 'tiles');
 
     this.layer=this.map.createLayer('World1');
@@ -35,6 +35,7 @@ var PlayScene = {
   update: function () {
     this.game.physics.arcade.collide(this.player,this.collisions);
     this.game.physics.arcade.collide(this.goomba,this.collisions);
+    this.game.physics.arcade.collide(this.player.cappy,this.collisions);
 
     //Movimiento
     if (this.teclas.right.isDown)

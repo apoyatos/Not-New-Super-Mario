@@ -25,7 +25,7 @@ function Cappy(game, x, y, name, player, dir) {
     this.game.physics.arcade.enable(this);
     this.body.allowGravity = false;
     //Sprite y animaciones
-    this.scale.setTo(2, 2);
+    this.scale.setTo(2.5, 2.5);
     this.animations.add("Thrown", [0, 1, 2], 8, true);
 }
 Cappy.prototype = Object.create(Phaser.Sprite.prototype);

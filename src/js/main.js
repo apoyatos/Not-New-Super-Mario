@@ -15,13 +15,14 @@ var PreloaderScene = {
   preload: function () {
     // load here the assets for the game
     this.game.load.image('logo', 'images/Logo.png');
-    this.game.load.spritesheet('mario', 'images/Mario.png', 24, 28);
     this.game.load.spritesheet('cappy', 'images/Gorra.png', 14, 8);
     this.game.load.spritesheet('goomba', 'images/Goomba.png', 24, 24);
     this.game.load.spritesheet('disparo-fuego', 'images/Disparo-Fuego.png', 9, 9);
 
-    this.game.load.tilemap('mario','tilemaps/super_mario.json',null,Phaser.Tilemap.TILED_JSON);
-    this.game.load.image('tiles','tilemaps/super_mario.png');
+    this.game.load.atlas('mario', 'images/Mario.png', 'images/sprites.json');
+
+    this.game.load.tilemap('map', 'tilemaps/super_mario.json', null, Phaser.Tilemap.TILED_JSON);
+    this.game.load.image('tiles', 'tilemaps/super_mario.png');
   },
   create: function () {
     this.game.state.start('play');

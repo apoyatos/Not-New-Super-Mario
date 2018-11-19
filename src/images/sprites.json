@@ -1,0 +1,833 @@
+{
+    "frames": [
+        {
+            "filename": "walkLeft2",
+            "frame": {
+                "x": 75,
+                "y": 0,
+                "w": 16,
+                "h": 27
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 16,
+                "h": 27
+            },
+            "sourceSize": {
+                "w": 16,
+                "h": 27
+            }
+        },
+        {
+            "filename": "walkLeft1",
+            "frame": {
+                "x": 101,
+                "y": 0,
+                "w": 14,
+                "h": 27
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 14,
+                "h": 27
+            },
+            "sourceSize": {
+                "w": 14,
+                "h": 27
+            }
+        },
+        {
+            "filename": "walkRight1",
+            "frame": {
+                "x": 126,
+                "y": 0,
+                "w": 14,
+                "h": 27
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 14,
+                "h": 27
+            },
+            "sourceSize": {
+                "w": 14,
+                "h": 27
+            }
+        },
+        {
+            "filename": "walkRight2",
+            "frame": {
+                "x": 149,
+                "y": 0,
+                "w": 16,
+                "h": 27
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 16,
+                "h": 27
+            },
+            "sourceSize": {
+                "w": 16,
+                "h": 27
+            }
+        },
+        {
+            "filename": "jumpLeft",
+            "frame": {
+                "x": 25,
+                "y": 1,
+                "w": 16,
+                "h": 26
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 16,
+                "h": 26
+            },
+            "sourceSize": {
+                "w": 16,
+                "h": 26
+            }
+        },
+        {
+            "filename": "walkLeft3",
+            "frame": {
+                "x": 49,
+                "y": 1,
+                "w": 16,
+                "h": 26
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 16,
+                "h": 26
+            },
+            "sourceSize": {
+                "w": 16,
+                "h": 26
+            }
+        },
+        {
+            "filename": "walkRight3",
+            "frame": {
+                "x": 175,
+                "y": 1,
+                "w": 16,
+                "h": 26
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 16,
+                "h": 26
+            },
+            "sourceSize": {
+                "w": 16,
+                "h": 26
+            }
+        },
+        {
+            "filename": "jumpRight",
+            "frame": {
+                "x": 199,
+                "y": 1,
+                "w": 16,
+                "h": 26
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 16,
+                "h": 26
+            },
+            "sourceSize": {
+                "w": 16,
+                "h": 26
+            }
+        },
+        {
+            "filename": "crouchLeft",
+            "frame": {
+                "x": 0,
+                "y": 0,
+                "w": 14,
+                "h": 27
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 14,
+                "h": 18
+            },
+            "sourceSize": {
+                "w": 14,
+                "h": 18
+            }
+        },
+        {
+            "filename": "crouchRight",
+            "frame": {
+                "x": 226,
+                "y": 0,
+                "w": 14,
+                "h": 27
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 14,
+                "h": 18
+            },
+            "sourceSize": {
+                "w": 14,
+                "h": 18
+            }
+        },
+        {
+            "filename": "swimLeft2",
+            "frame": {
+                "x": 75,
+                "y": 28,
+                "w": 18,
+                "h": 27
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 18,
+                "h": 27
+            },
+            "sourceSize": {
+                "w": 18,
+                "h": 27
+            }
+        },
+        {
+            "filename": "swimLeft1",
+            "frame": {
+                "x": 101,
+                "y": 28,
+                "w": 19,
+                "h": 27
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 19,
+                "h": 27
+            },
+            "sourceSize": {
+                "w": 19,
+                "h": 27
+            }
+        },
+        {
+            "filename": "swimRight1",
+            "frame": {
+                "x": 121,
+                "y": 28,
+                "w": 19,
+                "h": 27
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 19,
+                "h": 27
+            },
+            "sourceSize": {
+                "w": 19,
+                "h": 27
+            }
+        },
+        {
+            "filename": "swimRight2",
+            "frame": {
+                "x": 147,
+                "y": 28,
+                "w": 18,
+                "h": 27
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 18,
+                "h": 27
+            },
+            "sourceSize": {
+                "w": 18,
+                "h": 27
+            }
+        },
+        {
+            "filename": "bombLeft",
+            "frame": {
+                "x": 25,
+                "y": 29,
+                "w": 16,
+                "h": 26
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 16,
+                "h": 26
+            },
+            "sourceSize": {
+                "w": 16,
+                "h": 26
+            }
+        },
+        {
+            "filename": "swimLeft3",
+            "frame": {
+                "x": 49,
+                "y": 29,
+                "w": 19,
+                "h": 26
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 19,
+                "h": 26
+            },
+            "sourceSize": {
+                "w": 19,
+                "h": 26
+            }
+        },
+        {
+            "filename": "swimRight3",
+            "frame": {
+                "x": 172,
+                "y": 29,
+                "w": 19,
+                "h": 26
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 19,
+                "h": 26
+            },
+            "sourceSize": {
+                "w": 19,
+                "h": 26
+            }
+        },
+        {
+            "filename": "bombRight",
+            "frame": {
+                "x": 199,
+                "y": 29,
+                "w": 16,
+                "h": 26
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 16,
+                "h": 26
+            },
+            "sourceSize": {
+                "w": 16,
+                "h": 26
+            }
+        },
+        {
+            "filename": "jumpLeftCappy",
+            "frame": {
+                "x": 25,
+                "y": 57,
+                "w": 16,
+                "h": 26
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 16,
+                "h": 26
+            },
+            "sourceSize": {
+                "w": 16,
+                "h": 26
+            }
+        },
+        {
+            "filename": "jumpRightCappy",
+            "frame": {
+                "x": 199,
+                "y": 57,
+                "w": 16,
+                "h": 26
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 16,
+                "h": 26
+            },
+            "sourceSize": {
+                "w": 16,
+                "h": 26
+            }
+        },
+        {
+            "filename": "walkLeftCappy2",
+            "frame": {
+                "x": 75,
+                "y": 56,
+                "w": 16,
+                "h": 27
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 16,
+                "h": 25
+            },
+            "sourceSize": {
+                "w": 16,
+                "h": 25
+            }
+        },
+        {
+            "filename": "walkLeftCappy1",
+            "frame": {
+                "x": 101,
+                "y": 56,
+                "w": 14,
+                "h": 27
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 14,
+                "h": 25
+            },
+            "sourceSize": {
+                "w": 14,
+                "h": 25
+            }
+        },
+        {
+            "filename": "walkRightCappy1",
+            "frame": {
+                "x": 126,
+                "y": 56,
+                "w": 14,
+                "h": 27
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 14,
+                "h": 25
+            },
+            "sourceSize": {
+                "w": 14,
+                "h": 25
+            }
+        },
+        {
+            "filename": "walkRightCappy2",
+            "frame": {
+                "x": 149,
+                "y": 56,
+                "w": 16,
+                "h": 27
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 16,
+                "h": 25
+            },
+            "sourceSize": {
+                "w": 16,
+                "h": 25
+            }
+        },
+        {
+            "filename": "walkLeftCappy3",
+            "frame": {
+                "x": 49,
+                "y": 56,
+                "w": 16,
+                "h": 27
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 16,
+                "h": 24
+            },
+            "sourceSize": {
+                "w": 16,
+                "h": 24
+            }
+        },
+        {
+            "filename": "walkRightCappy3",
+            "frame": {
+                "x": 175,
+                "y": 56,
+                "w": 16,
+                "h": 27
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 16,
+                "h": 24
+            },
+            "sourceSize": {
+                "w": 16,
+                "h": 24
+            }
+        },
+        {
+            "filename": "crouchLeftCappy",
+            "frame": {
+                "x": 0,
+                "y": 56,
+                "w": 14,
+                "h": 27
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 14,
+                "h": 16
+            },
+            "sourceSize": {
+                "w": 14,
+                "h": 16
+            }
+        },
+        {
+            "filename": "crouchRightCappy",
+            "frame": {
+                "x": 226,
+                "y": 56,
+                "w": 14,
+                "h": 27
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 14,
+                "h": 16
+            },
+            "sourceSize": {
+                "w": 14,
+                "h": 16
+            }
+        },
+        {
+            "filename": "swimLeftCappy2",
+            "frame": {
+                "x": 75,
+                "y": 86,
+                "w": 18,
+                "h": 25
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 18,
+                "h": 25
+            },
+            "sourceSize": {
+                "w": 18,
+                "h": 25
+            }
+        },
+        {
+            "filename": "swimLeftCappy1",
+            "frame": {
+                "x": 101,
+                "y": 86,
+                "w": 19,
+                "h": 25
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 19,
+                "h": 25
+            },
+            "sourceSize": {
+                "w": 19,
+                "h": 25
+            }
+        },
+        {
+            "filename": "swimRightCappy1",
+            "frame": {
+                "x": 121,
+                "y": 86,
+                "w": 19,
+                "h": 25
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 19,
+                "h": 25
+            },
+            "sourceSize": {
+                "w": 19,
+                "h": 25
+            }
+        },
+        {
+            "filename": "swimRightCappy2",
+            "frame": {
+                "x": 147,
+                "y": 86,
+                "w": 18,
+                "h": 25
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 18,
+                "h": 25
+            },
+            "sourceSize": {
+                "w": 18,
+                "h": 25
+            }
+        },
+        {
+            "filename": "bombLeftCappy",
+            "frame": {
+                "x": 25,
+                "y": 87,
+                "w": 16,
+                "h": 24
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 16,
+                "h": 24
+            },
+            "sourceSize": {
+                "w": 16,
+                "h": 24
+            }
+        },
+        {
+            "filename": "swimLeftCappy3",
+            "frame": {
+                "x": 49,
+                "y": 87,
+                "w": 19,
+                "h": 24
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 19,
+                "h": 24
+            },
+            "sourceSize": {
+                "w": 19,
+                "h": 24
+            }
+        },
+        {
+            "filename": "swimRightCappy3",
+            "frame": {
+                "x": 172,
+                "y": 87,
+                "w": 19,
+                "h": 24
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 19,
+                "h": 24
+            },
+            "sourceSize": {
+                "w": 19,
+                "h": 24
+            }
+        },
+        {
+            "filename": "bombRightCappy",
+            "frame": {
+                "x": 199,
+                "y": 87,
+                "w": 16,
+                "h": 24
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 16,
+                "h": 24
+            },
+            "sourceSize": {
+                "w": 16,
+                "h": 24
+            }
+        },
+        {
+            "filename": "goombaLeft",
+            "frame": {
+                "x": 96,
+                "y": 113,
+                "w": 24,
+                "h": 26
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 24,
+                "h": 26
+            },
+            "sourceSize": {
+                "w": 24,
+                "h": 26
+            }
+        },
+        {
+            "filename": "goombaRight",
+            "frame": {
+                "x": 121,
+                "y": 113,
+                "w": 24,
+                "h": 26
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 24,
+                "h": 26
+            },
+            "sourceSize": {
+                "w": 24,
+                "h": 26
+            }
+        },
+        {
+            "filename": "hurt",
+            "frame": {
+                "x": 0,
+                "y": 113,
+                "w": 20,
+                "h": 26
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 24,
+                "h": 26
+            },
+            "sourceSize": {
+                "w": 24,
+                "h": 26
+            }
+        }
+    ],
+    "meta": {
+        "app": "https://www.leshylabs.com/apps/sstool/",
+        "version": "Leshy SpriteSheet Tool v0.8.4",
+        "image": "spritesheet.png",
+        "size": {
+            "w": 240,
+            "h": 140
+        },
+        "scale": 1
+    }
+}
