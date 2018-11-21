@@ -22,7 +22,13 @@ var PlayScene = {
 
     this.collisions = this.map.createLayer('Colisiones');
     this.collisions.setScale(2.5, 2.5);
-    this.map.setCollisionBetween(1, 999, true, 'Colisiones')
+    this.map.setCollisionBetween(1, 999, true, 'Colisiones');
+    this.floor = this.map.createLayer('Suelo');
+    this.floor.setScale(2.5, 2.5);
+    this.map.setCollisionBetween(1, 999, true, 'Suelo');
+    this.deathZone = this.map.createLayer('Muerte');
+    this.deathZone.setScale(2.5, 2.5);
+    this.map.setCollisionBetween(1, 999, true, 'Muerte');
 
     this.enemies = [];
     this.capturables = [];
@@ -37,13 +43,17 @@ var PlayScene = {
     this.enemies.push(this.goomba);
     this.enemies.push(this.spiny);
     this.enemies.push(this.planta);
+
     this.capturables.push(this.goomba);
   },
   update: function () {
+    this.game.physics.arcade.collide(this.planta, this.floor);
+    this.game.physics.arcade.collide(this.player, this.floor);
+    this.game.physics.arcade.collide(this.goomba, this.floor);
+    this.game.physics.arcade.collide(this.spiny, this.floor);
     this.game.physics.arcade.collide(this.player, this.collisions);
     this.game.physics.arcade.collide(this.goomba, this.collisions);
     this.game.physics.arcade.collide(this.spiny, this.collisions);
-    this.game.physics.arcade.collide(this.planta, this.collisions);
     this.game.physics.arcade.collide(this.player.cappy, this.collisions);
 
     //Movimiento
@@ -77,6 +87,8 @@ var PlayScene = {
       this.player.cappy.Collision();
     }
 
+ 
+
     if (this.goomba.alive) {
       this.goomba.Move();
       this.goomba.Die();
@@ -89,7 +101,6 @@ var PlayScene = {
       this.shots.push(shot);
 
 
-    console.log(this.shots);
     if (this.player.cappy != null)
       this.player.cappy.Capture(this.goomba);
 
