@@ -30,7 +30,7 @@ var PlayScene = {
     this.player = new Mario(this.game, 0, 450, 'mario', 5);
     this.goomba = new Goomba(this.game, 1400, 200, 'goomba', 0, 100, 2, this.player);
     this.spiny = new Spiny(this.game, 1800, 200, 'spiny', 0, 100, 2);
-    this.planta = new Planta(this.game, 400, 200, 'planta', 2, this.player);
+    this.planta = new Planta(this.game, 400, 400, 'planta', 5, 200,5);
     this.game.camera.follow(this.player);
 
     this.enemies.push(this.goomba);
@@ -81,12 +81,12 @@ var PlayScene = {
       this.goomba.Die();
       this.spiny.Move();
 
-      var shot = this.planta.Shoot();
+      var shot = this.planta.Shoot(this.player);
       if (shot != undefined)
         this.enemies.push(shot);
 
     }
-
+    console.log(this.enemies)
     this.player.EnemyCollision(this.goomba);
     this.player.EnemyCollision(this.spiny);
     this.player.EnemyCollision(this.planta);

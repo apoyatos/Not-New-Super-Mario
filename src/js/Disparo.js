@@ -3,7 +3,7 @@
 function Shot(game, x, y, sprite, frame, animName, animFrames, animSpeed) {
   Phaser.Sprite.call(this, game, x, y, sprite, frame);
   //Propiedades
-  this.game.world.addChild(shot);
+  this.game.world.addChild(this);
   this.game.physics.arcade.enable(this);
   this.body.allowGravity = false;
   //Sprite y animaciones
