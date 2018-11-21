@@ -30,6 +30,7 @@ function Mario(game, x, y, sprite, frame) {
     this.spawnY = y;
     //Captura
     this.capture = false;
+    this.enemy;
     //Propiedades
     this.game.world.addChild(this);
     this.game.physics.arcade.enable(this);
@@ -68,38 +69,38 @@ function Mario(game, x, y, sprite, frame) {
     this.animations.add('bombLeftCappy', ['bombLeftCappy'], 10, false);
     this.animations.add('bombRightCappy', ['bombRightCappy'], 10, false);
     //Animaciones de daño
-    this.animations.add('runLeftHurt', ['walkLeft1','hurt','walkLeft2','hurt','walkLeft3'], 10, true);
-    this.animations.add('runRightHurt', ['walkRight1','hurt','walkRight2','hurt','walkRight3'], 10, true);
-    this.animations.add('jumpLeftHurt', ['jumpLeft','hurt'], 10, true);
-    this.animations.add('jumpRightHurt', ['jumpRight','hurt'], 10, true);
+    this.animations.add('runLeftHurt', ['walkLeft1', 'hurt', 'walkLeft2', 'hurt', 'walkLeft3'], 10, true);
+    this.animations.add('runRightHurt', ['walkRight1', 'hurt', 'walkRight2', 'hurt', 'walkRight3'], 10, true);
+    this.animations.add('jumpLeftHurt', ['jumpLeft', 'hurt'], 10, true);
+    this.animations.add('jumpRightHurt', ['jumpRight', 'hurt'], 10, true);
     this.animations.add('idleLeftHurt', ['walkLeft1'], 10, true);
-    this.animations.add('idleRightHurt', ['walkRight1','hurt'], 10, true);
-    this.animations.add('crouchLeftHurt', ['crouchLeft','hurt'], 10, true);
-    this.animations.add('crouchRightHurt', ['crouchRight','hurt'], 10, true);
-    this.animations.add('tackleLeftHurt', ['swimLeft2','hurt'], 10, true);
-    this.animations.add('tackleRightHurt', ['swimRight2','hurt'], 10, true);
-    this.animations.add('swimLeftHurt', ['swimLeft1','hurt','swimLeft2','hurt','swimLeft3'], 10, true);
-    this.animations.add('swimRightHurt', ['swimRight1','hurt','swimRight2','hurt','swimRight3'], 10, true);
-    this.animations.add('bombLeftHurt', ['bombLeft','hurt'], 10, true);
-    this.animations.add('bombRightHurt', ['bombRight','hurt'], 10, true);
-    this.animations.add('runLeftCappyHurt', ['walkLeftCappy1','hurt','walkLeftCappy2','hurt','walkLeftCappy3'], 10, true);
-    this.animations.add('runRightCappyHurt', ['walkRightCappy1','hurt','ealkRightCappy2','hurt','walkRightCappy3'], 10, true);
-    this.animations.add('jumpLeftCappyHurt', ['jumpLeftCappy','hurt'], 10, true);
-    this.animations.add('jumpRightCappyHurt', ['jumpRightCappy','hurt'], 10, true);
-    this.animations.add('idleLeftCappyHurt', ['walkLeftCappy1','hurt'], 10, true);
-    this.animations.add('idleRightCappyHurt', ['walkRightCappy1','hurt'], 10, true);
-    this.animations.add('crouchLeftCappyHurt', ['crouchLeftCappy','hurt'], 10, true);
-    this.animations.add('crouchRightCappyHurt', ['crouchRightCappy','hurt'], 10, true);
-    this.animations.add('tackleLeftCappyHurt', ['swimLeftCappy2','hurt'], 10, true);
-    this.animations.add('tackleRightCappyHurt', ['swimRightCappy2','hurt'], 10, true);
-    this.animations.add('swimLeftCappyHurt', ['swimLeftCappy1','hurt','swimLeftCappy2','hurt','swimLeftCappy3'], 10, true);
-    this.animations.add('swimRightCappyHurt', ['swimRightCappy1','hurt','swimRightCappy2','hurt','swimRightCappy3'], 10, true);
-    this.animations.add('bombLeftCappyHurt', ['bombLeftCappy','hurt'], 10, true);
-    this.animations.add('bombRightCappyHurt', ['bombRightCappy','hurt'], 10, true);
+    this.animations.add('idleRightHurt', ['walkRight1', 'hurt'], 10, true);
+    this.animations.add('crouchLeftHurt', ['crouchLeft', 'hurt'], 10, true);
+    this.animations.add('crouchRightHurt', ['crouchRight', 'hurt'], 10, true);
+    this.animations.add('tackleLeftHurt', ['swimLeft2', 'hurt'], 10, true);
+    this.animations.add('tackleRightHurt', ['swimRight2', 'hurt'], 10, true);
+    this.animations.add('swimLeftHurt', ['swimLeft1', 'hurt', 'swimLeft2', 'hurt', 'swimLeft3'], 10, true);
+    this.animations.add('swimRightHurt', ['swimRight1', 'hurt', 'swimRight2', 'hurt', 'swimRight3'], 10, true);
+    this.animations.add('bombLeftHurt', ['bombLeft', 'hurt'], 10, true);
+    this.animations.add('bombRightHurt', ['bombRight', 'hurt'], 10, true);
+    this.animations.add('runLeftCappyHurt', ['walkLeftCappy1', 'hurt', 'walkLeftCappy2', 'hurt', 'walkLeftCappy3'], 10, true);
+    this.animations.add('runRightCappyHurt', ['walkRightCappy1', 'hurt', 'ealkRightCappy2', 'hurt', 'walkRightCappy3'], 10, true);
+    this.animations.add('jumpLeftCappyHurt', ['jumpLeftCappy', 'hurt'], 10, true);
+    this.animations.add('jumpRightCappyHurt', ['jumpRightCappy', 'hurt'], 10, true);
+    this.animations.add('idleLeftCappyHurt', ['walkLeftCappy1', 'hurt'], 10, true);
+    this.animations.add('idleRightCappyHurt', ['walkRightCappy1', 'hurt'], 10, true);
+    this.animations.add('crouchLeftCappyHurt', ['crouchLeftCappy', 'hurt'], 10, true);
+    this.animations.add('crouchRightCappyHurt', ['crouchRightCappy', 'hurt'], 10, true);
+    this.animations.add('tackleLeftCappyHurt', ['swimLeftCappy2', 'hurt'], 10, true);
+    this.animations.add('tackleRightCappyHurt', ['swimRightCappy2', 'hurt'], 10, true);
+    this.animations.add('swimLeftCappyHurt', ['swimLeftCappy1', 'hurt', 'swimLeftCappy2', 'hurt', 'swimLeftCappy3'], 10, true);
+    this.animations.add('swimRightCappyHurt', ['swimRightCappy1', 'hurt', 'swimRightCappy2', 'hurt', 'swimRightCappy3'], 10, true);
+    this.animations.add('bombLeftCappyHurt', ['bombLeftCappy', 'hurt'], 10, true);
+    this.animations.add('bombRightCappyHurt', ['bombRightCappy', 'hurt'], 10, true);
     //Animaciones de Goomba
     this.animations.add('walkGoomba', ['goombaLeft', 'goombaRight'], 5, true);
     this.animations.add('idleGoomba', ['goombaLeft'], 5, false);
-    this.animations.add('hurtGoomba', ['goombaLeft','hurt'], 5, true);
+    this.animations.add('hurtGoomba', ['goombaLeft', 'hurt'], 5, true);
 }
 Mario.prototype = Object.create(Phaser.Sprite.prototype);
 Mario.constructor = Mario;
@@ -125,7 +126,7 @@ Mario.prototype.Move = function (dir) {
                 this.body.velocity.x = this.facing * (this.velocity / 3);
         }
     }
-    else {
+    else if (this.enemy = 'goomba') {
         this.moving = true;
         Goomba.prototype.MarioMove(this);
     }
@@ -137,7 +138,7 @@ Mario.prototype.NotMoving = function () {
         this.body.velocity.x = 0;
         this.moving = false;
     }
-    else {
+    else if (this.enemy = 'goomba') {
         this.moving = false;
         Goomba.prototype.MarioNotMoving(this);
     }
@@ -153,7 +154,7 @@ Mario.prototype.Jump = function () {
             this.body.velocity.y = -this.jumpVelocity;
         }
     }
-    else if (this.body.onFloor()) {
+    else if ((this.enemy = 'goomba') && this.body.onFloor()) {
         Goomba.prototype.MarioJump(this);
     }
 }
@@ -276,33 +277,6 @@ Mario.prototype.MarioAnims = function (dir, cappy, hurt) //String con la direcci
     }
 }
 
-Mario.prototype.EnemyAnims = function () //Animaciones cuando hay un enemigo capturado
-{
-    if (this.swimming) //Animaciones cuando está nadando
-    {
-        //
-    }
-    else if (this.hurt) {
-        //
-    }
-    else if (this.body.onFloor()) //Animaciones cuando está en el suelo
-    {
-        if (this.crouching) {
-            //
-        }
-        else if (this.moving) {
-            //
-        }
-        else {
-            //
-        }
-    }
-    else //Animaciones cuando está en el aire
-    {
-        //
-    }
-}
-
 Mario.prototype.handleAnimations = function () {
     if (!this.capture) //Si no hay enemigo capturado se ponen las animaciones de Mario
     {
@@ -335,17 +309,6 @@ Mario.prototype.handleAnimations = function () {
                 else
                     this.MarioAnims('Left', 'Cappy', 'Hurt');
             }
-        }
-    }
-    else //Cuando hay enemigo capturado
-    {
-        if (this.facing == 1) //Animaciones derecha
-        {
-            //
-        }
-        else //Animaciones izquierda
-        {
-            //
         }
     }
 }

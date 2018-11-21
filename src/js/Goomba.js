@@ -2,8 +2,10 @@
 
 var Enemy = require('./Enemigo.js');
 
-function Goomba(game, x, y, sprite, frame, speed, movingTime) {
+function Goomba(game, x, y, sprite, frame, speed, movingTime, player) {
     Enemy.call(this, game, x, y, sprite, frame, 0, 0);
+    //Mario
+    this.player = player;
     //Tipo
     this.type = sprite;
     //Movimiento
@@ -12,7 +14,7 @@ function Goomba(game, x, y, sprite, frame, speed, movingTime) {
     this.movingTimer = 0;
     //Sprites y animaciones
     this.scale.setTo(2.5, 2.5);
-    this.animations.add('walk', [0, 1], 5);
+    this.animations.add('walk', [0, 1], 5, true);
 }
 Goomba.prototype = Object.create(Enemy.prototype);
 Goomba.constructor = Goomba;
@@ -26,6 +28,16 @@ Goomba.prototype.Move = function () {
     else {
         this.movingTimer = this.game.time.totalElapsedSeconds() + this.movingTime;
         this.speed = -this.speed;
+        this.animations.play('walk');
+    }
+}
+//Muerte
+Goomba.prototype.Die = function () {
+    if (this.game.physics.arcade.overlap(this, this.player) && this.player.y + this.player.height < this.y + this.height && !this.player.hurt) {
+        this.kill();
+        this.player.body.velocity.y = -this.player.jumpVelocity / 2;
+        this.player.tackling = false;
+        this.player.tackles = 1;
     }
 }
 //Movimiento capturado

@@ -92,6 +92,7 @@ Cappy.prototype.Capture = function (enemy) {
         enemy.kill();
         this.cappyCapture = true;
         this.player.capture = true;
+        this.player.enemy = enemy.type;
         this.player.reset(enemy.body.position.x, enemy.body.position.y);
         this.Reset();
     }

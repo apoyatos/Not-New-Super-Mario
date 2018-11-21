@@ -18,15 +18,15 @@ Enemy.prototype = Object.create(Phaser.Sprite.prototype);
 Enemy.constructor = Enemy;
 
 //Disparo
-Enemy.prototype.EnemyShoot = function (target, sprite) {
-  if (this.game.time.totalElapsedSeconds() > this.timeShooting) {
+Enemy.prototype.EnemyShoot = function (target, sprite, enemy) {
+  if (enemy.game.time.totalElapsedSeconds() > enemy.timeShooting) {
     //Crea el disparo
     if (sprite == 'disparo-fuego') {
-      var shot = new Shot(this.game, this.x, this.y, sprite, 0, 'shootFire', [0, 1, 2, 3], 5);
-      shot.Shoot(target, this.shootingVel);
-      this.timeShooting = this.game.time.totalElapsedSeconds() + this.shooting;
+      var shot = new Shot(enemy.game, enemy.x, enemy.y, sprite, 0, 'shootFire', [0, 1, 2, 3], 5);
+      shot.Shoot(target, enemy.shootingVel);
+      enemy.timeShooting = enemy.game.time.totalElapsedSeconds() + enemy.shooting;
     }
-    else{
+    else {
       //
     }
     //Destruye el disparo si sale de la pantalla

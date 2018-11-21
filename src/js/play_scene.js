@@ -2,6 +2,8 @@
 
 var Mario = require('./Mario.js');
 var Goomba = require('./Goomba.js');
+var Spiny = require('./Spiny.js');
+var Planta = require('./PlantaPiraña.js');
 
 var PlayScene = {
   create: function () {
@@ -14,28 +16,34 @@ var PlayScene = {
     this.map = this.game.add.tilemap('map');
     this.map.addTilesetImage('SuperMarioBros-World1-1', 'tiles');
 
-    this.layer=this.map.createLayer('World1');
-    this.layer.setScale(2.5,2.5)
+    this.layer = this.map.createLayer('World1');
+    this.layer.setScale(2.5, 2.5)
     this.layer.resizeWorld();
 
-    this.collisions=this.map.createLayer('Colisiones');
-    this.collisions.setScale(2.5,2.5);
-    this.map.setCollisionBetween(1,999,true,'Colisiones')
+    this.collisions = this.map.createLayer('Colisiones');
+    this.collisions.setScale(2.5, 2.5);
+    this.map.setCollisionBetween(1, 999, true, 'Colisiones')
 
     this.enemies = [];
     this.capturables = [];
 
     this.player = new Mario(this.game, 0, 450, 'mario', 5);
-    this.goomba = new Goomba(this.game, 1400,200 , 'goomba', 0, 100, 2, this.player);
+    this.goomba = new Goomba(this.game, 1400, 200, 'goomba', 0, 100, 2, this.player);
+    this.spiny = new Spiny(this.game, 1800, 200, 'spiny', 0, 100, 2);
+    this.planta = new Planta(this.game, 400, 200, 'planta', 2, this.player);
     this.game.camera.follow(this.player);
 
     this.enemies.push(this.goomba);
+    this.enemies.push(this.spiny);
+    this.enemies.push(this.planta);
     this.capturables.push(this.goomba);
   },
   update: function () {
-    this.game.physics.arcade.collide(this.player,this.collisions);
-    this.game.physics.arcade.collide(this.goomba,this.collisions);
-    this.game.physics.arcade.collide(this.player.cappy,this.collisions);
+    this.game.physics.arcade.collide(this.player, this.collisions);
+    this.game.physics.arcade.collide(this.goomba, this.collisions);
+    this.game.physics.arcade.collide(this.spiny, this.collisions);
+    this.game.physics.arcade.collide(this.planta, this.collisions);
+    this.game.physics.arcade.collide(this.player.cappy, this.collisions);
 
     //Movimiento
     if (this.teclas.right.isDown)
@@ -70,14 +78,19 @@ var PlayScene = {
 
     if (this.goomba.alive) {
       this.goomba.Move();
-      /*
-      var shot = this.goomba.EnemyShoot(this.player);
+      this.goomba.Die();
+      this.spiny.Move();
+
+      var shot = this.planta.Shoot();
       if (shot != undefined)
         this.enemies.push(shot);
-        */
+
     }
 
     this.player.EnemyCollision(this.goomba);
+    this.player.EnemyCollision(this.spiny);
+    this.player.EnemyCollision(this.planta);
+    this.player.EnemyCollision(this.shot);
     if (this.player.cappy != null)
       this.player.cappy.Capture(this.goomba);
     /*
