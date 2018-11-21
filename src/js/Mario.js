@@ -34,8 +34,8 @@ function Mario(game, x, y, sprite, frame) {
     //Propiedades
     this.game.world.addChild(this);
     this.game.physics.arcade.enable(this);
-    this.events.onOutOfBounds.add(this.Die);
     this.body.gravity.y = 500;
+    this.body.collideWorldBounds=true;
     //Sprite y animaciones
     this.scale.setTo(2.5, 2.5);
     //Animaciones normales
@@ -209,10 +209,14 @@ Mario.prototype.Swim = function () {
 }
 //Colisión con enemigos
 Mario.prototype.EnemyCollision = function (enemy) {
-    if (this.game.physics.arcade.overlap(enemy, this) && !this.hurt)
+    if (this.game.physics.arcade.overlap(enemy, this) && !this.hurt) {
         this.Hurt();
-    if (this.game.time.totalElapsedSeconds() > this.hurtTimer)
+        return true;
+    }
+    if (this.game.time.totalElapsedSeconds() > this.hurtTimer){
         this.hurt = false;
+        return false;
+    }
 }
 //Daño
 Mario.prototype.Hurt = function () {

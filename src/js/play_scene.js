@@ -26,11 +26,12 @@ var PlayScene = {
 
     this.enemies = [];
     this.capturables = [];
+    this.shots = [];
 
     this.player = new Mario(this.game, 0, 450, 'mario', 5);
     this.goomba = new Goomba(this.game, 1400, 200, 'goomba', 0, 100, 2, this.player);
     this.spiny = new Spiny(this.game, 1800, 200, 'spiny', 0, 100, 2);
-    this.planta = new Planta(this.game, 400, 400, 'planta', 5, 200,5);
+    this.planta = new Planta(this.game, 400, 400, 'planta', 5, 200, 5);
     this.game.camera.follow(this.player);
 
     this.enemies.push(this.goomba);
@@ -79,34 +80,38 @@ var PlayScene = {
     if (this.goomba.alive) {
       this.goomba.Move();
       this.goomba.Die();
-      this.spiny.Move();
-
-      var shot = this.planta.Shoot(this.player);
-      if (shot != undefined)
-        this.enemies.push(shot);
 
     }
-    console.log(this.enemies)
-    this.player.EnemyCollision(this.goomba);
-    this.player.EnemyCollision(this.spiny);
-    this.player.EnemyCollision(this.planta);
-    this.player.EnemyCollision(this.shot);
+    this.spiny.Move();
+
+    var shot = this.planta.Shoot(this.player);
+    if (shot != undefined)
+      this.shots.push(shot);
+
+
+    console.log(this.shots);
     if (this.player.cappy != null)
       this.player.cappy.Capture(this.goomba);
-    /*
+
     //Meter todos los enemigos en un grupo y llamar a esta funcion para cada uno
     this.enemies.forEach(
       function (item) {
-        this.player.EnemyCollision(this.item);
-      }
-    );
+        this.player.EnemyCollision(item);
+      }, this);
+
+    this.shots.forEach(
+      function (item) {
+        if (this.player.EnemyCollision(item)) {
+          item.destroy();
+        }
+        //item.RemoveShot();
+      }, this);
+
     this.capturables.forEach(
       function (item) {
         if (this.player.cappy != null)
           this.player.cappy.Capture(this.item);
-      }
-    );
-    */
+      }, this);
   }
 };
 

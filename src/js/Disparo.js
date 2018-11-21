@@ -21,7 +21,8 @@ Shot.prototype.Shoot = function (target, speed) {
 }
 //Destrucción
 Shot.prototype.RemoveShot = function () {
-  this.destroy();
+  if(this.inCamera)
+    this.destroy();
 }
 
 module.exports = Shot;

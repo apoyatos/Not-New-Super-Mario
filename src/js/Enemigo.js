@@ -30,10 +30,6 @@ Enemy.prototype.EnemyShoot = function (target, sprite, enemy) {
     else {
       //
     }
-    //Destruye el disparo si sale de la pantalla
-    shot.checkWorldBounds = true;
-    shot.events.onOutOfBounds.add((shot.RemoveShot));
-
   }
 }
 
