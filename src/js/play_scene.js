@@ -42,7 +42,7 @@ var PlayScene = {
     this.spiny = new Spiny(this.game, 1900, 200, 'spiny', 0, 100, 2);
     this.planta = new Planta(this.game, 470, 400, 'planta', 5, 300, 5);
     this.game.camera.follow(this.player);
-    this.vidas=this.game.add.sprite(this.game.width-110,0,'vidas',0);
+    this.vidas=this.game.add.sprite(this.game.width-110,27,'vidas',0);
     this.vidas.scale.setTo(1.5,1.5);
     this.vidas.fixedToCamera=true;
 
