@@ -32,14 +32,17 @@ Goomba.prototype.ChangeDir = function () {
 Goomba.prototype.Die = function () {
     if (this.game.physics.arcade.overlap(this, this.player) && this.player.y + this.player.height < this.y + 10 && !this.player.hurt && !this.player.capture) {
         this.kill();
-        this.player.body.velocity.y = -this.player.jumpVelocity / 1.5;
+        this.player.body.velocity.y = -this.player.jumpVelocity / 2;
         this.player.tackling = false;
         this.player.tackles = 1;
     }
 }
 //Movimiento capturado
 Goomba.prototype.MarioMove = function (player) {
-    player.body.velocity.x = player.facing * player.velocity;
+    if (!player.running)
+        player.body.velocity.x = player.facing * player.velocity / 1.75;
+    else
+        player.body.velocity.x = player.facing * player.velocity;
 }
 //Ausencia de movimiento capturado
 Goomba.prototype.MarioNotMoving = function (player) {

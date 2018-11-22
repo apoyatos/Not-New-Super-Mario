@@ -4,6 +4,8 @@ var Enemy = require('./Enemigo.js');
 
 function Planta(game, x, y, sprite, frame, shootingSpeed, shootingTime) {
     Enemy.call(this, game, x, y, sprite, frame, shootingSpeed, shootingTime);
+    //Tipo
+    this.type = sprite;
     //Disparo
     this.angleShoot = 0;
     //Sprites y animaciones
@@ -19,9 +21,14 @@ Planta.constructor = Planta;
 
 //Disparo
 Planta.prototype.Shoot = function (target) {
-    var shot = this.EnemyShoot(target, 'disparo-fuego', this);
-    this.Angle(target);
-    return shot;
+    if (!target.cappyPlant) {
+        var shot = this.EnemyShoot(target, 'disparo-fuego', this);
+        this.Angle(target);
+        return shot;
+    }
+    else {
+        this.frame = 5;
+    }
 }
 Planta.prototype.Angle = function (target) {
     this.angleShoot = Math.abs((this.game.physics.arcade.angleBetween(this, target) * 180) / Math.PI);

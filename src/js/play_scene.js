@@ -12,6 +12,7 @@ var PlayScene = {
     this.teclas = this.game.input.keyboard.createCursorKeys();
     this.saltar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     this.lanzar = this.game.input.keyboard.addKey(Phaser.Keyboard.Z);
+    this.correr = this.game.input.keyboard.addKey(Phaser.Keyboard.SHIFT);
     //Mapa
     this.game.stage.backgroundColor = '#787878';
     this.map = this.game.add.tilemap('map');
@@ -79,6 +80,11 @@ var PlayScene = {
     this.game.physics.arcade.collide(this.spiny, this.collisions, function(enemy){ enemy.ChangeDir();});
     this.game.physics.arcade.collide(this.planta, this.floor);
     this.game.physics.arcade.collide(this.player.cappy, this.collisions);
+    //Correr
+    if (this.correr.isDown)
+      this.player.running = true;
+    else
+      this.player.running = false;
     //Movimiento
     if (this.teclas.right.isDown)
       this.player.Move(1);
@@ -129,14 +135,17 @@ var PlayScene = {
     //Spiny
     this.spiny.Move();
     //Planta
-    
-    var shot = this.planta.Shoot(this.player);
-    if (shot != undefined)
-      this.shots.push(shot);
+    if (this.planta.alive) {
+      var shot = this.planta.Shoot(this.player);
+      if (shot != undefined)
+        this.shots.push(shot);
+    }
     //Colisiones con enemigos
     this.enemies.forEach(
       function (item) {
         this.player.EnemyCollision(this.player, item);
+        if (this.player.cappy != null)
+          this.player.cappy.Stunn(item);
       }, this);
     //Colisiones con disparos
     this.shots.forEach(
@@ -147,13 +156,11 @@ var PlayScene = {
         //item.RemoveShot();
       }, this);
     //Enemigos capturados/no capturados
-    
     this.capturables.forEach(
       function (item) {
         if (this.player.cappy != null)
           this.player.cappy.Capture(item);
       }, this);
-      
   }
 };
 
