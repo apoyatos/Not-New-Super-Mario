@@ -9,6 +9,7 @@ function Mario(game, x, y, sprite, frame) {
     this.cappy = null;
     this.cappyCooldownTimer = 0;
     this.thrown = false;
+    this.cappyPlant = false;
     //Vida y daño
     this.life = 3;
     this.hurt = false;
@@ -75,7 +76,7 @@ function Mario(game, x, y, sprite, frame) {
     this.animations.add('runRightHurt', ['walkRight1', 'hurt', 'walkRight2', 'hurt', 'walkRight3'], 10, true);
     this.animations.add('jumpLeftHurt', ['jumpLeft', 'hurt'], 10, true);
     this.animations.add('jumpRightHurt', ['jumpRight', 'hurt'], 10, true);
-    this.animations.add('idleLeftHurt', ['walkLeft1','hurt'], 10, true);
+    this.animations.add('idleLeftHurt', ['walkLeft1', 'hurt'], 10, true);
     this.animations.add('idleRightHurt', ['walkRight1', 'hurt'], 10, true);
     this.animations.add('crouchLeftHurt', ['crouchLeft', 'hurt'], 10, true);
     this.animations.add('crouchRightHurt', ['crouchRight', 'hurt'], 10, true);
@@ -222,8 +223,15 @@ Mario.prototype.Swim = function () {
 Mario.prototype.EnemyCollision = function (player, enemy) {
     if (!this.capture) {
         if (this.game.physics.arcade.overlap(enemy, this) && !this.hurt) {
-            this.Hurt();
-            return true;
+            if (enemy.type == 'planta' && this.cappyPlant) {
+                enemy.kill();
+                this.cappyPlant = false;
+                this.cappy.Reset();
+            }
+            else {
+                this.Hurt();
+                return true;
+            }
         }
         if (this.game.time.totalElapsedSeconds() > this.hurtTimer) {
             this.hurt = false;
@@ -258,7 +266,7 @@ Mario.prototype.ThrowCappy = function () {
             this.cappy = new Cappy(this.game, this.body.x, this.body.y, 'cappy', this, this.facing);
             this.cappy.Throw();
         }
-        else if (this.cappy != null && !this.cappy.alive && !this.capture) // Destruye la antigua y crea otra gorra
+        else if (this.cappy != null && !this.cappy.alive && !this.capture && !this.cappyPlant) // Destruye la antigua y crea otra gorra
         {
             this.cappy.destroy();
             this.cappy = new Cappy(this.game, this.body.x, this.body.y, 'cappy', this, this.facing);
@@ -286,7 +294,7 @@ Mario.prototype.MarioAnims = function (dir, cappy, hurt) //String con la direcci
         else if (this.moving)
             this.animations.play('run' + dir + cappy + hurt);
         else
-            this.animations.play('idle' + dir + cappy + hurt);        
+            this.animations.play('idle' + dir + cappy + hurt);
     }
     else //Animaciones cuando está en el aire
     {

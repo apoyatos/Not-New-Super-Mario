@@ -46,7 +46,7 @@ Cappy.prototype.Throw = function () {
 }
 //Manejo de lanzamiento
 Cappy.prototype.Check = function () {
-    if (this.player.thrown && !this.cappyStopped) //Si se ha lanzado y no se ha mantenido en su posición
+    if (this.player.thrown && !this.cappyStopped && !this.player.cappyPlant) //Si se ha lanzado y no se ha mantenido en su posición
     {
         if (this.game.time.totalElapsedSeconds() > this.cappyTimer) {
             this.body.velocity.x = 0;
@@ -55,7 +55,7 @@ Cappy.prototype.Check = function () {
             this.cappyStopTimer = this.game.time.totalElapsedSeconds() + this.cappyStopTime;
         }
     }
-    else if (this.cappyStopped) //Tras mantenerse en su posición
+    else if (this.cappyStopped && !this.player.cappyPlant) //Tras mantenerse en su posición
     {
         if ((this.cappyHold && this.game.time.totalElapsedSeconds() > this.cappyHoldTimer) || (!this.cappyHold && this.game.time.totalElapsedSeconds() > this.cappyStopTimer)) {
             this.game.physics.arcade.moveToObject(this.player.cappy, this.player, 500);
@@ -96,6 +96,13 @@ Cappy.prototype.Capture = function (enemy) {
         this.player.reset(enemy.body.position.x, enemy.body.position.y);
         this.Reset();
         this.player.recalculateBody();
+    }
+}
+//Bloquea a la Planta
+Cappy.prototype.Stunn = function (enemy) {
+    if (this.game.physics.arcade.overlap(this.player.cappy, enemy) && enemy.type == 'planta') {
+        this.player.cappyPlant = true;
+        this.player.cappy.kill();
     }
 }
 

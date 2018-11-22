@@ -106,13 +106,17 @@ var PlayScene = {
     //Spiny
     this.spiny.Move();
     //Planta
-    var shot = this.planta.Shoot(this.player);
-    if (shot != undefined)
-      this.shots.push(shot);
+    if (this.planta.alive) {
+      var shot = this.planta.Shoot(this.player);
+      if (shot != undefined)
+        this.shots.push(shot);
+    }
     //Colisiones con enemigos
     this.enemies.forEach(
       function (item) {
         this.player.EnemyCollision(this.player, item);
+        if (this.player.cappy != null)
+          this.player.cappy.Stunn(item);
       }, this);
     //Colisiones con disparos
     this.shots.forEach(
@@ -123,13 +127,11 @@ var PlayScene = {
         //item.RemoveShot();
       }, this);
     //Enemigos capturados/no capturados
-    
     this.capturables.forEach(
       function (item) {
         if (this.player.cappy != null)
           this.player.cappy.Capture(item);
       }, this);
-      
   }
 };
 
