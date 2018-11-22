@@ -37,21 +37,32 @@ var PlayScene = {
     this.player = new Mario(this.game, 0, 450, 'mario', 5);
     this.goomba = new Goomba(this.game, 1200, 200, 'goomba', 0, 100, 2, this.player);
     this.goomba1 = new Goomba(this.game, 1500, 200, 'goomba', 0, -100, 2, this.player);
-    this.spiny = new Spiny(this.game, 1700, 200, 'spiny', 0, 100, 2);
+    this.goomba2 = new Goomba(this.game, 1300, 200, 'goomba', 0, -100, 2, this.player);
+    this.goomba3 = new Goomba(this.game, 1400, 200, 'goomba', 0, 100, 2, this.player);
+    this.spiny = new Spiny(this.game, 1900, 200, 'spiny', 0, 100, 2);
     this.planta = new Planta(this.game, 470, 400, 'planta', 5, 300, 5);
     this.game.camera.follow(this.player);
+    this.vidas=this.game.add.sprite(this.game.width-110,0,'vidas',0);
+    this.vidas.scale.setTo(1.5,1.5);
+    this.vidas.fixedToCamera=true;
+
     //Array enemigo
     this.enemies.push(this.goomba);
     this.enemies.push(this.goomba1);
+    this.enemies.push(this.goomba2);
+    this.enemies.push(this.goomba3);
     this.enemies.push(this.spiny);
     this.enemies.push(this.planta);
     //Array capturables
     this.capturables.push(this.goomba);
     this.capturables.push(this.goomba1);
+    this.capturables.push(this.goomba2);
+    this.capturables.push(this.goomba3);
 
     console.log(this.player.life);
   },
   update: function () {
+    this.vidas.frame=this.player.life-1
     //Colisiones del mapa respectos a los objetos del juego
     this.game.physics.arcade.collide(this.player, this.floor);
     this.game.physics.arcade.collide(this.player, this.collisions);
@@ -60,6 +71,10 @@ var PlayScene = {
     this.game.physics.arcade.collide(this.goomba, this.collisions, function(enemy){ enemy.ChangeDir();});
     this.game.physics.arcade.collide(this.goomba1, this.floor);
     this.game.physics.arcade.collide(this.goomba1, this.collisions, function(enemy){ enemy.ChangeDir();});
+    this.game.physics.arcade.collide(this.goomba2, this.floor);
+    this.game.physics.arcade.collide(this.goomba2, this.collisions, function(enemy){ enemy.ChangeDir();});
+    this.game.physics.arcade.collide(this.goomba3, this.floor);
+    this.game.physics.arcade.collide(this.goomba3, this.collisions, function(enemy){ enemy.ChangeDir();});
     this.game.physics.arcade.collide(this.spiny, this.floor);
     this.game.physics.arcade.collide(this.spiny, this.collisions, function(enemy){ enemy.ChangeDir();});
     this.game.physics.arcade.collide(this.planta, this.floor);
@@ -102,6 +117,14 @@ var PlayScene = {
     if (this.goomba1.alive) {
       this.goomba1.Move();
       this.goomba1.Die();
+    }
+    if (this.goomba2.alive) {
+      this.goomba2.Move();
+      this.goomba2.Die();
+    }
+    if (this.goomba3.alive) {
+      this.goomba3.Move();
+      this.goomba3.Die();
     }
     //Spiny
     this.spiny.Move();

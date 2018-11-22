@@ -10,7 +10,7 @@ function Mario(game, x, y, sprite, frame) {
     this.cappyCooldownTimer = 0;
     this.thrown = false;
     //Vida y daño
-    this.life = 3;
+    this.life = 6;
     this.hurt = false;
     this.hurtTime = 1;
     this.hurtTimer = 0;

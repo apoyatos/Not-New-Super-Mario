@@ -15,6 +15,7 @@ var PreloaderScene = {
   preload: function () {
     // load here the assets for the game
     this.game.load.image('logo', 'images/Logo.png');
+    this.game.load.spritesheet('vidas','images/Vidas.png',55,55);
     this.game.load.spritesheet('cappy', 'images/Gorra.png', 16, 8);
     this.game.load.spritesheet('goomba', 'images/Goomba.png', 25, 24);
     this.game.load.spritesheet('spiny', 'images/Spiny.png', 18.5, 16);
