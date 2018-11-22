@@ -40,6 +40,7 @@ var PlayScene = {
     this.goomba1 = new Goomba(this.game, 1500, 200, 'goomba', 0, -100, 2, this.player);
     this.goomba2 = new Goomba(this.game, 1300, 200, 'goomba', 0, -100, 2, this.player);
     this.goomba3 = new Goomba(this.game, 1400, 200, 'goomba', 0, 100, 2, this.player);
+    this.goomba4 = new Goomba(this.game, 7000, 200, 'goomba', 0, -100, 2, this.player);
     this.spiny = new Spiny(this.game, 1900, 200, 'spiny', 0, 100, 2);
     this.planta = new Planta(this.game, 470, 400, 'planta', 5, 300, 5);
     this.game.camera.follow(this.player);
@@ -52,6 +53,7 @@ var PlayScene = {
     this.enemies.push(this.goomba1);
     this.enemies.push(this.goomba2);
     this.enemies.push(this.goomba3);
+    this.enemies.push(this.goomba4);
     this.enemies.push(this.spiny);
     this.enemies.push(this.planta);
     //Array capturables
@@ -59,8 +61,7 @@ var PlayScene = {
     this.capturables.push(this.goomba1);
     this.capturables.push(this.goomba2);
     this.capturables.push(this.goomba3);
-
-    console.log(this.player.life);
+    this.capturables.push(this.goomba4);
   },
   update: function () {
     this.vidas.frame=this.player.life-1
@@ -76,6 +77,8 @@ var PlayScene = {
     this.game.physics.arcade.collide(this.goomba2, this.collisions, function(enemy){ enemy.ChangeDir();});
     this.game.physics.arcade.collide(this.goomba3, this.floor);
     this.game.physics.arcade.collide(this.goomba3, this.collisions, function(enemy){ enemy.ChangeDir();});
+    this.game.physics.arcade.collide(this.goomba4, this.floor);
+    this.game.physics.arcade.collide(this.goomba4, this.collisions, function(enemy){ enemy.ChangeDir();});
     this.game.physics.arcade.collide(this.spiny, this.floor);
     this.game.physics.arcade.collide(this.spiny, this.collisions, function(enemy){ enemy.ChangeDir();});
     this.game.physics.arcade.collide(this.planta, this.floor);
@@ -131,6 +134,10 @@ var PlayScene = {
     if (this.goomba3.alive) {
       this.goomba3.Move();
       this.goomba3.Die();
+    }
+    if (this.goomba4.alive) {
+      this.goomba4.Move();
+      this.goomba4.Die();
     }
     //Spiny
     this.spiny.Move();

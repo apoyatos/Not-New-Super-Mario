@@ -286,6 +286,7 @@ Mario.prototype.Hurt = function () {
 Mario.prototype.Die = function () {
     this.reset(this.spawnX, this.spawnY);
     this.life = 3;
+    this.goombaCount=0;
     this.capture = false;
     if (this.cappy != null)
         this.cappy.Reset();
