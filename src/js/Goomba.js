@@ -111,6 +111,5 @@ Goomba.prototype.handleAnimations = function (player) {
     }
 }
 
-}
 
 module.exports = Goomba;

@@ -52,7 +52,6 @@ var PlayScene = {
     console.log(this.player.life);
   },
   update: function () {
-    this.game.debug.body(this.player)
     //Colisiones del mapa respectos a los objetos del juego
     this.game.physics.arcade.collide(this.player, this.floor);
     this.game.physics.arcade.collide(this.player, this.collisions);
