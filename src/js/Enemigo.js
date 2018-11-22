@@ -28,7 +28,7 @@ Enemy.prototype.EnemyShoot = function (target, sprite, enemy) {
       return shot;
     }
     else {
-      //
+      //Disparo del tanque
     }
   }
 }

@@ -16,7 +16,7 @@ function Mario(game, x, y, sprite, frame) {
     this.hurtTimer = 0;
     //Movimiento
     this.velocity = 200;
-    this.facing = 1; //1 derecha, -1 izquierda
+    this.facing = 1; //derecha = 1, izquierda = -1
     this.jumpVelocity = 415;
     this.tackles = 0;
     //Acciones
@@ -31,11 +31,12 @@ function Mario(game, x, y, sprite, frame) {
     //Captura
     this.capture = false;
     this.enemy;
+    this.goombaCount = 1;
     //Propiedades
     this.game.world.addChild(this);
     this.game.physics.arcade.enable(this);
     this.body.gravity.y = 500;
-    this.body.collideWorldBounds=true;
+    this.body.collideWorldBounds = true;
     //Sprite y animaciones
     this.scale.setTo(2.5, 2.5);
     //Animaciones normales
@@ -98,9 +99,18 @@ function Mario(game, x, y, sprite, frame) {
     this.animations.add('bombLeftCappyHurt', ['bombLeftCappy', 'hurt'], 10, true);
     this.animations.add('bombRightCappyHurt', ['bombRightCappy', 'hurt'], 10, true);
     //Animaciones de Goomba
-    this.animations.add('walkGoomba', ['goombaLeft', 'goombaRight'], 5, true);
-    this.animations.add('idleGoomba', ['goombaLeft'], 5, false);
-    this.animations.add('hurtGoomba', ['goombaLeft', 'hurt'], 5, true);
+    this.animations.add('walkGoomba1', ['goombaLeft1', 'goombaRight1'], 5, true);
+    this.animations.add('idleGoomba1', ['goombaLeft1'], 5, false);
+    this.animations.add('hurtGoomba1', ['goombaLeft1', 'hurt'], 10, true);
+    this.animations.add('walkGoomba2', ['goombaLeft2', 'goombaRight2'], 5, true);
+    this.animations.add('idleGoomba2', ['goombaLeft2'], 5, false);
+    this.animations.add('hurtGoomba2', ['goombaLeft2', 'hurt'], 10, true);
+    this.animations.add('walkGoomba3', ['goombaLeft3', 'goombaRight3'], 5, true);
+    this.animations.add('idleGoomba3', ['goombaLeft3'], 5, false);
+    this.animations.add('hurtGoomba3', ['goombaLeft3', 'hurt'], 10, true);
+    this.animations.add('walkGoomba4', ['goombaLeft4', 'goombaRight4'], 5, true);
+    this.animations.add('idleGoomba4', ['goombaLeft4'], 5, false);
+    this.animations.add('hurtGoomba4', ['goombaLeft4', 'hurt'], 10, true);
 }
 Mario.prototype = Object.create(Phaser.Sprite.prototype);
 Mario.constructor = Mario;
@@ -208,14 +218,19 @@ Mario.prototype.Swim = function () {
     }
 }
 //Colisión con enemigos
-Mario.prototype.EnemyCollision = function (enemy) {
-    if (this.game.physics.arcade.overlap(enemy, this) && !this.hurt) {
-        this.Hurt();
-        return true;
+Mario.prototype.EnemyCollision = function (player, enemy) {
+    if (!this.capture) {
+        if (this.game.physics.arcade.overlap(enemy, this) && !this.hurt) {
+            this.Hurt();
+            return true;
+        }
+        if (this.game.time.totalElapsedSeconds() > this.hurtTimer) {
+            this.hurt = false;
+            return false;
+        }
     }
-    if (this.game.time.totalElapsedSeconds() > this.hurtTimer){
-        this.hurt = false;
-        return false;
+    else if (this.enemy == 'goomba') {
+        Goomba.prototype.GoombaCollision(player, enemy);
     }
 }
 //Daño
@@ -280,7 +295,6 @@ Mario.prototype.MarioAnims = function (dir, cappy, hurt) //String con la direcci
             this.animations.play('jump' + dir + cappy + hurt);
     }
 }
-
 Mario.prototype.handleAnimations = function () {
     if (!this.capture) //Si no hay enemigo capturado se ponen las animaciones de Mario
     {
@@ -315,6 +329,18 @@ Mario.prototype.handleAnimations = function () {
             }
         }
     }
+    else if (this.enemy == 'goomba') {
+        if (this.hurt)
+            if (this.goombaCount == 1)
+                this.animations.play('hurtGoomba1');
+            else if (this.goombaCount == 2)
+                this.animations.play('hurtGoomba2');
+            else if (this.goombaCount == 3)
+                this.animations.play('hurtGoomba3');
+            else
+                this.animations.play('hurtGoomba4');
+    }
+
 }
 
 module.exports = Mario;

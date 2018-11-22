@@ -757,10 +757,136 @@
             }
         },
         {
-            "filename": "goombaLeft",
+            "filename": "goombaLeft4",
             "frame": {
-                "x": 96,
-                "y": 113,
+                "x": 156,
+                "y": 115,
+                "w": 24,
+                "h": 89
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 24,
+                "h": 89
+            },
+            "sourceSize": {
+                "w": 24,
+                "h": 89
+            }
+        },
+        {
+            "filename": "goombaRight4",
+            "frame": {
+                "x": 182,
+                "y": 115,
+                "w": 24,
+                "h": 89
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 24,
+                "h": 89
+            },
+            "sourceSize": {
+                "w": 24,
+                "h": 89
+            }
+        },
+        {
+            "filename": "goombaLeft3",
+            "frame": {
+                "x": 104,
+                "y": 136,
+                "w": 24,
+                "h": 68
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 24,
+                "h": 68
+            },
+            "sourceSize": {
+                "w": 24,
+                "h": 68
+            }
+        },
+        {
+            "filename": "goombaRight3",
+            "frame": {
+                "x": 130,
+                "y": 136,
+                "w": 24,
+                "h": 68
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 24,
+                "h": 68
+            },
+            "sourceSize": {
+                "w": 24,
+                "h": 68
+            }
+        },
+        {
+            "filename": "goombaLeft2",
+            "frame": {
+                "x": 52,
+                "y": 157,
+                "w": 24,
+                "h": 47
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 24,
+                "h": 47
+            },
+            "sourceSize": {
+                "w": 24,
+                "h": 47
+            }
+        },
+        {
+            "filename": "goombaRight2",
+            "frame": {
+                "x": 78,
+                "y": 157,
+                "w": 24,
+                "h": 47
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 24,
+                "h": 47
+            },
+            "sourceSize": {
+                "w": 24,
+                "h": 47
+            }
+        },
+        {
+            "filename": "goombaLeft1",
+            "frame": {
+                "x": 0,
+                "y": 178,
                 "w": 24,
                 "h": 26
             },
@@ -778,10 +904,10 @@
             }
         },
         {
-            "filename": "goombaRight",
+            "filename": "goombaRight1",
             "frame": {
-                "x": 121,
-                "y": 113,
+                "x": 26,
+                "y": 178,
                 "w": 24,
                 "h": 26
             },

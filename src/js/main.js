@@ -15,10 +15,10 @@ var PreloaderScene = {
   preload: function () {
     // load here the assets for the game
     this.game.load.image('logo', 'images/Logo.png');
-    this.game.load.spritesheet('cappy', 'images/Gorra.png', 14, 8);
-    this.game.load.spritesheet('goomba', 'images/Goomba.png', 24, 24);
-    this.game.load.spritesheet('spiny', 'images/Spiny.png', 17.5, 16);
-    this.game.load.spritesheet('planta', 'images/PlantaPiraña.png', 17.6, 33);
+    this.game.load.spritesheet('cappy', 'images/Gorra.png', 16, 8);
+    this.game.load.spritesheet('goomba', 'images/Goomba.png', 25, 24);
+    this.game.load.spritesheet('spiny', 'images/Spiny.png', 18.5, 16);
+    this.game.load.spritesheet('planta', 'images/PlantaPiraña.png', 18, 34);
     this.game.load.spritesheet('disparo-fuego', 'images/Disparo-Fuego.png', 9, 9);
 
     this.game.load.atlas('mario', 'images/Mario.png', 'images/sprites.json');
