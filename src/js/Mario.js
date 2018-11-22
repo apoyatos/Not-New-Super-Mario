@@ -27,7 +27,7 @@ function Mario(game, x, y, sprite, frame) {
     this.crouching = false;
     //Posición
     this.spawnX = x;
-    this.spawnY = y;
+    this.spawnY = y - 300;
     //Captura
     this.capture = false;
     this.enemy;
@@ -39,6 +39,7 @@ function Mario(game, x, y, sprite, frame) {
     this.body.collideWorldBounds = true;
     //Sprite y animaciones
     this.scale.setTo(2.5, 2.5);
+    this.originalHeight = this.body.height * this.scale.x;
     //Animaciones normales
     this.animations.add('runLeft', Phaser.Animation.generateFrameNames('walkLeft', 1, 3), 8, true);
     this.animations.add('runRight', Phaser.Animation.generateFrameNames('walkRight', 1, 3), 8, true);
@@ -115,6 +116,10 @@ function Mario(game, x, y, sprite, frame) {
 Mario.prototype = Object.create(Phaser.Sprite.prototype);
 Mario.constructor = Mario;
 
+Mario.prototype.recalculateBody = function () {
+    this.body.height = this.height;
+    this.body.width = this.width;
+}
 //Comprueba si está en el suelo
 Mario.prototype.CheckOnFloor = function () {
     if (this.body.onFloor()) {
@@ -242,6 +247,7 @@ Mario.prototype.Hurt = function () {
     }
     else
         this.Die();
+    console.log(this.life);
 }
 //Muerte
 Mario.prototype.Die = function () {
@@ -283,7 +289,10 @@ Mario.prototype.MarioAnims = function (dir, cappy, hurt) //String con la direcci
         else if (this.moving)
             this.animations.play('run' + dir + cappy + hurt);
         else
-            this.animations.play('idle' + dir + cappy + hurt);
+        {
+            this.animations.play('idle' + dir + cappy + hurt);        
+            this.recalculateBody();
+        }
     }
     else //Animaciones cuando está en el aire
     {
@@ -293,6 +302,7 @@ Mario.prototype.MarioAnims = function (dir, cappy, hurt) //String con la direcci
             this.animations.play('tackle' + dir + cappy + hurt);
         else
             this.animations.play('jump' + dir + cappy + hurt);
+            this.recalculateBody();
     }
 }
 Mario.prototype.handleAnimations = function () {
@@ -339,6 +349,7 @@ Mario.prototype.handleAnimations = function () {
                 this.animations.play('hurtGoomba3');
             else
                 this.animations.play('hurtGoomba4');
+        this.recalculateBody();
     }
 
 }

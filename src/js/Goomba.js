@@ -15,6 +15,7 @@ function Goomba(game, x, y, sprite, frame, speed, movingTime, player) {
     //Sprites y animaciones
     this.scale.setTo(2.5, 2.5);
     this.animations.add('walk', [0, 1], 5, true);
+    this.originalHeight=this.body.height*this.scale.x;
 }
 Goomba.prototype = Object.create(Enemy.prototype);
 Goomba.constructor = Goomba;
@@ -29,7 +30,7 @@ Goomba.prototype.ChangeDir = function () {
 }
 //Muerte
 Goomba.prototype.Die = function () {
-    if (this.game.physics.arcade.overlap(this, this.player) && this.player.y + this.player.height < this.y + this.height && !this.player.hurt && !this.player.capture) {
+    if (this.game.physics.arcade.overlap(this, this.player) && this.player.y + this.player.height < this.y +10 && !this.player.hurt && !this.player.capture) {
         this.kill();
         this.player.body.velocity.y = -this.player.jumpVelocity / 1.5;
         this.player.tackling = false;
@@ -70,21 +71,37 @@ Goomba.prototype.GoombaCollision = function (player, enemy) {
     {
         if (enemy.type == 'goomba') //Si es un goomba
         {
-            if (player.y + player.height < enemy.y + enemy.height && player.goombaCount < 4) //Se sube en el goomba
+            if (player.y + player.height < enemy.y+10 && player.goombaCount < 4) //Se sube en el goomba
             {
                 player.goombaCount++;
                 enemy.kill();
-                player.reset(enemy.body.position.x, enemy.body.position.y);
+          
             }
             else //Se hace daño
             {
                 player.Hurt();
+                if (player.goombaCount == 1)
+                    player.animations.play('hurtGoomba1');
+                else if (player.goombaCount == 2)
+                    player.animations.play('hurtGoomba2');
+                else if (player.goombaCount == 3)
+                    player.animations.play('hurtGoomba3');
+                else
+                    player.animations.play('hurtGoomba4');
                 return true;
             }
         }
         else //Se hace daño
         {
             player.Hurt();
+            if (player.goombaCount == 1)
+                player.animations.play('hurtGoomba1');
+            else if (player.goombaCount == 2)
+                player.animations.play('hurtGoomba2');
+            else if (player.goombaCount == 3)
+                player.animations.play('hurtGoomba3');
+            else
+                player.animations.play('hurtGoomba4');
             return true;
         }
     }

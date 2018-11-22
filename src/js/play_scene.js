@@ -48,9 +48,11 @@ var PlayScene = {
     //Array capturables
     this.capturables.push(this.goomba);
     this.capturables.push(this.goomba1);
+
+    console.log(this.player.life);
   },
   update: function () {
-    console.log(this.player.life);
+    this.game.debug.body(this.player)
     //Colisiones del mapa respectos a los objetos del juego
     this.game.physics.arcade.collide(this.player, this.floor);
     this.game.physics.arcade.collide(this.player, this.collisions);
@@ -102,10 +104,6 @@ var PlayScene = {
       this.goomba1.Move();
       this.goomba1.Die();
     }
-    if (this.player.cappy != null) {
-      this.player.cappy.Capture(this.goomba);
-      this.player.cappy.Capture(this.goomba1);
-    }
     //Spiny
     this.spiny.Move();
     //Planta
@@ -126,13 +124,13 @@ var PlayScene = {
         //item.RemoveShot();
       }, this);
     //Enemigos capturados/no capturados
-    /*
+    
     this.capturables.forEach(
-      function () {
+      function (item) {
         if (this.player.cappy != null)
-          this.player.cappy.Capture(this.item);
+          this.player.cappy.Capture(item);
       }, this);
-      */
+      
   }
 };
 
