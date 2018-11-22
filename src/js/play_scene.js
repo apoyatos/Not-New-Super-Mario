@@ -12,6 +12,7 @@ var PlayScene = {
     this.teclas = this.game.input.keyboard.createCursorKeys();
     this.saltar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     this.lanzar = this.game.input.keyboard.addKey(Phaser.Keyboard.Z);
+    this.correr = this.game.input.keyboard.addKey(Phaser.Keyboard.SHIFT);
     //Mapa
     this.game.stage.backgroundColor = '#787878';
     this.map = this.game.add.tilemap('map');
@@ -64,6 +65,11 @@ var PlayScene = {
     this.game.physics.arcade.collide(this.spiny, this.collisions/*, this.spiny.ChangeDir()*/);
     this.game.physics.arcade.collide(this.planta, this.floor);
     this.game.physics.arcade.collide(this.player.cappy, this.collisions);
+    //Correr
+    if (this.correr.isDown)
+      this.player.running = true;
+    else
+      this.player.running = false;
     //Movimiento
     if (this.teclas.right.isDown)
       this.player.Move(1);
