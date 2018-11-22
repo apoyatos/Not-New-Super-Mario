@@ -75,7 +75,7 @@ function Mario(game, x, y, sprite, frame) {
     this.animations.add('runRightHurt', ['walkRight1', 'hurt', 'walkRight2', 'hurt', 'walkRight3'], 10, true);
     this.animations.add('jumpLeftHurt', ['jumpLeft', 'hurt'], 10, true);
     this.animations.add('jumpRightHurt', ['jumpRight', 'hurt'], 10, true);
-    this.animations.add('idleLeftHurt', ['walkLeft1'], 10, true);
+    this.animations.add('idleLeftHurt', ['walkLeft1','hurt'], 10, true);
     this.animations.add('idleRightHurt', ['walkRight1', 'hurt'], 10, true);
     this.animations.add('crouchLeftHurt', ['crouchLeft', 'hurt'], 10, true);
     this.animations.add('crouchRightHurt', ['crouchRight', 'hurt'], 10, true);
@@ -116,10 +116,6 @@ function Mario(game, x, y, sprite, frame) {
 Mario.prototype = Object.create(Phaser.Sprite.prototype);
 Mario.constructor = Mario;
 
-Mario.prototype.recalculateBody = function () {
-    this.body.height = this.height;
-    this.body.width = this.width;
-}
 //Comprueba si está en el suelo
 Mario.prototype.CheckOnFloor = function () {
     if (this.body.onFloor()) {
@@ -273,6 +269,7 @@ Mario.prototype.ThrowCappy = function () {
             this.cappy.Reset()
             this.capture = false;
             this.cappy.cappyCapture = false;
+            this.recalculateBody();
         }
     }
 }
@@ -289,10 +286,7 @@ Mario.prototype.MarioAnims = function (dir, cappy, hurt) //String con la direcci
         else if (this.moving)
             this.animations.play('run' + dir + cappy + hurt);
         else
-        {
             this.animations.play('idle' + dir + cappy + hurt);        
-            this.recalculateBody();
-        }
     }
     else //Animaciones cuando está en el aire
     {
@@ -302,7 +296,6 @@ Mario.prototype.MarioAnims = function (dir, cappy, hurt) //String con la direcci
             this.animations.play('tackle' + dir + cappy + hurt);
         else
             this.animations.play('jump' + dir + cappy + hurt);
-            this.recalculateBody();
     }
 }
 Mario.prototype.handleAnimations = function () {
@@ -340,18 +333,15 @@ Mario.prototype.handleAnimations = function () {
         }
     }
     else if (this.enemy == 'goomba') {
-        if (this.hurt)
-            if (this.goombaCount == 1)
-                this.animations.play('hurtGoomba1');
-            else if (this.goombaCount == 2)
-                this.animations.play('hurtGoomba2');
-            else if (this.goombaCount == 3)
-                this.animations.play('hurtGoomba3');
-            else
-                this.animations.play('hurtGoomba4');
-        this.recalculateBody();
+        Goomba.prototype.handleAnimations(this);
     }
 
+}
+Mario.prototype.recalculateBody = function () {
+    this.handleAnimations();
+    this.body.height = this.height;
+    this.body.width = this.width;
+    console.log('hola')
 }
 
 module.exports = Mario;

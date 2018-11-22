@@ -95,6 +95,7 @@ Cappy.prototype.Capture = function (enemy) {
         this.player.enemy = enemy.type;
         this.player.reset(enemy.body.position.x, enemy.body.position.y);
         this.Reset();
+        this.player.recalculateBody();
     }
 }
 
