@@ -75,7 +75,7 @@ function Mario(game, x, y, sprite, frame) {
     this.animations.add('runRightHurt', ['walkRight1', 'hurt', 'walkRight2', 'hurt', 'walkRight3'], 10, true);
     this.animations.add('jumpLeftHurt', ['jumpLeft', 'hurt'], 10, true);
     this.animations.add('jumpRightHurt', ['jumpRight', 'hurt'], 10, true);
-    this.animations.add('idleLeftHurt', ['walkLeft1','hurt'], 10, true);
+    this.animations.add('idleLeftHurt', ['walkLeft1', 'hurt'], 10, true);
     this.animations.add('idleRightHurt', ['walkRight1', 'hurt'], 10, true);
     this.animations.add('crouchLeftHurt', ['crouchLeft', 'hurt'], 10, true);
     this.animations.add('crouchRightHurt', ['crouchRight', 'hurt'], 10, true);
@@ -249,6 +249,10 @@ Mario.prototype.Hurt = function () {
 Mario.prototype.Die = function () {
     this.reset(this.spawnX, this.spawnY);
     this.life = 3;
+    this.capture = false;
+    if (this.cappy != null)
+        this.cappy.Reset();
+    this.recalculateBody();
 }
 //Lanzar a Cappy
 Mario.prototype.ThrowCappy = function () {
@@ -286,7 +290,7 @@ Mario.prototype.MarioAnims = function (dir, cappy, hurt) //String con la direcci
         else if (this.moving)
             this.animations.play('run' + dir + cappy + hurt);
         else
-            this.animations.play('idle' + dir + cappy + hurt);        
+            this.animations.play('idle' + dir + cappy + hurt);
     }
     else //Animaciones cuando está en el aire
     {
@@ -341,7 +345,6 @@ Mario.prototype.recalculateBody = function () {
     this.handleAnimations();
     this.body.height = this.height;
     this.body.width = this.width;
-    console.log('hola')
 }
 
 module.exports = Mario;

@@ -88,7 +88,6 @@ Cappy.prototype.Reset = function () {
 //Captura al enemigo con Cappy
 Cappy.prototype.Capture = function (enemy) {
     if (this.game.physics.arcade.overlap(this.player.cappy, enemy)) {
-
         enemy.kill();
         this.cappyCapture = true;
         this.player.capture = true;
@@ -96,7 +95,10 @@ Cappy.prototype.Capture = function (enemy) {
         this.player.reset(enemy.body.position.x, enemy.body.position.y);
         this.Reset();
         this.player.recalculateBody();
+        return true;
     }
+    else
+        return false;
 }
 
 module.exports = Cappy;
