@@ -39,7 +39,7 @@ var PlayScene = {
     this.goomba = new Goomba(this.game, 1200, 200, 'goomba', 0, 100, 2, this.player);
     this.goomba1 = new Goomba(this.game, 1500, 200, 'goomba', 0, -100, 2, this.player);
     this.spiny = new Spiny(this.game, 1800, 200, 'spiny', 0, 100, 2);
-    this.planta = new Planta(this.game, 400, 400, 'planta', 5, 300, 5);
+    this.planta = new Planta(this.game, 450, 400, 'planta', 5, 300, 5);
     this.game.camera.follow(this.player);
     //Array enemigo
     this.enemies.push(this.goomba);

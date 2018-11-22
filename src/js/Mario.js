@@ -27,6 +27,12 @@ function Mario(game, x, y, sprite, frame) {
     this.swimming = false;
     this.crouching = false;
     this.running = false;
+    this.kicking = false;
+    //Timers
+    this.timeKicking = 0.2;
+    this.tK = 0;
+    this.timeThrowing = 0.2;
+    this.tT = 0;
     //Posición
     this.spawnX = x;
     this.spawnY = y - 300;
@@ -61,8 +67,8 @@ function Mario(game, x, y, sprite, frame) {
     this.animations.add('bombRight', ['bombRight'], 10, false);
     this.animations.add('crouchingLeft', Phaser.Animation.generateFrameNames('crouchingLeft', 1, 4), 10, false);
     this.animations.add('crouchingRight', Phaser.Animation.generateFrameNames('crouchingRight', 1, 4), 10, false);
-    this.animations.add('throwLeft', ['throwLeft', 'walkLeftCappy1'], 10, false);
-    this.animations.add('throwRight', ['throwRight', 'walkRightCappy1'], 10, false);
+    this.animations.add('throwLeft', ['throwLeft'], 10, false);
+    this.animations.add('throwRight', ['throwRight'], 10, false);
     //Animaciones sin Cappy
     this.animations.add('runLeftCappy', Phaser.Animation.generateFrameNames('walkLeftCappy', 1, 3), 8, true);
     this.animations.add('runRightCappy', Phaser.Animation.generateFrameNames('walkRightCappy', 1, 3), 8, true);
@@ -82,8 +88,8 @@ function Mario(game, x, y, sprite, frame) {
     this.animations.add('bombRightCappy', ['bombRightCappy'], 10, false);
     this.animations.add('crouchingLeftCappy', Phaser.Animation.generateFrameNames('crouchingLeftCappy', 1, 4), 10, false);
     this.animations.add('crouchingRightCappy', Phaser.Animation.generateFrameNames('crouchingRightCappy', 1, 4), 10, false);
-    this.animations.add('kickLeft', ['kickLeft', 'walkLeftCappy1'], 10, false);
-    this.animations.add('kickRight', ['kickRight', 'walkRightCappy1'], 10, false);
+    this.animations.add('kickLeft', ['kickLeft'], 10, false);
+    this.animations.add('kickRight', ['kickRight'], 10, false);
     //Animaciones de daño
     this.animations.add('runLeftHurt', ['walkLeft1', 'hurt', 'walkLeft2', 'hurt', 'walkLeft3'], 10, true);
     this.animations.add('runRightHurt', ['walkRight1', 'hurt', 'walkRight2', 'hurt', 'walkRight3'], 10, true);
@@ -101,6 +107,8 @@ function Mario(game, x, y, sprite, frame) {
     this.animations.add('swimRightHurt', ['swimRight1', 'hurt', 'swimRight2', 'hurt', 'swimRight3'], 10, true);
     this.animations.add('bombLeftHurt', ['bombLeft', 'hurt'], 10, true);
     this.animations.add('bombRightHurt', ['bombRight', 'hurt'], 10, true);
+    this.animations.add('crouchingLeftHurt', ['crouchingLeft1', 'hurt', 'crouchingLeft2', 'hurt', 'crouchingLeft3', 'hurt', 'crouchingLeft4', 'hurt'], 10, false);
+    this.animations.add('crouchingRightHurt', ['crouchingRight1', 'hurt', 'crouchingRight2', 'hurt', 'crouchingRight3', 'hurt', 'crouchingRight4', 'hurt'], 10, false);
     this.animations.add('runLeftCappyHurt', ['walkLeftCappy1', 'hurt', 'walkLeftCappy2', 'hurt', 'walkLeftCappy3'], 10, true);
     this.animations.add('runRightCappyHurt', ['walkRightCappy1', 'hurt', 'ealkRightCappy2', 'hurt', 'walkRightCappy3'], 10, true);
     this.animations.add('jumpLeftCappyHurt', ['jumpLeftCappy', 'hurt'], 10, true);
@@ -115,8 +123,6 @@ function Mario(game, x, y, sprite, frame) {
     this.animations.add('swimRightCappyHurt', ['swimRightCappy1', 'hurt', 'swimRightCappy2', 'hurt', 'swimRightCappy3'], 10, true);
     this.animations.add('bombLeftCappyHurt', ['bombLeftCappy', 'hurt'], 10, true);
     this.animations.add('bombRightCappyHurt', ['bombRightCappy', 'hurt'], 10, true);
-    this.animations.add('crouchingLeftHurt', ['crouchingLeft1', 'hurt', 'crouchingLeft2', 'hurt', 'crouchingLeft3', 'hurt', 'crouchingLeft4', 'hurt'], 10, false);
-    this.animations.add('crouchingRightHurt', ['crouchingRight1', 'hurt', 'crouchingRight2', 'hurt', 'crouchingRight3', 'hurt', 'crouchingRight4', 'hurt'], 10, false);
     //Animaciones de Goomba
     this.animations.add('walkGoomba1', ['goombaLeft1', 'goombaRight1'], 5, true);
     this.animations.add('idleGoomba1', ['goombaLeft1'], 5, false);
@@ -245,6 +251,8 @@ Mario.prototype.EnemyCollision = function (player, enemy) {
     if (!this.capture) {
         if (this.game.physics.arcade.overlap(enemy, this) && !this.hurt) {
             if (enemy.type == 'planta' && this.cappyPlant) {
+                this.tK = this.game.time.totalElapsedSeconds() + this.timeKicking;
+                this.kicking = true;
                 enemy.kill();
                 this.cappyPlant = false;
                 this.cappy.Reset();
@@ -286,12 +294,14 @@ Mario.prototype.ThrowCappy = function () {
         {
             this.cappy = new Cappy(this.game, this.body.x, this.body.y, 'cappy', this, this.facing);
             this.cappy.Throw();
+            this.tT = this.game.time.totalElapsedSeconds() + this.timeThrowing;
         }
         else if (this.cappy != null && !this.cappy.alive && !this.capture && !this.cappyPlant) // Destruye la antigua y crea otra gorra
         {
             this.cappy.destroy();
             this.cappy = new Cappy(this.game, this.body.x, this.body.y, 'cappy', this, this.facing);
             this.cappy.Throw();
+            this.tT = this.game.time.totalElapsedSeconds() + this.timeThrowing;
         }
         else if (this.capture) // Reinicia el estado de la gorra
         {
@@ -309,24 +319,44 @@ Mario.prototype.MarioAnims = function (dir, cappy, hurt) //String con la direcci
         this.animations.play('swim' + dir + cappy + hurt);
     else if (this.body.onFloor()) //Animaciones cuando está en el suelo
     {
-        this.bombJump = false;
-        if (this.crouching)
-            this.animations.play('crouch' + dir + cappy + hurt);
-        else if (this.crouching && this.running)
-            this.animations.play('crouching' + dir + cappy + hurt);
-        else if (this.moving)
-            this.animations.play('run' + dir + cappy + hurt);
+        if (this.tT > this.game.time.totalElapsedSeconds()) {
+            if (this.thrown)
+                this.animations.play('throw' + dir);
+        }
+        else if (this.kicking) {
+            if (this.tK > this.game.time.totalElapsedSeconds())
+                this.animations.play('kick' + dir);
+            else
+                this.kicking = false;
+        }
         else if (!this.moving && this.crouching)
             this.animations.play('idleCrouch' + dir + cappy + hurt);
+        else if (this.crouching && this.running)
+            this.animations.play('crouching' + dir + cappy + hurt);
+        else if (this.crouching)
+            this.animations.play('crouch' + dir + cappy + hurt);
+        else if (this.moving)
+            this.animations.play('run' + dir + cappy + hurt);
         else
             this.animations.play('idle' + dir + cappy + hurt);
     }
     else //Animaciones cuando está en el aire
     {
+
         if (this.bombJump)
             this.animations.play('bomb' + dir + cappy + hurt);
         else if (this.tackling)
             this.animations.play('tackle' + dir + cappy + hurt);
+        else if (this.tT > this.game.time.totalElapsedSeconds()) {
+            if (this.thrown)
+                this.animations.play('throw' + dir);
+        }
+        else if (this.kicking) {
+            if (this.tK > this.game.time.totalElapsedSeconds())
+                this.animations.play('kick' + dir);
+            else
+                this.kicking = false;
+        }
         else
             this.animations.play('jump' + dir + cappy + hurt);
     }
