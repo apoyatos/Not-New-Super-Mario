@@ -81,8 +81,10 @@ Goomba.prototype.GoombaCollision = function (player, enemy) {
         return false;
     }
 }
+//Animaciones
 Goomba.prototype.handleAnimations = function (player) {
-    if (player.hurt) {
+    if (player.hurt) //Si se hace daño
+    {
         if (player.goombaCount == 1)
             player.animations.play('hurtGoomba1');
         else if (player.goombaCount == 2)
@@ -92,7 +94,8 @@ Goomba.prototype.handleAnimations = function (player) {
         else
             player.animations.play('hurtGoomba4');
     }
-    else if (!player.moving) {
+    else if (!player.moving) //Si no se mueve
+    {
         if (player.goombaCount == 1)
             player.animations.play('idleGoomba1');
         else if (player.goombaCount == 2)
@@ -102,7 +105,8 @@ Goomba.prototype.handleAnimations = function (player) {
         else
             player.animations.play('idleGoomba4');
     }
-    else {
+    else //Si se mueve
+    {
         if (player.goombaCount == 1)
             player.animations.play('walkGoomba1');
         else if (player.goombaCount == 2)
@@ -113,6 +117,5 @@ Goomba.prototype.handleAnimations = function (player) {
             player.animations.play('walkGoomba4');
     }
 }
-
 
 module.exports = Goomba;

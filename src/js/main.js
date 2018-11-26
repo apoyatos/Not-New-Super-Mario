@@ -15,7 +15,7 @@ var PreloaderScene = {
   preload: function () {
     // load here the assets for the game
     this.game.load.image('logo', 'images/Logo.png');
-    this.game.load.spritesheet('vidas','images/Vidas.png',55,55);
+    this.game.load.spritesheet('vidas', 'images/Vidas.png', 55, 55);
     this.game.load.spritesheet('cappy', 'images/Gorra.png', 16, 8);
     this.game.load.spritesheet('goomba', 'images/Goomba.png', 25, 24);
     this.game.load.spritesheet('spiny', 'images/Spiny.png', 18.5, 16);
@@ -28,7 +28,22 @@ var PreloaderScene = {
     this.game.load.image('tiles', 'tilemaps/super_mario.png');
   },
   create: function () {
-    this.game.state.start('play');
+    this.game.state.start('menu');
+  }
+};
+
+var Menu = {
+  create: function () {
+    this.game.stage.backgroundColor = 0x4488aa;
+    this.logo = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'logo');
+    this.logo.scale.setTo(2, 2);
+    this.logo.anchor.setTo(0.5, 0.5);
+
+    this.empezar = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+  },
+  update: function () {
+    if (this.empezar.isDown)
+      this.game.state.start('play');
   }
 };
 
@@ -37,6 +52,7 @@ window.onload = function () {
 
   game.state.add('boot', BootScene);
   game.state.add('preloader', PreloaderScene);
+  game.state.add('menu', Menu);
   game.state.add('play', PlayScene);
 
   game.state.start('boot');

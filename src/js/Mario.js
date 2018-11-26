@@ -7,9 +7,9 @@ function Mario(game, x, y, sprite, frame) {
     Phaser.Sprite.call(this, game, x, y, sprite, frame);
     //Cappy
     this.cappy = null;
-    this.cappyCooldownTimer = 0;
     this.thrown = false;
     this.cappyPlant = false;
+    this.cappyCooldownTimer = 0;
     //Vida y daño
     this.life = 6;
     this.hurt = false;
@@ -29,10 +29,10 @@ function Mario(game, x, y, sprite, frame) {
     this.running = false;
     this.kicking = false;
     //Timers
-    this.timeKicking = 0.2;
-    this.tK = 0;
-    this.timeThrowing = 0.2;
-    this.tT = 0;
+    this.kickTime = 0.2;
+    this.kickTimer = 0;
+    this.throwTime = 0.2;
+    this.throwTimer = 0;
     //Posición
     this.spawnX = x;
     this.spawnY = y - 300;
@@ -251,7 +251,7 @@ Mario.prototype.EnemyCollision = function (player, enemy) {
     if (!this.capture) {
         if (this.game.physics.arcade.overlap(enemy, this) && !this.hurt) {
             if (enemy.type == 'planta' && this.cappyPlant) {
-                this.tK = this.game.time.totalElapsedSeconds() + this.timeKicking;
+                this.kickTimer = this.game.time.totalElapsedSeconds() + this.kickTime;
                 this.kicking = true;
                 enemy.kill();
                 this.cappyPlant = false;
@@ -286,10 +286,12 @@ Mario.prototype.Hurt = function () {
 Mario.prototype.Die = function () {
     this.reset(this.spawnX, this.spawnY);
     this.life = 3;
-    this.goombaCount=0;
+    this.goombaCount = 0;
     this.capture = false;
+
     if (this.cappy != null)
         this.cappy.Reset();
+
     this.recalculateBody();
 }
 //Lanzar a Cappy
@@ -299,18 +301,19 @@ Mario.prototype.ThrowCappy = function () {
         {
             this.cappy = new Cappy(this.game, this.body.x, this.body.y, 'cappy', this, this.facing);
             this.cappy.Throw();
-            this.tT = this.game.time.totalElapsedSeconds() + this.timeThrowing;
+            this.throwTimer = this.game.time.totalElapsedSeconds() + this.throwTime;
         }
         else if (this.cappy != null && !this.cappy.alive && !this.capture && !this.cappyPlant) // Destruye la antigua y crea otra gorra
         {
             this.cappy.destroy();
             this.cappy = new Cappy(this.game, this.body.x, this.body.y, 'cappy', this, this.facing);
             this.cappy.Throw();
-            this.tT = this.game.time.totalElapsedSeconds() + this.timeThrowing;
+            this.throwTimer = this.game.time.totalElapsedSeconds() + this.throwTime;
         }
         else if (this.capture) // Reinicia el estado de la gorra
         {
             this.cappy.Reset()
+            this.goombaCount = 1;
             this.capture = false;
             this.cappy.cappyCapture = false;
             this.recalculateBody();
@@ -324,12 +327,12 @@ Mario.prototype.MarioAnims = function (dir, cappy, hurt) //String con la direcci
         this.animations.play('swim' + dir + cappy + hurt);
     else if (this.body.onFloor()) //Animaciones cuando está en el suelo
     {
-        if (this.tT > this.game.time.totalElapsedSeconds()) {
+        if (this.throwTimer > this.game.time.totalElapsedSeconds()) {
             if (this.thrown)
                 this.animations.play('throw' + dir);
         }
         else if (this.kicking) {
-            if (this.tK > this.game.time.totalElapsedSeconds())
+            if (this.kickTimer > this.game.time.totalElapsedSeconds())
                 this.animations.play('kick' + dir);
             else
                 this.kicking = false;
@@ -352,12 +355,12 @@ Mario.prototype.MarioAnims = function (dir, cappy, hurt) //String con la direcci
             this.animations.play('bomb' + dir + cappy + hurt);
         else if (this.tackling)
             this.animations.play('tackle' + dir + cappy + hurt);
-        else if (this.tT > this.game.time.totalElapsedSeconds()) {
+        else if (this.throwTimer > this.game.time.totalElapsedSeconds()) {
             if (this.thrown)
                 this.animations.play('throw' + dir);
         }
         else if (this.kicking) {
-            if (this.tK > this.game.time.totalElapsedSeconds())
+            if (this.kickTimer > this.game.time.totalElapsedSeconds())
                 this.animations.play('kick' + dir);
             else
                 this.kicking = false;
