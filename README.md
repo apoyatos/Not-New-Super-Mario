@@ -1,5 +1,5 @@
 <h1 align=center>
-<img src=Imagenes/Logo.png height=350>
+<img src=src/images/Logo.png height=350>
 </h1>
 
 ## Introduction:
