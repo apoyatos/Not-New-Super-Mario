@@ -15,6 +15,10 @@ var PreloaderScene = {
   preload: function () {
     // load here the assets for the game
     this.game.load.image('logo', 'images/Logo.png');
+    this.game.load.image('moon', 'images/moon.png');
+    this.game.load.image('blockE', 'images/bloque.png');
+    this.game.load.image('block', 'images/bloque2.png');
+    this.game.load.image('coins', 'images/coins.png');
     this.game.load.spritesheet('vidas', 'images/Vidas.png', 55, 55);
     this.game.load.spritesheet('cappy', 'images/Gorra.png', 16, 8);
     this.game.load.spritesheet('goomba', 'images/Goomba.png', 25, 24);

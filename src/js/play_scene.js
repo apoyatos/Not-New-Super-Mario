@@ -4,6 +4,10 @@ var Mario = require('./Mario.js');
 var Goomba = require('./Goomba.js');
 var Spiny = require('./Spiny.js');
 var Planta = require('./PlantaPiraña.js');
+var Monedas=require('./Monedas.js');
+var Bloque=require('./Monedas.js');
+var BloqueE=require('./Monedas.js');
+var Lunas=require('./Monedas.js');
 
 var PlayScene = {
   create: function () {
@@ -20,6 +24,16 @@ var PlayScene = {
     this.layer = this.map.createLayer('World1');
     this.layer.setScale(2.5, 2.5)
     this.layer.resizeWorld();
+
+    this.coins=this.game.add.group();
+    this.blocks=this.game.add.group();
+    this.moons=this.game.add.group();
+    this.specialBlocks=this.game.add.group();
+    this.map.createFromObjects('Bloques',15,'block',0,true,false,this.blocks,Bloque);
+    this.map.createFromObjects('Monedas',11,'coins',0,true,false,this.coins,Monedas);
+    this.map.createFromObjects('Lunas',19,'moon',0,true,false,this.specialBlocks,Lunas);
+    this.map.createFromObjects('BloquesE',14,'blockE',0,true,false,this.moons,BloqueE);
+
     //Colisiones
     this.collisions = this.map.createLayer('Colisiones');
     this.collisions.setScale(2.5, 2.5);
