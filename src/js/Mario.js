@@ -15,6 +15,9 @@ function Mario(game, x, y, sprite, frame) {
     this.hurt = false;
     this.hurtTime = 1;
     this.hurtTimer = 0;
+    //Objetos
+    this.coins = 0;
+    this.moons = 0;
     //Movimiento
     this.velocity = 200;
     this.facing = 1; //derecha = 1, izquierda = -1
@@ -246,8 +249,17 @@ Mario.prototype.Swim = function () {
         //
     }
 }
+//Collision con Objetos
+Mario.prototype.CollectibleCollision = function (object) {
+    if (this.game.physics.arcade.overlap(object, this))
+    {
+        console.log(object)
+        object.Collision(this);
+    }
+}
+
 //Colisión con enemigos
-Mario.prototype.EnemyCollision = function (player, enemy) {
+Mario.prototype.EnemyCollision = function (enemy) {
     if (!this.capture) {
         if (this.game.physics.arcade.overlap(enemy, this) && !this.hurt) {
             if (enemy.type == 'planta' && this.cappyPlant) {
@@ -268,7 +280,7 @@ Mario.prototype.EnemyCollision = function (player, enemy) {
         }
     }
     else if (this.enemy == 'goomba') {
-        Goomba.prototype.GoombaCollision(player, enemy);
+        Goomba.prototype.GoombaCollision(this, enemy);
     }
 }
 //Daño

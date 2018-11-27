@@ -4,7 +4,7 @@ var Mario = require('./Mario.js');
 var Goomba = require('./Goomba.js');
 var Spiny = require('./Spiny.js');
 var Planta = require('./PlantaPiraña.js');
-var Monedas=require('./Monedas.js');
+//var Monedas=require('./Monedas.js');
 var Bloque=require('./Monedas.js');
 var BloqueE=require('./Monedas.js');
 var Lunas=require('./Monedas.js');
@@ -25,14 +25,11 @@ var PlayScene = {
     this.layer.setScale(2.5, 2.5)
     this.layer.resizeWorld();
 
-    this.coins=this.game.add.group();
-    this.blocks=this.game.add.group();
-    this.moons=this.game.add.group();
-    this.specialBlocks=this.game.add.group();
-    this.map.createFromObjects('Bloques',15,'block',0,true,false,this.blocks,Bloque);
-    this.map.createFromObjects('Monedas',11,'coins',0,true,false,this.coins,Monedas);
-    this.map.createFromObjects('Lunas',19,'moon',0,true,false,this.specialBlocks,Lunas);
-    this.map.createFromObjects('BloquesE',14,'blockE',0,true,false,this.moons,BloqueE);
+    this.collectibles=this.game.add.group();
+    this.map.createFromObjects('Bloques',15,'block',0,true,false,this.collectibles,Bloque);
+    //this.map.createFromObjects('Monedas',11,'coins',0,true,false,this.objects,Monedas);
+    this.map.createFromObjects('Lunas',19,'moon',0,true,false,this.collectibles,Lunas);
+    this.map.createFromObjects('BloquesE',14,'blockE',0,true,false,this.collectibles,BloqueE);
 
     //Colisiones
     this.collisions = this.map.createLayer('Colisiones');
@@ -162,17 +159,22 @@ var PlayScene = {
       if (shot != undefined)
         this.shots.push(shot);
     }
+    //colisiones con Objetos
+    this.collectibles.forEach(
+      function (item) {
+        this.player.CollectibleCollision(item);
+      }, this);
     //Colisiones con enemigos
     this.enemies.forEach(
       function (item) {
-        this.player.EnemyCollision(this.player, item);
+        this.player.EnemyCollision(item);
         if (this.player.cappy != null)
           this.player.cappy.Stunn(item);
       }, this);
     //Colisiones con disparos
     this.shots.forEach(
       function (item) {
-        if (this.player.EnemyCollision(this.player, item)) {
+        if (this.player.EnemyCollision(item)) {
           item.destroy();
         }
         //item.RemoveShot();
