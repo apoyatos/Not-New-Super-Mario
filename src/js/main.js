@@ -16,7 +16,7 @@ var PreloaderScene = {
     // load here the assets for the game
     this.game.load.image('logo', 'images/Logo.png');
     this.game.load.image('moon', 'images/moon.png');
-    this.game.load.image('blockE', 'images/bloque.png');
+    this.game.load.spritesheet('blockE', 'images/bloqueE.png',16,32);
     this.game.load.image('block', 'images/bloque2.png');
     this.game.load.image('coins', 'images/coins.png');
     this.game.load.spritesheet('vidas', 'images/Vidas.png', 55, 55);

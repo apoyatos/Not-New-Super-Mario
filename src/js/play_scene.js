@@ -4,10 +4,10 @@ var Mario = require('./Mario.js');
 var Goomba = require('./Goomba.js');
 var Spiny = require('./Spiny.js');
 var Planta = require('./PlantaPiraña.js');
-//var Monedas=require('./Monedas.js');
-var Bloque=require('./Monedas.js');
-var BloqueE=require('./Monedas.js');
-var Lunas=require('./Monedas.js');
+var Monedas=require('./Monedas.js');
+var Bloque=require('./Bloque.js');
+var BloqueE=require('./BloqueEspecial.js');
+var Lunas=require('./Lunas.js');
 
 var PlayScene = {
   create: function () {
@@ -27,9 +27,9 @@ var PlayScene = {
 
     this.collectibles=this.game.add.group();
     this.map.createFromObjects('Bloques',15,'block',0,true,false,this.collectibles,Bloque);
-    //this.map.createFromObjects('Monedas',11,'coins',0,true,false,this.objects,Monedas);
+    this.map.createFromObjects('Monedas',11,'coins',0,true,false,this.collectibles,Monedas);
     this.map.createFromObjects('Lunas',19,'moon',0,true,false,this.collectibles,Lunas);
-    this.map.createFromObjects('BloquesE',14,'blockE',0,true,false,this.collectibles,BloqueE);
+    this.map.createFromObjects('BloquesE',14,'blockE',1,true,false,this.collectibles,BloqueE);
 
     //Colisiones
     this.collisions = this.map.createLayer('Colisiones');

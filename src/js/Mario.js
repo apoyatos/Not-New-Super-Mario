@@ -251,9 +251,7 @@ Mario.prototype.Swim = function () {
 }
 //Collision con Objetos
 Mario.prototype.CollectibleCollision = function (object) {
-    if (this.game.physics.arcade.overlap(object, this))
-    {
-        console.log(object)
+    if (this.game.physics.arcade.overlap(object, this)) {
         object.Collision(this);
     }
 }
