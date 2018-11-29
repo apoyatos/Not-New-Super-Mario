@@ -4,10 +4,10 @@ var Mario = require('./Mario.js');
 var Goomba = require('./Goomba.js');
 var Spiny = require('./Spiny.js');
 var Planta = require('./PlantaPiraña.js');
-var Monedas=require('./Monedas.js');
-var Bloque=require('./Bloque.js');
-var BloqueE=require('./BloqueEspecial.js');
-var Lunas=require('./Lunas.js');
+var Monedas = require('./Monedas.js');
+var Bloque = require('./Bloque.js');
+var BloqueE = require('./BloqueEspecial.js');
+var Lunas = require('./Lunas.js');
 
 var PlayScene = {
   create: function () {
@@ -21,41 +21,39 @@ var PlayScene = {
     this.game.stage.backgroundColor = '#787878';
     this.map = this.game.add.tilemap('map');
     this.map.addTilesetImage('SuperMarioBros-World1-1', 'tiles');
+    this.map.scale = { x: 2.5, y: 2.5 };
     this.layer = this.map.createLayer('World1');
-    this.layer.setScale(2.5, 2.5)
     this.layer.resizeWorld();
 
-    this.collectibles=this.game.add.group();
-    this.map.createFromObjects('Bloques',15,'block',0,true,false,this.collectibles,Bloque);
-    this.map.createFromObjects('Monedas',11,'coins',0,true,false,this.collectibles,Monedas);
-    this.map.createFromObjects('Lunas',19,'moon',0,true,false,this.collectibles,Lunas);
-    this.map.createFromObjects('BloquesE',14,'blockE',1,true,false,this.collectibles,BloqueE);
+    this.blocks = this.game.add.group();
+    this.collectibles = this.game.add.group();
+    this.map.createFromObjects('Bloques', 15, 'block', 0, true, false, this.blocks, Bloque);
+    this.map.createFromObjects('Monedas', 11, 'coins', 0, true, false, this.collectibles, Monedas);
+    this.map.createFromObjects('Lunas', 19, 'moon', 0, true, false, this.collectibles, Lunas);
+    this.map.createFromObjects('BloquesE', 14, 'blockE', 1, true, false, this.blocks, BloqueE);
 
     //Colisiones
     this.collisions = this.map.createLayer('Colisiones');
-    this.collisions.setScale(2.5, 2.5);
     this.map.setCollisionByExclusion([], true, 'Colisiones');
     this.floor = this.map.createLayer('Suelo');
-    this.floor.setScale(2.5, 2.5);
     this.map.setCollisionByExclusion([], true, 'Suelo');
     this.deathZone = this.map.createLayer('Muerte');
-    this.deathZone.setScale(2.5, 2.5);
     this.map.setCollisionByExclusion([], true, 'Muerte');
     //Arrays
     this.enemies = [];
     this.capturables = [];
     this.shots = [];
     //Objetos: jugador y enemigos
-    this.player = new Mario(this.game, 0, 450, 'mario', 5);
+    this.player = new Mario(this.game, 0, 0, 'mario', 5);
     this.game.camera.follow(this.player);
 
-    this.goomba = new Goomba(this.game, 1200, 450, 'goomba', 0, 100, 2, this.player);
-    this.goomba1 = new Goomba(this.game, 1500, 450, 'goomba', 0, -100, 2, this.player);
-    this.goomba2 = new Goomba(this.game, 1300, 450, 'goomba', 0, -100, 2, this.player);
-    this.goomba3 = new Goomba(this.game, 1600, 450, 'goomba', 0, 100, 2, this.player);
-    this.goomba4 = new Goomba(this.game, 7000, 450, 'goomba', 0, -100, 2, this.player);
-    this.spiny = new Spiny(this.game, 1900, 450, 'spiny', 0, 100, 2);
-    this.planta = new Planta(this.game, 500, 450, 'planta', 5, 300, 5);
+    this.goomba = new Goomba(this.game, 1200, 0, 'goomba', 0, 100, 2, this.player);
+    this.goomba1 = new Goomba(this.game, 1500, 0, 'goomba', 0, -100, 2, this.player);
+    this.goomba2 = new Goomba(this.game, 1300, 0, 'goomba', 0, -100, 2, this.player);
+    this.goomba3 = new Goomba(this.game, 1600, 0, 'goomba', 0, 100, 2, this.player);
+    this.goomba4 = new Goomba(this.game, 7000, 0, 'goomba', 0, -100, 2, this.player);
+    this.spiny = new Spiny(this.game, 1900, 0, 'spiny', 0, 100, 2);
+    this.planta = new Planta(this.game, 500, 0, 'planta', 5, 300, 5);
 
     this.vidas = this.game.add.sprite(this.game.width - 110, 27, 'vidas', 0);
     this.vidas.scale.setTo(1.5, 1.5);
@@ -81,20 +79,17 @@ var PlayScene = {
     this.game.physics.arcade.collide(this.player, this.floor);
     this.game.physics.arcade.collide(this.player, this.collisions);
     this.game.physics.arcade.collide(this.player, this.deathZone, function (player) { player.Die(); });
-    this.game.physics.arcade.collide(this.goomba, this.floor);
-    this.game.physics.arcade.collide(this.goomba, this.collisions, function (enemy) { enemy.ChangeDir(); });
-    this.game.physics.arcade.collide(this.goomba1, this.floor);
-    this.game.physics.arcade.collide(this.goomba1, this.collisions, function (enemy) { enemy.ChangeDir(); });
-    this.game.physics.arcade.collide(this.goomba2, this.floor);
-    this.game.physics.arcade.collide(this.goomba2, this.collisions, function (enemy) { enemy.ChangeDir(); });
-    this.game.physics.arcade.collide(this.goomba3, this.floor);
-    this.game.physics.arcade.collide(this.goomba3, this.collisions, function (enemy) { enemy.ChangeDir(); });
-    this.game.physics.arcade.collide(this.goomba4, this.floor);
-    this.game.physics.arcade.collide(this.goomba4, this.collisions, function (enemy) { enemy.ChangeDir(); });
-    this.game.physics.arcade.collide(this.spiny, this.floor);
-    this.game.physics.arcade.collide(this.spiny, this.collisions, function (enemy) { enemy.ChangeDir(); });
-    this.game.physics.arcade.collide(this.planta, this.floor);
+    this.enemies.forEach(
+      function (item) {
+        this.game.physics.arcade.collide(item, this.floor);
+        this.game.physics.arcade.collide(item, this.collisions, function (enemy) { enemy.ChangeDir(); });
+        this.game.physics.arcade.collide(item, this.floor);
+      }, this);
     this.game.physics.arcade.collide(this.player.cappy, this.collisions);
+    this.blocks.forEach(
+      function (item) {
+      this.game.physics.arcade.collide( item, this.player,function (block,player) { block.Collision(player); });
+      },this);
     //Correr
     if (this.correr.isDown)
       this.player.running = true;

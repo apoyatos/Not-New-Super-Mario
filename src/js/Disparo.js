@@ -8,7 +8,6 @@ function Shot(game, x, y, sprite, frame, animName, animFrames, animSpeed) {
   this.body.allowGravity = false;
   //Sprite y animaciones
   this.animName = animName;
-  this.scale.setTo(2, 2);
   this.animations.add(this.animName, animFrames, animSpeed, true);
 }
 Shot.prototype = Object.create(Phaser.Sprite.prototype);
