@@ -15,6 +15,8 @@ var PreloaderScene = {
   preload: function () {
     // load here the assets for the game
     this.game.load.image('logo', 'images/Logo.png');
+    this.game.load.spritesheet('play', 'images/BotonPlay.png', 73, 30);
+    this.game.load.spritesheet('options', 'images/BotonOptions.png', 95, 32);
     this.game.load.spritesheet('vidas', 'images/Vidas.png', 55, 55);
     this.game.load.spritesheet('cappy', 'images/Gorra.png', 16, 8);
     this.game.load.spritesheet('goomba', 'images/Goomba.png', 25, 24);
@@ -35,15 +37,30 @@ var PreloaderScene = {
 var Menu = {
   create: function () {
     this.game.stage.backgroundColor = 0x4488aa;
-    this.logo = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'logo');
+    this.logo = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY - 50, 'logo');
     this.logo.scale.setTo(2, 2);
     this.logo.anchor.setTo(0.5, 0.5);
 
-    this.empezar = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
-  },
-  update: function () {
-    if (this.empezar.isDown)
+    this.buttonPlay = this.game.add.button(this.game.world.centerX - 200, this.game.world.centerY + 250, 'play', play, this, 0, 1, 2);
+    this.buttonPlay.scale.setTo(2, 2);
+    this.buttonPlay.anchor.setTo(0.5, 0.5);
+
+    this.buttonOptions = this.game.add.button(this.game.world.centerX + 200, this.game.world.centerY + 250, 'options', options, this, 0, 1, 2);
+    this.buttonOptions.scale.setTo(2, 2);
+    this.buttonOptions.anchor.setTo(0.5, 0.5);
+
+    function play() {
       this.game.state.start('play');
+    }
+    function options() {
+      //this.game.state.start('options');
+    }
+  }
+};
+
+var Options = {
+  create: function () {
+
   }
 };
 
@@ -53,6 +70,7 @@ window.onload = function () {
   game.state.add('boot', BootScene);
   game.state.add('preloader', PreloaderScene);
   game.state.add('menu', Menu);
+  game.state.add('options', Options);
   game.state.add('play', PlayScene);
 
   game.state.start('boot');
