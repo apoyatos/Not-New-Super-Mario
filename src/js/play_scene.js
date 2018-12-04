@@ -88,7 +88,7 @@ var PlayScene = {
     this.game.physics.arcade.collide(this.player.cappy, this.collisions);
     this.blocks.forEach(
       function (item) {
-      this.game.physics.arcade.collide( item, this.player,function (block,player) { block.Collision(player); });
+        this.game.physics.arcade.collide( item, this.player,function (block,player) { block.Collision(player); });
       },this);
     //Correr
     if (this.correr.isDown)
