@@ -144,7 +144,7 @@ Mario.constructor = Mario;
 
 //Comprueba si está en el suelo
 Mario.prototype.CheckOnFloor = function () {
-    if (this.body.onFloor()) {
+    if (this.body.onFloor() || this.body.touching.down) {
         this.tackling = false;
         this.bombJump = false;
     }
@@ -188,14 +188,14 @@ Mario.prototype.NotMoving = function () {
 Mario.prototype.Jump = function () {
     if (!this.capture) //Si es Mario
     {
-        if (this.body.onFloor() && !this.crouching) //Si está en el suelo y no está agachado puede saltar
+        if ((this.body.onFloor()|| this.body.touching.down) && !this.crouching) //Si está en el suelo y no está agachado puede saltar
         {
             this.swimming = false;
             this.tackles = 1;
             this.body.velocity.y = -this.jumpVelocity;
         }
     }
-    else if ((this.enemy = 'goomba') && this.body.onFloor()) {
+    else if ((this.enemy = 'goomba') && (this.body.onFloor()|| this.body.touching.down)) {
         Goomba.prototype.MarioJump(this);
     }
 }
@@ -203,7 +203,7 @@ Mario.prototype.Jump = function () {
 Mario.prototype.Tackle = function () {
     if (!this.capture) //Si es Mario
     {
-        if (!this.body.onFloor() && this.tackles > 0) {
+        if ((!this.body.onFloor()|| !this.body.touching.down) && this.tackles > 0) {
             this.body.velocity.y = -this.jumpVelocity / 2;
             this.body.velocity.x = this.facing * (this.velocity / 2);
 
@@ -218,7 +218,7 @@ Mario.prototype.Crouch = function () {
     {
         if (!this.swimming) //Solo puede agacharse o hacer salto bomba si no esta nadando
         {
-            if (this.body.onFloor()) {
+            if (this.body.onFloor()|| this.body.touching.down) {
                 this.crouching = true;
             }
             else {
@@ -334,7 +334,7 @@ Mario.prototype.MarioAnims = function (dir, cappy, hurt) //String con la direcci
 {
     if (this.swimming) //Animaciones cuando está nadando
         this.animations.play('swim' + dir + cappy + hurt);
-    else if (this.body.onFloor()) //Animaciones cuando está en el suelo
+    else if (this.body.onFloor()|| this.body.touching.down) //Animaciones cuando está en el suelo
     {
         if (this.throwTimer > this.game.time.totalElapsedSeconds()) {
             if (this.thrown)
