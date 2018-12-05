@@ -15,8 +15,12 @@ function Mario(game, x, y, sprite, frame) {
     this.hurt = false;
     this.hurtTime = 1;
     this.hurtTimer = 0;
+    //Objetos
+    this.coins = 0;
+    this.moons = 0;
     //Movimiento
     this.velocity = 200;
+    this.prevY;
     this.facing = 1; //derecha = 1, izquierda = -1
     this.jumpVelocity = 415;
     this.tackles = 0;
@@ -46,7 +50,6 @@ function Mario(game, x, y, sprite, frame) {
     this.body.gravity.y = 500;
     this.body.collideWorldBounds = true;
     //Sprite y animaciones
-    this.scale.setTo(2.5, 2.5);
     this.originalHeight = this.body.height * this.scale.x;
     //Animaciones normales
     this.animations.add('runLeft', Phaser.Animation.generateFrameNames('walkLeft', 1, 3), 8, true);
@@ -150,6 +153,7 @@ Mario.prototype.CheckOnFloor = function () {
 //Movimiento
 Mario.prototype.Move = function (dir) {
     this.facing = dir;
+    this.prevY=this.y;
     if (!this.capture) //Si es Mario
     {
         if (!this.bombJump) //En el salto bomba no hay movimiento
@@ -184,6 +188,7 @@ Mario.prototype.NotMoving = function () {
 }
 //Salto
 Mario.prototype.Jump = function () {
+    this.prevY=this.y;
     if (!this.capture) //Si es Mario
     {
         if (this.body.onFloor() && !this.crouching) //Si está en el suelo y no está agachado puede saltar
@@ -193,12 +198,13 @@ Mario.prototype.Jump = function () {
             this.body.velocity.y = -this.jumpVelocity;
         }
     }
-    else if ((this.enemy = 'goomba') && this.body.onFloor()) {
+    else if ((this.enemy = 'goomba') && (this.body.onFloor()|| this.body.touching.down)) {
         Goomba.prototype.MarioJump(this);
     }
 }
 //Impulso tras el salto
 Mario.prototype.Tackle = function () {
+    this.prevY=this.y;
     if (!this.capture) //Si es Mario
     {
         if (!this.body.onFloor() && this.tackles > 0) {
@@ -220,6 +226,7 @@ Mario.prototype.Crouch = function () {
                 this.crouching = true;
             }
             else {
+                this.prevY=this.y;
                 this.body.velocity.y = 600;
                 this.body.velocity.x = 0;
                 this.tackles = 0;
@@ -236,6 +243,7 @@ Mario.prototype.NotCrouching = function () {
 Mario.prototype.Swim = function () {
     if (!this.capture) //Si es Mario
     {
+        this.prevY=this.y;
         this.swimming = true;
         this.game.physics.arcade.gravity.y = 600;
 
@@ -246,8 +254,15 @@ Mario.prototype.Swim = function () {
         //
     }
 }
+//Collision con Objetos
+Mario.prototype.CollectibleCollision = function (object) {
+    if (this.game.physics.arcade.overlap(object, this)) {
+        object.Collision(this);
+    }
+}
+
 //Colisión con enemigos
-Mario.prototype.EnemyCollision = function (player, enemy) {
+Mario.prototype.EnemyCollision = function (enemy) {
     if (!this.capture) {
         if (this.game.physics.arcade.overlap(enemy, this) && !this.hurt) {
             if (enemy.type == 'planta' && this.cappyPlant) {
@@ -268,7 +283,7 @@ Mario.prototype.EnemyCollision = function (player, enemy) {
         }
     }
     else if (this.enemy == 'goomba') {
-        Goomba.prototype.GoombaCollision(player, enemy);
+        Goomba.prototype.GoombaCollision(this, enemy);
     }
 }
 //Daño

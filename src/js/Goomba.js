@@ -13,7 +13,6 @@ function Goomba(game, x, y, sprite, frame, speed, movingTime, player) {
     this.movingTime = movingTime;
     this.movingTimer = 0;
     //Sprites y animaciones
-    this.scale.setTo(2.5, 2.5);
     this.animations.add('walk', [0, 1], 5, true);
     this.originalHeight = this.body.height * this.scale.x;
 }
