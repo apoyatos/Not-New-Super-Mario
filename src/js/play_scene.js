@@ -5,9 +5,9 @@ var Goomba = require('./Goomba.js');
 var Spiny = require('./Spiny.js');
 var Planta = require('./PlantaPiraña.js');
 var Monedas = require('./Monedas.js');
-var Bloque = require('./Bloque.js');
-var BloqueE = require('./BloqueEspecial.js');
 var Lunas = require('./Lunas.js');
+var Corazones=require('./Corazones.js');
+var Banderas= require('./Checkpoints.js');
 
 var PlayScene = {
   create: function () {
@@ -25,12 +25,9 @@ var PlayScene = {
     this.layer = this.map.createLayer('World1');
     this.layer.resizeWorld();
 
-    this.blocks = this.game.add.group();
     this.collectibles = this.game.add.group();
-    this.map.createFromObjects('Bloques', 15, 'block', 0, true, false, this.blocks, Bloque);
     this.map.createFromObjects('Monedas', 11, 'coins', 0, true, false, this.collectibles, Monedas);
     this.map.createFromObjects('Lunas', 19, 'moon', 0, true, false, this.collectibles, Lunas);
-    this.map.createFromObjects('BloquesE', 14, 'blockE', 1, true, false, this.blocks, BloqueE);
 
     //Colisiones
     this.collisions = this.map.createLayer('Colisiones');
@@ -39,6 +36,10 @@ var PlayScene = {
     this.map.setCollisionByExclusion([], true, 'Suelo');
     this.deathZone = this.map.createLayer('Muerte');
     this.map.setCollisionByExclusion([], true, 'Muerte');
+    this.eBlocks = this.map.createLayer('BloquesENormales');
+    this.map.setCollisionByExclusion([], true, 'BloquesENormales');
+    this.blocks = this.map.createLayer('Bloques');
+    this.map.setCollisionByExclusion([], true, 'Bloques');
     //Arrays
     this.enemies = [];
     this.capturables = [];
@@ -75,22 +76,24 @@ var PlayScene = {
   },
   update: function () {
     this.vidas.frame = this.player.life - 1
+
     //Colisiones del mapa respectos a los objetos del juego
     this.game.physics.arcade.collide(this.player, this.floor);
     this.game.physics.arcade.collide(this.player, this.collisions);
     this.game.physics.arcade.collide(this.player, this.deathZone, function (player) { player.Die(); });
+    
+    this.game.physics.arcade.collide(this.player, this.blocks, function (player, tile) { HitBlock(player, tile); });
+    this.game.physics.arcade.collide(this.player, this.eBlocks,function (player, tile) { HitBlockCoins(player, tile);});
+    
     this.enemies.forEach(
       function (item) {
         this.game.physics.arcade.collide(item, this.floor);
         this.game.physics.arcade.collide(item, this.collisions, function (enemy) { enemy.ChangeDir(); });
         this.game.physics.arcade.collide(item, this.floor);
       }, this);
-    this.game.physics.arcade.collide(this.player.cappy, this.collisions);
-    this.blocks.forEach(
-      function (item) {
-        this.game.physics.arcade.collide(item, this.floor);
-        this.game.physics.arcade.collide( item, this.player,function (block,player) { block.Collision(player); });
-      },this);
+    
+      this.game.physics.arcade.collide(this.player.cappy, this.collisions);
+
     //Correr
     if (this.correr.isDown)
       this.player.running = true;
@@ -183,5 +186,20 @@ var PlayScene = {
       }, this);
   }
 };
+
+function HitBlock(player, tile) {
+  if (player.body.blocked.up || (player.prevY < player.y && player.crouching)) {
+    tile.index = 1;
+    tile.setCollision(false, false, false, false);
+    tile.layer.dirty = true;
+  }
+}
+
+function HitBlockCoins(player, tile) {
+  if (tile.index == 14 && (player.body.blocked.up || (player.prevY < player.y && player.crouching))) {
+    tile.index = 16;
+    tile.layer.dirty = true;
+  }
+}
 
 module.exports = PlayScene;

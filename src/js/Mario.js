@@ -20,6 +20,7 @@ function Mario(game, x, y, sprite, frame) {
     this.moons = 0;
     //Movimiento
     this.velocity = 200;
+    this.prevY;
     this.facing = 1; //derecha = 1, izquierda = -1
     this.jumpVelocity = 415;
     this.tackles = 0;
@@ -144,7 +145,7 @@ Mario.constructor = Mario;
 
 //Comprueba si está en el suelo
 Mario.prototype.CheckOnFloor = function () {
-    if (this.body.onFloor() || this.body.touching.down) {
+    if (this.body.onFloor()) {
         this.tackling = false;
         this.bombJump = false;
     }
@@ -152,6 +153,7 @@ Mario.prototype.CheckOnFloor = function () {
 //Movimiento
 Mario.prototype.Move = function (dir) {
     this.facing = dir;
+    this.prevY=this.y;
     if (!this.capture) //Si es Mario
     {
         if (!this.bombJump) //En el salto bomba no hay movimiento
@@ -186,9 +188,10 @@ Mario.prototype.NotMoving = function () {
 }
 //Salto
 Mario.prototype.Jump = function () {
+    this.prevY=this.y;
     if (!this.capture) //Si es Mario
     {
-        if ((this.body.onFloor()|| this.body.touching.down) && !this.crouching) //Si está en el suelo y no está agachado puede saltar
+        if (this.body.onFloor() && !this.crouching) //Si está en el suelo y no está agachado puede saltar
         {
             this.swimming = false;
             this.tackles = 1;
@@ -201,9 +204,10 @@ Mario.prototype.Jump = function () {
 }
 //Impulso tras el salto
 Mario.prototype.Tackle = function () {
+    this.prevY=this.y;
     if (!this.capture) //Si es Mario
     {
-        if ((!this.body.onFloor()|| !this.body.touching.down) && this.tackles > 0) {
+        if (!this.body.onFloor() && this.tackles > 0) {
             this.body.velocity.y = -this.jumpVelocity / 2;
             this.body.velocity.x = this.facing * (this.velocity / 2);
 
@@ -218,10 +222,11 @@ Mario.prototype.Crouch = function () {
     {
         if (!this.swimming) //Solo puede agacharse o hacer salto bomba si no esta nadando
         {
-            if (this.body.onFloor()|| this.body.touching.down) {
+            if (this.body.onFloor()) {
                 this.crouching = true;
             }
             else {
+                this.prevY=this.y;
                 this.body.velocity.y = 600;
                 this.body.velocity.x = 0;
                 this.tackles = 0;
@@ -238,6 +243,7 @@ Mario.prototype.NotCrouching = function () {
 Mario.prototype.Swim = function () {
     if (!this.capture) //Si es Mario
     {
+        this.prevY=this.y;
         this.swimming = true;
         this.game.physics.arcade.gravity.y = 600;
 
@@ -334,7 +340,7 @@ Mario.prototype.MarioAnims = function (dir, cappy, hurt) //String con la direcci
 {
     if (this.swimming) //Animaciones cuando está nadando
         this.animations.play('swim' + dir + cappy + hurt);
-    else if (this.body.onFloor()|| this.body.touching.down) //Animaciones cuando está en el suelo
+    else if (this.body.onFloor()) //Animaciones cuando está en el suelo
     {
         if (this.throwTimer > this.game.time.totalElapsedSeconds()) {
             if (this.thrown)
