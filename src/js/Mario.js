@@ -3,8 +3,9 @@
 var Cappy = require('./Cappy.js');
 var Goomba = require('./Goomba.js');
 
-function Mario(game, x, y, sprite, frame) {
+function Mario(game, x, y, sprite, frame,scene) {
     Phaser.Sprite.call(this, game, x, y, sprite, frame);
+    this.scene=scene;
     //Cappy
     this.cappy = null;
     this.thrown = false;
@@ -20,7 +21,7 @@ function Mario(game, x, y, sprite, frame) {
     this.moons = 0;
     //Movimiento
     this.velocity = 200;
-    this.prevY;
+    this.prevState;
     this.facing = 1; //derecha = 1, izquierda = -1
     this.jumpVelocity = 415;
     this.tackles = 0;
@@ -146,6 +147,7 @@ Mario.constructor = Mario;
 //Comprueba si está en el suelo
 Mario.prototype.CheckOnFloor = function () {
     if (this.body.onFloor()) {
+        this.prevY=this.y
         this.tackling = false;
         this.bombJump = false;
     }

@@ -6,8 +6,8 @@ var Spiny = require('./Spiny.js');
 var Planta = require('./PlantaPiraña.js');
 var Monedas = require('./Monedas.js');
 var Lunas = require('./Lunas.js');
-var Corazones=require('./Corazones.js');
 var Banderas= require('./Checkpoints.js');
+var Bloques= require('./Bloques.js');
 
 var PlayScene = {
   create: function () {
@@ -40,12 +40,14 @@ var PlayScene = {
     this.map.setCollisionByExclusion([], true, 'BloquesENormales');
     this.blocks = this.map.createLayer('Bloques');
     this.map.setCollisionByExclusion([], true, 'Bloques');
+    this.blocks
     //Arrays
     this.enemies = [];
     this.capturables = [];
     this.shots = [];
+    this.blocksHandler=new Bloques(this.game,'block','block');
     //Objetos: jugador y enemigos
-    this.player = new Mario(this.game, 0, 0, 'mario', 5);
+    this.player = new Mario(this.game, 0, 0, 'mario', 5, this);
     this.game.camera.follow(this.player);
 
     this.goomba = new Goomba(this.game, 1200, 0, 'goomba', 0, 100, 2, this.player);
@@ -82,8 +84,8 @@ var PlayScene = {
     this.game.physics.arcade.collide(this.player, this.collisions);
     this.game.physics.arcade.collide(this.player, this.deathZone, function (player) { player.Die(); });
     
-    this.game.physics.arcade.collide(this.player, this.blocks, function (player, tile) { HitBlock(player, tile); });
-    this.game.physics.arcade.collide(this.player, this.eBlocks,function (player, tile) { HitBlockCoins(player, tile);});
+    this.game.physics.arcade.collide(this.player, this.blocks, function (player, tile) { player.scene.blocksHandler.HitBlock(player, tile); });
+    this.game.physics.arcade.collide(this.player, this.eBlocks,function (player, tile) { player.scene.blocksHandler.HitBlockCoins(player, tile);});
     
     this.enemies.forEach(
       function (item) {
@@ -187,19 +189,6 @@ var PlayScene = {
   }
 };
 
-function HitBlock(player, tile) {
-  if (player.body.blocked.up || (player.prevY < player.y && player.crouching)) {
-    tile.index = 1;
-    tile.setCollision(false, false, false, false);
-    tile.layer.dirty = true;
-  }
-}
 
-function HitBlockCoins(player, tile) {
-  if (tile.index == 14 && (player.body.blocked.up || (player.prevY < player.y && player.crouching))) {
-    tile.index = 16;
-    tile.layer.dirty = true;
-  }
-}
 
 module.exports = PlayScene;
