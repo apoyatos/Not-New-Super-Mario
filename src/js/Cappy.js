@@ -25,7 +25,6 @@ function Cappy(game, x, y, name, player, dir) {
     this.game.physics.arcade.enable(this);
     this.body.allowGravity = false;
     //Sprite y animaciones
-
     this.animations.add("Thrown", [0, 1, 2], 8, true);
 }
 Cappy.prototype = Object.create(Phaser.Sprite.prototype);
@@ -102,7 +101,7 @@ Cappy.prototype.Capture = function (enemy) {
 }
 //Bloquea a la Planta
 Cappy.prototype.Stunn = function (enemy) {
-    if (this.game.physics.arcade.overlap(this.player.cappy, enemy) && enemy.type == 'planta') {
+    if (this.game.physics.arcade.overlap(this.player.cappy, enemy) && enemy.type == 'plant') {
         this.player.cappyPlant = true;
         this.player.cappy.kill();
     }

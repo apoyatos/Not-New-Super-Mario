@@ -4,10 +4,11 @@ var Mario = require('./Mario.js');
 var Goomba = require('./Goomba.js');
 var Spiny = require('./Spiny.js');
 var Planta = require('./PlantaPiraña.js');
-var Monedas = require('./Monedas.js');
-var Lunas = require('./Lunas.js');
-var Banderas= require('./Checkpoints.js');
-var Bloques= require('./Bloques.js');
+var Bandera = require('./Bandera.js');
+var Moneda = require('./Moneda.js');
+var Corazon = require('./Corazon.js');
+var Luna = require('./Luna.js');
+var Bloque = require('./Bloque.js');
 
 var PlayScene = {
   create: function () {
@@ -24,11 +25,12 @@ var PlayScene = {
     this.map.scale = { x: 2.5, y: 2.5 };
     this.layer = this.map.createLayer('World1');
     this.layer.resizeWorld();
-
+    //Objetos coleccionables
     this.collectibles = this.game.add.group();
-    this.map.createFromObjects('Monedas', 11, 'coins', 0, true, false, this.collectibles, Monedas);
-    this.map.createFromObjects('Lunas', 19, 'moon', 0, true, false, this.collectibles, Lunas);
-
+    this.map.createFromObjects('Moneda', 11, 'coin', 0, true, false, this.collectibles, Moneda);
+    this.map.createFromObjects('Luna', 19, 'moon', 0, true, false, this.collectibles, Luna);
+    //this.map.createFromObjects('Corazon', x, 'heart', 0, true, false, this.collectibles, Corazon);
+    //this.map.createFromObjects('SuperCorazon', x, 'superHeart', 0, true, false, this.collectibles, Corazon);
     //Colisiones
     this.collisions = this.map.createLayer('Colisiones');
     this.map.setCollisionByExclusion([], true, 'Colisiones');
@@ -36,32 +38,32 @@ var PlayScene = {
     this.map.setCollisionByExclusion([], true, 'Suelo');
     this.deathZone = this.map.createLayer('Muerte');
     this.map.setCollisionByExclusion([], true, 'Muerte');
-    this.eBlocks = this.map.createLayer('BloquesENormales');
-    this.map.setCollisionByExclusion([], true, 'BloquesENormales');
+    this.eBlocks = this.map.createLayer('BloquesEspeciales');
+    this.map.setCollisionByExclusion([], true, 'BloquesEspeciales');
     this.blocks = this.map.createLayer('Bloques');
     this.map.setCollisionByExclusion([], true, 'Bloques');
-    this.blocks
     //Arrays
     this.enemies = [];
     this.capturables = [];
     this.shots = [];
-    this.blocksHandler=new Bloques(this.game,'block','block');
-    //Objetos: jugador y enemigos
-    this.player = new Mario(this.game, 0, 0, 'mario', 5, this);
+    //Mario
+    this.player = new Mario(this.game, 0, 150, 'mario', 5, this);
     this.game.camera.follow(this.player);
-
-    this.goomba = new Goomba(this.game, 1200, 0, 'goomba', 0, 100, 2, this.player);
-    this.goomba1 = new Goomba(this.game, 1500, 0, 'goomba', 0, -100, 2, this.player);
-    this.goomba2 = new Goomba(this.game, 1300, 0, 'goomba', 0, -100, 2, this.player);
-    this.goomba3 = new Goomba(this.game, 1600, 0, 'goomba', 0, 100, 2, this.player);
-    this.goomba4 = new Goomba(this.game, 7000, 0, 'goomba', 0, -100, 2, this.player);
-    this.spiny = new Spiny(this.game, 1900, 0, 'spiny', 0, 100, 2);
-    this.planta = new Planta(this.game, 500, 0, 'planta', 5, 300, 5);
-
-    this.vidas = this.game.add.sprite(this.game.width - 110, 27, 'vidas', 0);
+    //Enemigos
+    this.goomba = new Goomba(this.game, 500, 150, 'goomba', 0, 100, 2, this.player);
+    this.goomba1 = new Goomba(this.game, 500, 150, 'goomba', 0, -100, 2, this.player);
+    this.goomba2 = new Goomba(this.game, 600, 150, 'goomba', 0, 100, 2, this.player);
+    this.goomba3 = new Goomba(this.game, 600, 150, 'goomba', 0, -100, 2, this.player);
+    this.goomba4 = new Goomba(this.game, 700, 150, 'goomba', 0, 100, 2, this.player);
+    this.spiny = new Spiny(this.game, 800, 150, 'spiny', 0, 100, 2);
+    this.planta = new Planta(this.game, 350, 150, 'plant', 5, 300, 5);
+    //Bloques
+    this.blocksHandler = new Bloque(this.game, 'coin', 'heart', 'superHeart');
+    //Interfaz
+    this.vidas = this.game.add.sprite(this.game.width - 110, 27, 'life', 0);
     this.vidas.scale.setTo(1.5, 1.5);
     this.vidas.fixedToCamera = true;
-    //Array enemigo
+    //Array enemies
     this.enemies.push(this.goomba);
     this.enemies.push(this.goomba1);
     this.enemies.push(this.goomba2);
@@ -77,38 +79,37 @@ var PlayScene = {
     this.capturables.push(this.goomba4);
   },
   update: function () {
-    this.vidas.frame = this.player.life - 1
-
-    //Colisiones del mapa respectos a los objetos del juego
+    //Vida
+    this.vidas.frame = this.player.life - 1;
+    //Colisiones de Mario con el mapa
     this.game.physics.arcade.collide(this.player, this.floor);
     this.game.physics.arcade.collide(this.player, this.collisions);
     this.game.physics.arcade.collide(this.player, this.deathZone, function (player) { player.Die(); });
-    
+    //Colisiones de Mario con los bloques
     this.game.physics.arcade.collide(this.player, this.blocks, function (player, tile) { player.scene.blocksHandler.HitBlock(player, tile); });
-    this.game.physics.arcade.collide(this.player, this.eBlocks,function (player, tile) { player.scene.blocksHandler.HitBlockCoins(player, tile);});
-    
+    this.game.physics.arcade.collide(this.player, this.eBlocks, function (player, tile) { player.scene.blocksHandler.HitBlockCoins(player, tile); });
+    //Colisiones de Cappy
+    this.game.physics.arcade.collide(this.player.cappy, this.collisions);
+    //Colisiones de enemigos
     this.enemies.forEach(
       function (item) {
         this.game.physics.arcade.collide(item, this.floor);
         this.game.physics.arcade.collide(item, this.collisions, function (enemy) { enemy.ChangeDir(); });
-        this.game.physics.arcade.collide(item, this.floor);
       }, this);
-    
-      this.game.physics.arcade.collide(this.player.cappy, this.collisions);
 
-    //Correr
-    if (this.correr.isDown)
-      this.player.running = true;
-    else
-      this.player.running = false;
-    //Movimiento
+    //Andar
     if (this.teclas.right.isDown)
       this.player.Move(1);
     else if (this.teclas.left.isDown)
       this.player.Move(-1);
     else
       this.player.NotMoving();
-    //Salto
+    //Correr y rodar
+    if (this.correr.isDown)
+      this.player.running = true;
+    else
+      this.player.running = false;
+    //Salto e impulso aereo
     if (this.saltar.isDown)
       this.player.Jump();
     if (this.teclas.up.isDown)
@@ -123,7 +124,7 @@ var PlayScene = {
       this.player.ThrowCappy();
     else if (this.player.cappy != null)
       this.player.cappy.cappyHold = false;
-    //Manejo de eventos
+    //Colisiones y animaciones
     this.player.CheckOnFloor();
     this.player.handleAnimations();
 
@@ -131,7 +132,7 @@ var PlayScene = {
       this.player.cappy.Check();
       this.player.cappy.Collision();
     }
-    //Goomba
+    //Goombas
     if (this.goomba.alive) {
       this.goomba.Move();
       this.goomba.Die();
@@ -160,19 +161,19 @@ var PlayScene = {
       if (shot != undefined)
         this.shots.push(shot);
     }
-    //colisiones con Objetos
+    //colisiones de Mario con objetos
     this.collectibles.forEach(
       function (item) {
         this.player.CollectibleCollision(item);
       }, this);
-    //Colisiones con enemigos
+    //Colisiones de Mario con enemigos
     this.enemies.forEach(
       function (item) {
         this.player.EnemyCollision(item);
         if (this.player.cappy != null)
           this.player.cappy.Stunn(item);
       }, this);
-    //Colisiones con disparos
+    //Colisiones de Mario con disparos
     this.shots.forEach(
       function (item) {
         if (this.player.EnemyCollision(item)) {
@@ -188,7 +189,5 @@ var PlayScene = {
       }, this);
   }
 };
-
-
 
 module.exports = PlayScene;

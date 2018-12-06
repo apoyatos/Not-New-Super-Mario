@@ -19,22 +19,26 @@ var PreloaderScene = {
     this.game.load.spritesheet('play', 'images/BotonPlay.png', 73, 30);
     this.game.load.spritesheet('options', 'images/BotonOptions.png', 95, 32);
 
-    this.game.load.image('moon', 'images/moon.png');
-    this.game.load.spritesheet('blockE', 'images/bloqueE.png',16,16);
-    this.game.load.image('block', 'images/bloque2.png');
-    this.game.load.image('coins', 'images/coins.png');
-
-    this.game.load.spritesheet('vidas', 'images/Vidas.png', 55, 55);
-    this.game.load.spritesheet('cappy', 'images/Gorra.png', 16, 8);
-    this.game.load.spritesheet('goomba', 'images/Goomba.png', 25, 24);
-    this.game.load.spritesheet('spiny', 'images/Spiny.png', 18.5, 16);
-    this.game.load.spritesheet('planta', 'images/PlantaPiraña.png', 18, 34);
-    this.game.load.spritesheet('disparo-fuego', 'images/Disparo-Fuego.png', 9, 9);
+    this.game.load.spritesheet('superBlock', 'images/SuperBloque.png', 33, 32);
+    this.game.load.image('block', 'images/Bloque.png');
+    this.game.load.spritesheet('coin', 'images/Moneda.png', 14, 16);
+    this.game.load.spritesheet('superCoin', 'images/SuperMoneda.png', 14, 16);
+    this.game.load.image('moon', 'images/Energiluna.png');
+    this.game.load.image('heart', 'images/Corazon.png');
+    this.game.load.image('superHeart', 'images/SuperCorazon.png');
+    this.game.load.spritesheet('checkpoint', 'images/Bandera.png', 25, 32);
 
     this.game.load.atlas('mario', 'images/Mario.png', 'images/sprites.json');
 
-    this.game.load.tilemap('map', 'tilemaps/super_mario.json', null, Phaser.Tilemap.TILED_JSON);
+    this.game.load.spritesheet('cappy', 'images/Gorra.png', 16, 8);
+    this.game.load.spritesheet('goomba', 'images/Goomba.png', 25, 24);
+    this.game.load.spritesheet('spiny', 'images/Spiny.png', 18.5, 16);
+    this.game.load.spritesheet('plant', 'images/PlantaPiraña.png', 18, 34);
+    this.game.load.spritesheet('life', 'images/Vida.png', 55, 55);
+    this.game.load.spritesheet('shotFire', 'images/Disparo-Fuego.png', 9, 9);
+
     this.game.load.image('tiles', 'tilemaps/super_mario.png');
+    this.game.load.tilemap('map', 'tilemaps/super_mario.json', null, Phaser.Tilemap.TILED_JSON);
   },
   create: function () {
     this.game.state.start('menu');
@@ -67,7 +71,7 @@ var Menu = {
 
 var Options = {
   create: function () {
-
+    //En desarrollo
   }
 };
 
