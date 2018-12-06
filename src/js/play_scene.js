@@ -56,7 +56,7 @@ var PlayScene = {
     this.goomba2 = new Goomba(this.game, 1300, 0, 'goomba', 0, -100, 2, this.player);
     this.goomba3 = new Goomba(this.game, 1600, 0, 'goomba', 0, 100, 2, this.player);
     this.goomba4 = new Goomba(this.game, 7000, 0, 'goomba', 0, -100, 2, this.player);
-    this.chomp = new Chomp(this.game, 600, 0, 'chomp', 0, 50, 100, 200);
+    this.chomp = new Chomp(this.game, 600, 0, 'chomp', 0, 50, 100, 200,1);
     this.spiny = new Spiny(this.game, 1900, 0, 'spiny', 0, 100, 2);
     this.planta = new Planta(this.game, 5500, 0, 'planta', 5, 300, 5);
 
