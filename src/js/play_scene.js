@@ -51,12 +51,12 @@ var PlayScene = {
     this.player = new Mario(this.game, 0, 0, 'mario', 5, this);
     this.game.camera.follow(this.player);
 
-    this.goomba = new Goomba(this.game, 1200, 0, 'goomba', 0, 100, 2, this.player);
+    this.goomba = new Goomba(this.game, 800, 0, 'goomba', 0, 100, 2, this.player);
     this.goomba1 = new Goomba(this.game, 1500, 0, 'goomba', 0, -100, 2, this.player);
     this.goomba2 = new Goomba(this.game, 1300, 0, 'goomba', 0, -100, 2, this.player);
     this.goomba3 = new Goomba(this.game, 1600, 0, 'goomba', 0, 100, 2, this.player);
     this.goomba4 = new Goomba(this.game, 7000, 0, 'goomba', 0, -100, 2, this.player);
-    this.chomp = new Chomp(this.game, 600, 0, 'chomp', 0, 50, 100, 200,1);
+    this.chomp = new Chomp(this.game, 600, 0, 'chomp', 0, 50, 75, 200,1);
     this.spiny = new Spiny(this.game, 1900, 0, 'spiny', 0, 100, 2);
     this.planta = new Planta(this.game, 5500, 0, 'planta', 5, 300, 5);
 
@@ -78,6 +78,7 @@ var PlayScene = {
     this.capturables.push(this.goomba2);
     this.capturables.push(this.goomba3);
     this.capturables.push(this.goomba4);
+    this.capturables.push(this.chomp);
   },
   update: function () {
     this.vidas.frame = this.player.life - 1

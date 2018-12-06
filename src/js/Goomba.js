@@ -44,7 +44,7 @@ Goomba.prototype.MarioJump = function (player) {
     player.body.velocity.y = -player.jumpVelocity / 1.5;
 }
 //Colisiones capturado
-Goomba.prototype.GoombaCollision = function (player, enemy) {
+Goomba.prototype.Collision = function (player, enemy) {
     if (player.game.physics.arcade.overlap(enemy, player) && !player.hurt) //Si choca con un enemigo
     {
         if (enemy.type == 'goomba') //Si es un goomba

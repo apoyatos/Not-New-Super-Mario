@@ -140,6 +140,9 @@ function Mario(game, x, y, sprite, frame,scene) {
     this.animations.add('walkGoomba4', ['goombaLeft4', 'goombaRight4'], 5, true);
     this.animations.add('idleGoomba4', ['goombaLeft4'], 5, false);
     this.animations.add('hurtGoomba4', ['goombaLeft4', 'hurt'], 10, true);
+
+    this.animations.add('walkChompLeft',Phaser.Animation.generateFrameNames('ChompLeft', 1, 3),10,true)
+    this.animations.add('walkChompRight',Phaser.Animation.generateFrameNames('ChompRight', 1, 3),10,true)
 }
 Mario.prototype = Object.create(Phaser.Sprite.prototype);
 Mario.constructor = Mario;
@@ -171,9 +174,9 @@ Mario.prototype.Move = function (dir) {
                 this.body.velocity.x = this.facing * this.velocity * 1.5;
         }
     }
-    else if (this.enemy = 'goomba') {
+    else  {
         this.moving = true;
-        Goomba.prototype.MarioMove(this);
+        this.enemy.MarioMove(this);
     }
 }
 //Ausencia de movimiento
@@ -183,9 +186,9 @@ Mario.prototype.NotMoving = function () {
         this.body.velocity.x = 0;
         this.moving = false;
     }
-    else if (this.enemy = 'goomba') {
+    else  {
         this.moving = false;
-        Goomba.prototype.MarioNotMoving(this);
+        this.enemy.MarioNotMoving(this);
     }
 }
 //Salto
@@ -200,8 +203,8 @@ Mario.prototype.Jump = function () {
             this.body.velocity.y = -this.jumpVelocity;
         }
     }
-    else if ((this.enemy = 'goomba') && (this.body.onFloor()|| this.body.touching.down)) {
-        Goomba.prototype.MarioJump(this);
+    else if ((this.body.onFloor()|| this.body.touching.down)) {
+        this.enemy.MarioJump(this);
     }
 }
 //Impulso tras el salto
@@ -284,8 +287,8 @@ Mario.prototype.EnemyCollision = function (enemy) {
             return false;
         }
     }
-    else if (this.enemy == 'goomba') {
-        Goomba.prototype.GoombaCollision(this, enemy);
+    else{
+        this.enemy.Collision(this, enemy);
     }
 }
 //Daño
@@ -420,8 +423,8 @@ Mario.prototype.handleAnimations = function () {
             }
         }
     }
-    else if (this.enemy == 'goomba') {
-        Goomba.prototype.handleAnimations(this);
+    else {
+        this.enemy.handleAnimations(this);
     }
 
 }
