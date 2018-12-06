@@ -19,14 +19,6 @@ function Goomba(game, x, y, sprite, frame, speed, movingTime, player) {
 Goomba.prototype = Object.create(Enemy.prototype);
 Goomba.constructor = Goomba;
 
-//Movimiento
-Goomba.prototype.Move = function () {
-    this.body.velocity.x = this.speed;
-    this.animations.play('walk');
-}
-Goomba.prototype.ChangeDir = function () {
-    this.speed = -this.speed;
-}
 //Muerte
 Goomba.prototype.Die = function () {
     if (this.game.physics.arcade.overlap(this, this.player) && this.player.y + this.player.height < this.y + 10 && !this.player.hurt && !this.player.capture) {

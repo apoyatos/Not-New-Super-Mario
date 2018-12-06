@@ -16,16 +16,4 @@ function Spiny(game, x, y, sprite, frame, speed, movingTime) {
 Spiny.prototype = Object.create(Enemy.prototype);
 Spiny.constructor = Spiny;
 
-//Movimiento
-Spiny.prototype.Move = function () {
-    this.body.velocity.x = this.speed;
-    if (this.speed < 0)
-        this.animations.play('walkRight');
-    else
-        this.animations.play('walkLeft');
-}
-Spiny.prototype.ChangeDir = function () {
-    this.speed = -this.speed;
-}
-
 module.exports = Spiny;

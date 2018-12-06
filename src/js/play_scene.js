@@ -6,8 +6,9 @@ var Spiny = require('./Spiny.js');
 var Planta = require('./PlantaPiraña.js');
 var Monedas = require('./Monedas.js');
 var Lunas = require('./Lunas.js');
-var Banderas= require('./Checkpoints.js');
-var Bloques= require('./Bloques.js');
+var Banderas = require('./Checkpoints.js');
+var Bloques = require('./Bloques.js');
+var Chomp = require('./Chomp.js');
 
 var PlayScene = {
   create: function () {
@@ -45,7 +46,7 @@ var PlayScene = {
     this.enemies = [];
     this.capturables = [];
     this.shots = [];
-    this.blocksHandler=new Bloques(this.game,'block','block');
+    this.blocksHandler = new Bloques(this.game, 'block', 'block');
     //Objetos: jugador y enemigos
     this.player = new Mario(this.game, 0, 0, 'mario', 5, this);
     this.game.camera.follow(this.player);
@@ -55,8 +56,9 @@ var PlayScene = {
     this.goomba2 = new Goomba(this.game, 1300, 0, 'goomba', 0, -100, 2, this.player);
     this.goomba3 = new Goomba(this.game, 1600, 0, 'goomba', 0, 100, 2, this.player);
     this.goomba4 = new Goomba(this.game, 7000, 0, 'goomba', 0, -100, 2, this.player);
+    this.chomp = new Chomp(this.game, 600, 0, 'chomp', 0, 50, 100, 200);
     this.spiny = new Spiny(this.game, 1900, 0, 'spiny', 0, 100, 2);
-    this.planta = new Planta(this.game, 500, 0, 'planta', 5, 300, 5);
+    this.planta = new Planta(this.game, 5500, 0, 'planta', 5, 300, 5);
 
     this.vidas = this.game.add.sprite(this.game.width - 110, 27, 'vidas', 0);
     this.vidas.scale.setTo(1.5, 1.5);
@@ -67,6 +69,7 @@ var PlayScene = {
     this.enemies.push(this.goomba2);
     this.enemies.push(this.goomba3);
     this.enemies.push(this.goomba4);
+    this.enemies.push(this.chomp);
     this.enemies.push(this.spiny);
     this.enemies.push(this.planta);
     //Array capturables
@@ -83,18 +86,18 @@ var PlayScene = {
     this.game.physics.arcade.collide(this.player, this.floor);
     this.game.physics.arcade.collide(this.player, this.collisions);
     this.game.physics.arcade.collide(this.player, this.deathZone, function (player) { player.Die(); });
-    
+
     this.game.physics.arcade.collide(this.player, this.blocks, function (player, tile) { player.scene.blocksHandler.HitBlock(player, tile); });
-    this.game.physics.arcade.collide(this.player, this.eBlocks,function (player, tile) { player.scene.blocksHandler.HitBlockCoins(player, tile);});
-    
+    this.game.physics.arcade.collide(this.player, this.eBlocks, function (player, tile) { player.scene.blocksHandler.HitBlockCoins(player, tile); });
+
     this.enemies.forEach(
       function (item) {
         this.game.physics.arcade.collide(item, this.floor);
         this.game.physics.arcade.collide(item, this.collisions, function (enemy) { enemy.ChangeDir(); });
         this.game.physics.arcade.collide(item, this.floor);
       }, this);
-    
-      this.game.physics.arcade.collide(this.player.cappy, this.collisions);
+
+    this.game.physics.arcade.collide(this.player.cappy, this.collisions);
 
     //Correr
     if (this.correr.isDown)
@@ -151,6 +154,10 @@ var PlayScene = {
     if (this.goomba4.alive) {
       this.goomba4.Move();
       this.goomba4.Die();
+    }
+    if (this.chomp.alive) {
+      this.chomp.Move();
+      this.chomp.Attack(this.player);
     }
     //Spiny
     this.spiny.Move();
