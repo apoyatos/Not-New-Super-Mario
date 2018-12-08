@@ -58,7 +58,7 @@ var PlayScene = {
     this.goomba4 = new Goomba(this.game, 7000, 0, 'goomba', 0, -100, 2, this.player);
     this.chomp = new Chomp(this.game, 550, 0, 'chomp', 0, 50, 50, 100,1);
     this.spiny = new Spiny(this.game, 1900, 0, 'spiny', 0, 100, 2);
-    this.planta = new Planta(this.game, 5500, 0, 'planta', 5, 300, 5);
+    this.planta = new Planta(this.game, 2600, 0, 'planta', 5, 300, 5);
 
     this.vidas = this.game.add.sprite(this.game.width - 110, 27, 'vidas', 0);
     this.vidas.scale.setTo(1.5, 1.5);
@@ -163,7 +163,7 @@ var PlayScene = {
     //Spiny
     this.spiny.Move();
     //Planta
-    if (this.planta.alive) {
+    if (this.planta.alive && this.planta.inCamera) {
       var shot = this.planta.Shoot(this.player);
       if (shot != undefined)
         this.shots.push(shot);
@@ -186,7 +186,6 @@ var PlayScene = {
         if (this.player.EnemyCollision(item)) {
           item.destroy();
         }
-        //item.RemoveShot();
       }, this);
     //Enemigos capturados/no capturados
     this.capturables.forEach(
