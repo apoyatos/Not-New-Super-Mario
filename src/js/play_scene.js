@@ -56,7 +56,7 @@ var PlayScene = {
     this.goomba2 = new Goomba(this.game, 1300, 0, 'goomba', 0, -100, 2, this.player);
     this.goomba3 = new Goomba(this.game, 1600, 0, 'goomba', 0, 100, 2, this.player);
     this.goomba4 = new Goomba(this.game, 7000, 0, 'goomba', 0, -100, 2, this.player);
-    this.chomp = new Chomp(this.game, 600, 0, 'chomp', 0, 50, 75, 200,1);
+    this.chomp = new Chomp(this.game, 550, 0, 'chomp', 0, 50, 50, 100,1);
     this.spiny = new Spiny(this.game, 1900, 0, 'spiny', 0, 100, 2);
     this.planta = new Planta(this.game, 5500, 0, 'planta', 5, 300, 5);
 
@@ -89,13 +89,14 @@ var PlayScene = {
     this.game.physics.arcade.collide(this.player, this.deathZone, function (player) { player.Die(); });
 
     this.game.physics.arcade.collide(this.player, this.blocks, function (player, tile) { player.scene.blocksHandler.HitBlock(player, tile); });
-    this.game.physics.arcade.collide(this.player, this.eBlocks, function (player, tile) { player.scene.blocksHandler.HitBlockCoins(player, tile); });
+    this.game.physics.arcade.collide(this.player, this.eBlocks, function (player, tile) { player.scene.blocksHandler.HitEBlock(player, tile,'coin'); });
 
     this.enemies.forEach(
       function (item) {
         this.game.physics.arcade.collide(item, this.floor);
         this.game.physics.arcade.collide(item, this.collisions, function (enemy) { enemy.ChangeDir(); });
-        this.game.physics.arcade.collide(item, this.floor);
+        this.game.physics.arcade.collide(item, this.blocks);
+        this.game.physics.arcade.collide(item, this.eBlocks);
       }, this);
 
     this.game.physics.arcade.collide(this.player.cappy, this.collisions);

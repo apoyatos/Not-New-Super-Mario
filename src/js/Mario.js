@@ -141,8 +141,10 @@ function Mario(game, x, y, sprite, frame,scene) {
     this.animations.add('idleGoomba4', ['goombaLeft4'], 5, false);
     this.animations.add('hurtGoomba4', ['goombaLeft4', 'hurt'], 10, true);
 
-    this.animations.add('walkChompLeft',Phaser.Animation.generateFrameNames('ChompLeft', 1, 3),10,true)
-    this.animations.add('walkChompRight',Phaser.Animation.generateFrameNames('ChompRight', 1, 3),10,true)
+    this.animations.add('walkChompLeft',Phaser.Animation.generateFrameNames('ChompLeft', 1, 3),10,true);
+    this.animations.add('walkChompRight',Phaser.Animation.generateFrameNames('ChompRight', 1, 3),10,true);
+    this.animations.add('hurtChompLeft', ['ChompLeft1','hurt','ChompLeft2','hurt','ChompLeft3','hurt','ChompLeft2','hurt','ChompLeft1','hurt'],10,true)
+    this.animations.add('hurtChompRight', ['ChompRight','hurt','ChompRight2','hurt','ChompRight3','hurt','ChompRight2','hurt','ChompRight1','hurt'],10,true)
 }
 Mario.prototype = Object.create(Phaser.Sprite.prototype);
 Mario.constructor = Mario;

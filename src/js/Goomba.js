@@ -72,6 +72,12 @@ Goomba.prototype.Collision = function (player, enemy) {
         return false;
     }
 }
+
+Goomba.prototype.BlockCollision = function (player, tile) {
+
+}
+Goomba.prototype.EBlockCollision = function (tile, prizeType) {
+}
 //Animaciones
 Goomba.prototype.handleAnimations = function (player) {
     if (player.hurt) //Si se hace daño
