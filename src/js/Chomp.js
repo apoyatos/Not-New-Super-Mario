@@ -64,7 +64,6 @@ Chomp.prototype.Attack = function (player) {
 
 //Movimiento capturado
 Chomp.prototype.MarioMove = function (player) {
-    console.log(this.chargeTimer)
     if ((player.x + player.velocity / 30 < (this.originX + this.chain)) && player.facing == 1) {
         player.body.velocity.x = player.velocity / 2;
         this.charged = false;
@@ -89,10 +88,10 @@ Chomp.prototype.MarioMove = function (player) {
 }
 //Ausencia de movimiento capturado
 Chomp.prototype.MarioNotMoving = function (player) {
-    if (this.charged && ((player.x + player.velocity / 30 < (this.originX + this.chain) + 10) && player.facing == -1)) {
+    if (this.charged && ((player.x + player.velocity / 30 < (this.originX + this.chain) + 25) && player.facing == -1)) {
         player.body.velocity.x = 2 * player.velocity;
     }
-    else if (this.charged && ((player.x - player.velocity / 30 > (this.originX - this.chain) - 10) && player.facing == 1)) {
+    else if (this.charged && ((player.x - player.velocity / 30 > (this.originX - this.chain) - 25) && player.facing == 1)) {
         player.body.velocity.x = -2 * player.velocity;
     }
     else {
@@ -117,12 +116,11 @@ Chomp.prototype.Collision = function (player, enemy) {
     }
 }
 
-Chomp.prototype.BlockCollision = function (tile) {
+Chomp.prototype.BlockCollision = function (tile, player) {
     if (this.charged) {
-        tile.index = 1;
-        tile.layer.dirty = true;
-        tile.setCollision(false, false, false, false);
+        player.scene.map.removeTile(tile.x,tile.y,player.scene.blocks)
     }
+
 
 }
 Chomp.prototype.EBlockCollision = function (tile, prizeType) {

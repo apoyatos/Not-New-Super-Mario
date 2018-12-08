@@ -12,13 +12,12 @@ function BlocksHandler(game, coinSprite, heartSprite) {
 BlocksHandler.prototype.HitBlock = function (player, tile) {
     if (!player.capture) {
         if (player.body.blocked.up || (player.prevY < player.y && player.crouching)) {
-            tile.index = 1;
-            tile.setCollision(false, false, false, false);
-            tile.layer.dirty = true;
+            player.scene.map.removeTile(tile.x, tile.y, player.scene.blocks)
         }
     }
     else
-        player.enemy.BlockCollision(tile);
+        player.enemy.BlockCollision(tile, player);
+
 }
 
 BlocksHandler.prototype.HitEBlock = function (player, tile, prizeType) {
@@ -38,7 +37,7 @@ BlocksHandler.prototype.HitEBlock = function (player, tile, prizeType) {
         }
     }
     else {
-        player.enemy.EBlockCollision(tile,prizeType);
+        player.enemy.EBlockCollision(tile, prizeType);
     }
 }
 

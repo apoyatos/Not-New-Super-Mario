@@ -100,7 +100,6 @@ var PlayScene = {
       }, this);
 
     this.game.physics.arcade.collide(this.player.cappy, this.collisions);
-
     //Correr
     if (this.correr.isDown)
       this.player.running = true;
