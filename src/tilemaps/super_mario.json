@@ -208,6 +208,32 @@
                         }]
                 }],
          "tilewidth":16
+        }, 
+        {
+         "columns":28,
+         "firstgid":45,
+         "image":"tiles1.png",
+         "imageheight":492,
+         "imagewidth":492,
+         "margin":0,
+         "name":"Sin t\u00edtulo",
+         "spacing":0,
+         "tilecount":784,
+         "tileheight":17,
+         "tilewidth":17
+        }, 
+        {
+         "columns":16,
+         "firstgid":829,
+         "image":"tiles2.png",
+         "imageheight":522,
+         "imagewidth":273,
+         "margin":1,
+         "name":"tiles2",
+         "spacing":0,
+         "tilecount":480,
+         "tileheight":17,
+         "tilewidth":17
         }],
  "tilewidth":16,
  "type":"map",
