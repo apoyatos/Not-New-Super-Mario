@@ -17,6 +17,7 @@ function Mario(game, x, y, sprite, frame, scene) {
     this.hurtTimer = 0;
     //Objetos
     this.coins = 0;
+    this.superCoins = 0;
     this.moons = 0;
     //Movimiento
     this.velocity = 200;

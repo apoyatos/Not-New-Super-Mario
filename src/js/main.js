@@ -16,8 +16,8 @@ var PreloaderScene = {
     // load here the assets for the game
     this.game.load.image('logo', 'images/Logo.png');
 
-    this.game.load.spritesheet('play', 'images/BotonPlay.png', 73, 30);
-    this.game.load.spritesheet('options', 'images/BotonOptions.png', 95, 32);
+    this.game.load.spritesheet('start', 'images/Start.png', 306, 56);
+    this.game.load.spritesheet('options', 'images/Options.png', 306, 56);
 
     this.game.load.spritesheet('superBlock', 'images/SuperBloque.png', 33, 32);
     this.game.load.image('block', 'images/Bloque.png');
@@ -48,17 +48,17 @@ var PreloaderScene = {
 var Menu = {
   create: function () {
     this.game.stage.backgroundColor = 0x4488aa;
-    this.logo = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY - 50, 'logo');
-    this.logo.scale.setTo(2, 2);
-    this.logo.anchor.setTo(0.5, 0.5);
+    this.logo = this.game.add.sprite(0, 0, 'logo');
+    this.logo.scale.setTo(3, 3);
+    this.logo.anchor.setTo(-1.2, -0.2);
 
-    this.buttonPlay = this.game.add.button(this.game.world.centerX - 200, this.game.world.centerY + 250, 'play', play, this, 0, 1, 2);
+    this.buttonPlay = this.game.add.button(0, 0, 'start', play, this, 0, 2, 1);
     this.buttonPlay.scale.setTo(2, 2);
-    this.buttonPlay.anchor.setTo(0.5, 0.5);
+    this.buttonPlay.anchor.setTo(-0.6, -4);
 
-    this.buttonOptions = this.game.add.button(this.game.world.centerX + 200, this.game.world.centerY + 250, 'options', options, this, 0, 1, 2);
+    this.buttonOptions = this.game.add.button(0, 0, 'options', options, this, 0, 2, 1);
     this.buttonOptions.scale.setTo(2, 2);
-    this.buttonOptions.anchor.setTo(0.5, 0.5);
+    this.buttonOptions.anchor.setTo(-0.6, -5.2);
 
     function play() {
       this.game.state.start('play');

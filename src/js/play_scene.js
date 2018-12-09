@@ -60,9 +60,21 @@ var PlayScene = {
     //Bloques
     this.blocksHandler = new Bloque(this.game, 'coin', 'heart', 'superHeart');
     //Interfaz
-    this.vidas = this.game.add.sprite(this.game.width - 110, 27, 'life', 0);
-    this.vidas.scale.setTo(1.5, 1.5);
+    this.vidas = this.game.add.sprite(this.game.width, 0, 'life', 0);
+    this.vidas.anchor.setTo(1.5, -0.2);
     this.vidas.fixedToCamera = true;
+    this.coins = this.game.add.sprite(0, 0, 'coin', 0);
+    this.coins.anchor.setTo(-0.5, -0.5);
+    this.coins.fixedToCamera = true;
+    this.textCoins = this.game.add.text(0, 0, this.player.coins, { font: "16px Arial", fill: "#ffffff", align: "center" });
+    this.textCoins.anchor.setTo(-3.5, -0.3);
+    this.textCoins.fixedToCamera = true;
+    this.superCoins = this.game.add.sprite(0, 0, 'superCoin', 0);
+    this.superCoins.anchor.setTo(-4, -0.5);
+    this.superCoins.fixedToCamera = true;
+    this.textSuperCoins = this.game.add.text(0, 0, this.player.superCoins, { font: "16px Arial", fill: "#ffffff", align: "center" });
+    this.textSuperCoins.anchor.setTo(-9, -0.3);
+    this.textSuperCoins.fixedToCamera = true;
     //Array enemies
     this.enemies.push(this.goomba);
     this.enemies.push(this.goomba1);
@@ -81,6 +93,8 @@ var PlayScene = {
   update: function () {
     //Vida
     this.vidas.frame = this.player.life - 1;
+    this.textCoins.setText(this.player.coins);
+    this.textSuperCoins.setText(this.player.superCoins);
     //Colisiones de Mario con el mapa
     this.game.physics.arcade.collide(this.player, this.floor);
     this.game.physics.arcade.collide(this.player, this.collisions);
