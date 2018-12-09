@@ -51,6 +51,7 @@ function Mario(game, x, y, sprite, frame,scene) {
     this.body.gravity.y = 500;
     this.body.collideWorldBounds = true;
     //Sprite y animaciones
+    this.scale.setTo(2,2);
     this.originalHeight = this.body.height * this.scale.x;
     //Animaciones normales
     this.animations.add('runLeft', Phaser.Animation.generateFrameNames('walkLeft', 1, 3), 8, true);

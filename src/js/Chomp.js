@@ -21,6 +21,7 @@ function Chomp(game, x, y, sprite, frame, speed, chain, distance, cooldown) {
     this.chargeTimer = 0;
     this.charging = false;
     //Sprites y animaciones
+    this.scale.setTo(2.5,2.5);
     this.animations.add('walkLeft', [0, 1, 4, 1, 0], 5, true);
     this.animations.add('walkRight', [3, 2, 7, 2, 3], 5, true);
     this.originalHeight = this.body.height * this.scale.x;

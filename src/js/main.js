@@ -34,8 +34,16 @@ var PreloaderScene = {
 
     this.game.load.atlas('mario', 'images/Mario.png', 'images/sprites.json');
 
+    this.game.load.tilemap('map', 'tilemaps/level1.json', null, Phaser.Tilemap.TILED_JSON);
+    this.game.load.image('tiles3', 'tilemaps/tiles3G.png');
+    this.game.load.image('tiles1', 'tilemaps/tiles1G.png'); 
+    this.game.load.image('tiles2', 'tilemaps/tiles2G.png');    
+    /*
     this.game.load.tilemap('map', 'tilemaps/super_mario.json', null, Phaser.Tilemap.TILED_JSON);
-    this.game.load.image('tiles', 'tilemaps/super_mario.png');
+    this.game.load.image('tiles3', 'tilemaps/tiles3G.png');
+    this.game.load.image('tiles1', 'tilemaps/tiles1G.png'); 
+    this.game.load.image('tiles2', 'tilemaps/tiles2G.png');  
+    */
   },
   create: function () {
     this.game.state.start('menu');

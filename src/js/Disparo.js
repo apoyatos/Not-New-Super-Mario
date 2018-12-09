@@ -7,6 +7,7 @@ function Shot(game, x, y, sprite, frame, animName, animFrames, animSpeed) {
   this.game.physics.arcade.enable(this);
   this.body.allowGravity = false;
   //Sprite y animaciones
+  this.scale.setTo(2,2);
   this.animName = animName;
   this.animations.add(this.animName, animFrames, animSpeed, true);
 }

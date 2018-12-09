@@ -21,8 +21,9 @@ var PlayScene = {
     //Mapa
     this.game.stage.backgroundColor = '#787878';
     this.map = this.game.add.tilemap('map');
-    this.map.addTilesetImage('SuperMarioBros-World1-1', 'tiles');
-    this.map.scale = { x: 2.5, y: 2.5 };
+    this.map.addTilesetImage('tiles3G', 'tiles3');
+    this.map.addTilesetImage('tiles1G', 'tiles1');
+    this.map.addTilesetImage('tiles2G', 'tiles2');
     this.layer = this.map.createLayer('World1');
     this.layer.resizeWorld();
 
