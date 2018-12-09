@@ -29,7 +29,7 @@ var PlayScene = {
 
     this.collectibles = this.game.add.group();
     this.map.createFromObjects('Monedas', 11, 'coins', 0, true, false, this.collectibles, Monedas);
-    this.map.createFromObjects('Lunas', 19, 'moon', 0, true, false, this.collectibles, Lunas);
+    this.map.createFromObjects('Lunas', 1269, 'moon', 0, true, false, this.collectibles, Lunas);
 
     //Colisiones
     this.collisions = this.map.createLayer('Colisiones');
@@ -49,16 +49,15 @@ var PlayScene = {
     this.shots = [];
     this.blocksHandler = new Bloques(this.game, 'block', 'block');
     //Objetos: jugador y enemigos
-    this.player = new Mario(this.game, 0, 0, 'mario', 5, this);
+    this.player = new Mario(this.game, 3500, 0, 'mario', 5, this);
     this.game.camera.follow(this.player);
 
-    this.goomba = new Goomba(this.game, 800, 0, 'goomba', 0, 100, 2, this.player);
+    this.goomba = new Goomba(this.game, 1150, 0, 'goomba', 0, 100, 2, this.player);
     this.goomba1 = new Goomba(this.game, 1500, 0, 'goomba', 0, -100, 2, this.player);
-    this.goomba2 = new Goomba(this.game, 1300, 0, 'goomba', 0, -100, 2, this.player);
+    this.goomba2 = new Goomba(this.game, 1800, 0, 'goomba', 0, -100, 2, this.player);
     this.goomba3 = new Goomba(this.game, 1600, 0, 'goomba', 0, 100, 2, this.player);
-    this.goomba4 = new Goomba(this.game, 7000, 0, 'goomba', 0, -100, 2, this.player);
-    this.chomp = new Chomp(this.game, 550, 0, 'chomp', 0, 50, 50, 100,1);
-    this.spiny = new Spiny(this.game, 1900, 0, 'spiny', 0, 100, 2);
+    this.chomp = new Chomp(this.game, 3800, 0, 'chomp', 0, 50, 150, 300,1);
+    this.spiny = new Spiny(this.game, 4900, 0, 'spiny', 0, 100, 2);
     this.planta = new Planta(this.game, 2600, 0, 'planta', 5, 300, 5);
 
     this.vidas = this.game.add.sprite(this.game.width - 110, 27, 'vidas', 0);
@@ -69,7 +68,6 @@ var PlayScene = {
     this.enemies.push(this.goomba1);
     this.enemies.push(this.goomba2);
     this.enemies.push(this.goomba3);
-    this.enemies.push(this.goomba4);
     this.enemies.push(this.chomp);
     this.enemies.push(this.spiny);
     this.enemies.push(this.planta);
@@ -78,7 +76,6 @@ var PlayScene = {
     this.capturables.push(this.goomba1);
     this.capturables.push(this.goomba2);
     this.capturables.push(this.goomba3);
-    this.capturables.push(this.goomba4);
     this.capturables.push(this.chomp);
   },
   update: function () {
@@ -152,10 +149,6 @@ var PlayScene = {
     if (this.goomba3.alive) {
       this.goomba3.Move();
       this.goomba3.Die();
-    }
-    if (this.goomba4.alive) {
-      this.goomba4.Move();
-      this.goomba4.Die();
     }
     if (this.chomp.alive) {
       this.chomp.Move();

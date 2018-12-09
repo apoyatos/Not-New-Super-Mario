@@ -66,12 +66,12 @@ Chomp.prototype.Attack = function (player) {
 //Movimiento capturado
 Chomp.prototype.MarioMove = function (player) {
     if ((player.x + player.velocity / 30 < (this.originX + this.chain)) && player.facing == 1) {
-        player.body.velocity.x = player.velocity / 2;
+        player.body.velocity.x = player.velocity / 4;
         this.charged = false;
         this.charging = false;
     }
     else if ((player.x - player.velocity / 30 > (this.originX - this.chain)) && player.facing == -1) {
-        player.body.velocity.x = -player.velocity / 2;
+        player.body.velocity.x = -player.velocity / 4;
         this.charged = false;
     }
     else {
@@ -89,11 +89,11 @@ Chomp.prototype.MarioMove = function (player) {
 }
 //Ausencia de movimiento capturado
 Chomp.prototype.MarioNotMoving = function (player) {
-    if (this.charged && ((player.x + player.velocity / 30 < (this.originX + this.chain) + 25) && player.facing == -1)) {
-        player.body.velocity.x = 2 * player.velocity;
+    if (this.charged && ((player.x + player.velocity / 30 < (this.originX + this.chain) + 150) && player.facing == -1)) {
+        player.body.velocity.x = 4 * player.velocity;
     }
-    else if (this.charged && ((player.x - player.velocity / 30 > (this.originX - this.chain) - 25) && player.facing == 1)) {
-        player.body.velocity.x = -2 * player.velocity;
+    else if (this.charged && ((player.x - player.velocity / 30 > (this.originX - this.chain) - 150) && player.facing == 1)) {
+        player.body.velocity.x = -4 * player.velocity;
     }
     else {
         player.body.velocity.x = 0;
@@ -125,9 +125,9 @@ Chomp.prototype.BlockCollision = function (tile, player) {
 
 }
 Chomp.prototype.EBlockCollision = function (tile, prizeType) {
-    if (tile.index == 14) {
+    if (tile.index == 2) {
         if (this.charged) {
-            tile.index = 16;
+            tile.index = 123;
             tile.layer.dirty = true;
             if (prizeType == 'coin')
                 player.scene.collectibles.add(new Monedas(this.game, tile.worldX, tile.worldY + tile.height, this.coinSprite))

@@ -22,10 +22,10 @@ BlocksHandler.prototype.HitBlock = function (player, tile) {
 
 BlocksHandler.prototype.HitEBlock = function (player, tile, prizeType) {
     if (!player.capture) {
-        if (tile.index == 14) {
+        if (tile.index == 2) {
             if ((player.body.blocked.up) || (player.prevY < player.y && player.crouching)) {
                 player.scene.collectibles.add(new Monedas(this.game, tile.worldX, tile.worldY - tile.height, this.coinSprite))
-                tile.index = 16;
+                tile.index = 123;
                 tile.layer.dirty = true;
                 if (prizeType == 'coin')
                     player.scene.collectibles.add(new Monedas(this.game, tile.worldX, tile.worldY + tile.height, this.coinSprite))
