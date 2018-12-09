@@ -9,6 +9,9 @@ function Bloque(game, coinSprite, heartSprite, superHeartSprite) {
     this.coinSprite = coinSprite;
     this.heartSprite = heartSprite;
     this.superHeartSprite = superHeartSprite;
+    //Sonidos
+    this.breakSound = this.game.add.audio('break');
+    this.hitSound = this.game.add.audio('hit');
 }
 
 //Bloque normal
@@ -17,6 +20,7 @@ Bloque.prototype.HitBlock = function (player, tile) {
         tile.index = 1;
         tile.setCollision(false, false, false, false);
         tile.layer.dirty = true;
+        this.breakSound.play();
     }
 }
 //Bloque con moneda
@@ -26,11 +30,13 @@ Bloque.prototype.HitBlockCoins = function (player, tile) {
             player.scene.collectibles.add(new Moneda(this.game, tile.worldX, tile.worldY - tile.height, this.coinSprite));
             tile.index = 16;
             tile.layer.dirty = true;
+            this.hitSound.play();
         }
         else if (player.prevY < player.y && player.crouching) {
             player.scene.collectibles.add(new Moneda(this.game, tile.worldX, tile.worldY + tile.height, this.coinSprite));
             tile.index = 16;
             tile.layer.dirty = true;
+            this.hitSound.play();
         }
     }
 }
@@ -41,11 +47,13 @@ Bloque.prototype.HitBlockHeart = function (player, tile) {
             player.scene.collectibles.add(new Corazon(this.game, tile.worldX, tile.worldY - tile.height, this.heartSprite, 0, 3));
             tile.index = 16;
             tile.layer.dirty = true;
+            this.hitSound.play();
         }
         else if (player.prevY < player.y && player.crouching) {
             player.scene.collectibles.add(new Corazon(this.game, tile.worldX, tile.worldY + tile.height, this.heartSprite, 0, 3))
             tile.index = 16;
             tile.layer.dirty = true;
+            this.hitSound.play();
         }
     }
 }
@@ -56,11 +64,13 @@ Bloque.prototype.HitBlockSuperHearts = function (player, tile) {
             player.scene.collectibles.add(new Corazon(this.game, tile.worldX, tile.worldY - tile.height, this.superHeartSprite, 0, 6));
             tile.index = 16;
             tile.layer.dirty = true;
+            this.hitSound.play();
         }
         else if (player.prevY < player.y && player.crouching) {
             player.scene.collectibles.add(new Corazon(this.game, tile.worldX, tile.worldY + tile.height, this.superHeartSprite, 0, 6));
             tile.index = 16;
             tile.layer.dirty = true;
+            this.hitSound.play();
         }
     }
 }

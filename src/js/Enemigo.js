@@ -21,8 +21,8 @@ Enemy.constructor = Enemy;
 Enemy.prototype.EnemyShoot = function (target, sprite, enemy) {
   if (enemy.game.time.totalElapsedSeconds() > this.shootingTimer) {
     //Crea el disparo
-    if (sprite == 'shotFire') {
-      var shot = new Shot(enemy.game, enemy.x, enemy.y, sprite, 0, 'shootFire', [0, 1, 2, 3], 5);
+    if (sprite == 'fireball') {
+      var shot = new Shot(enemy.game, enemy.x, enemy.y, sprite, 0, 'fireball', [0, 1, 2, 3], 5);
       shot.Shoot(target, enemy.shootingVel);
       this.shootingTimer = enemy.game.time.totalElapsedSeconds() + this.shootingTime;
       return shot;

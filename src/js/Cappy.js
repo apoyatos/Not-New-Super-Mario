@@ -24,6 +24,9 @@ function Cappy(game, x, y, name, player, dir) {
     this.game.world.addChild(this);
     this.game.physics.arcade.enable(this);
     this.body.allowGravity = false;
+    //Sonidos
+    this.throwSound = this.game.add.audio('throw');
+    this.captureSound = this.game.add.audio('capture');
     //Sprite y animaciones
     this.animations.add("Thrown", [0, 1, 2], 8, true);
 }
@@ -39,6 +42,7 @@ Cappy.prototype.Throw = function () {
             this.animations.play("Thrown");
             this.player.thrown = true;
             this.cappyHold = true;
+            this.throwSound.play();
             this.cappyTimer = this.game.time.totalElapsedSeconds() + this.cappyTime;
         }
     }
@@ -83,6 +87,8 @@ Cappy.prototype.Reset = function () {
     this.cappyStopped = false;
     this.cappyReturning = false;
     this.player.cappy.kill();
+    if (this.throwSound.isPlaying)
+        this.throwSound.stop();
 }
 //Captura al enemigo con Cappy
 Cappy.prototype.Capture = function (enemy) {
@@ -91,19 +97,25 @@ Cappy.prototype.Capture = function (enemy) {
         this.cappyCapture = true;
         this.player.capture = true;
         this.player.enemy = enemy.type;
-        this.player.reset(enemy.body.position.x, enemy.body.position.y);
         this.Reset();
-        this.player.recalculateBody();
+        this.captureSound.play();
+        this.captureSound.onStop.add(Cappy.prototype.ResetMario, this);
         return true;
     }
     else
         return false;
+}
+Cappy.prototype.ResetMario = function () {
+    this.player.reset(enemy.body.position.x, enemy.body.position.y);
+    this.player.recalculateBody();
 }
 //Bloquea a la Planta
 Cappy.prototype.Stunn = function (enemy) {
     if (this.game.physics.arcade.overlap(this.player.cappy, enemy) && enemy.type == 'plant') {
         this.player.cappyPlant = true;
         this.player.cappy.kill();
+        if (this.throwSound.isPlaying)
+            this.throwSound.stop();
     }
 }
 

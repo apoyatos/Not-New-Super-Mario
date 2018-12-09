@@ -13,6 +13,10 @@ var Bloque = require('./Bloque.js');
 var PlayScene = {
   create: function () {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
+    //Sonido
+    this.level1Sound = this.game.add.audio('level1');
+    this.level1Sound.play();
+    this.level1Sound.loop = true;
     //Teclas para input
     this.teclas = this.game.input.keyboard.createCursorKeys();
     this.saltar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);

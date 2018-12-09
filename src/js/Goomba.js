@@ -12,6 +12,8 @@ function Goomba(game, x, y, sprite, frame, speed, movingTime, player) {
     this.speed = speed;
     this.movingTime = movingTime;
     this.movingTimer = 0;
+    //Sonidos
+    this.killSound = this.game.add.audio('kill');
     //Sprites y animaciones
     this.animations.add('walk', [0, 1], 5, true);
     this.originalHeight = this.body.height * this.scale.x;
@@ -31,6 +33,7 @@ Goomba.prototype.ChangeDir = function () {
 Goomba.prototype.Die = function () {
     if (this.game.physics.arcade.overlap(this, this.player) && this.player.y + this.player.height < this.y + 10 && !this.player.hurt && !this.player.capture) {
         this.kill();
+        this.killSound.play();
         this.player.body.velocity.y = -this.player.jumpVelocity / 2;
         this.player.tackling = false;
         this.player.tackles = 1;

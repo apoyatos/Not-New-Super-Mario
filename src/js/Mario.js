@@ -51,6 +51,12 @@ function Mario(game, x, y, sprite, frame, scene) {
     this.game.physics.arcade.enable(this);
     this.body.gravity.y = 500;
     this.body.collideWorldBounds = true;
+    //Sonidos
+    this.jumpSound = this.game.add.audio('jump');
+    this.tackleSound = this.game.add.audio('swim');
+    this.bombSound = this.game.add.audio('hit');
+    this.kickSound = this.game.add.audio('kick');
+    this.hurtSound = this.game.add.audio('hurt');
     //Sprite y animaciones
     this.originalHeight = this.body.height * this.scale.x;
     //Animaciones normales
@@ -199,6 +205,7 @@ Mario.prototype.Jump = function () {
             this.swimming = false;
             this.tackles = 1;
             this.body.velocity.y = -this.jumpVelocity;
+            this.jumpSound.play();
         }
     }
     else if ((this.enemy = 'goomba') && (this.body.onFloor() || this.body.touching.down)) {
@@ -216,6 +223,7 @@ Mario.prototype.Tackle = function () {
 
             this.tackles--;
             this.tackling = true;
+            this.tackleSound.play();
         }
     }
 }
@@ -273,6 +281,7 @@ Mario.prototype.EnemyCollision = function (enemy) {
                 this.kickTimer = this.game.time.totalElapsedSeconds() + this.kickTime;
                 this.kicking = true;
                 enemy.kill();
+                this.kickSound.play();
                 this.cappyPlant = false;
                 this.cappy.Reset();
             }
@@ -295,6 +304,7 @@ Mario.prototype.Hurt = function () {
     if (this.life > 1) {
         this.life--;
         this.hurt = true;
+        this.hurtSound.play();
         this.hurtTimer = this.game.time.totalElapsedSeconds() + this.hurtTime;
     }
     else
