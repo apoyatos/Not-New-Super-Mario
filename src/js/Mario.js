@@ -291,7 +291,7 @@ Mario.prototype.EnemyCollision = function (enemy) {
         }
     }
     else {
-        this.enemy.Collision(this, enemy);
+        return this.enemy.Collision(this, enemy);
     }
 }
 //Daño

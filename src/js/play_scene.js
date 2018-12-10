@@ -193,7 +193,8 @@ var PlayScene = {
         if (this.player.EnemyCollision(item)) {
           item.destroy();
         }
-        item.RemoveShot();
+        if (item.alive)
+          item.RemoveShot();
       }, this);
 
     //Enemigos capturados/no capturados
