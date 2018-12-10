@@ -1266,7 +1266,7 @@ var PlayScene = {
     this.capturables = [];
     this.blocksHandler = new Bloques(this.game, 'block', 'block');
     //Objetos: jugador y enemigos
-    this.player = new Mario(this.game, 2300, 0, 'mario', 5, this);
+    this.player = new Mario(this.game, 0, 0, 'mario', 5, this);
     this.game.camera.follow(this.player);
 
     this.map.createFromObjects('Monedas', 11, 'coins', 0, true, false, this.collectibles, Monedas);
