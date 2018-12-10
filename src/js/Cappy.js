@@ -71,7 +71,7 @@ Cappy.prototype.Collision = function () {
     }
     else if (this.game.physics.arcade.overlap(this.player.cappy, this.player) && this.cappyStopped) //Se reinicia después de que Mario salte sobre ella
     {
-        this.player.body.velocity.y = -this.player.jumpVelocity;
+        this.player.body.velocity.y = -this.player.jumpVelocity/1.5;
         this.player.tackling = false;
         this.player.tackles = 1;
         this.Reset();

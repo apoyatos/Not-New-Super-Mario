@@ -24,15 +24,14 @@ BlocksHandler.prototype.HitEBlock = function (player, tile, prizeType) {
     if (!player.capture) {
         if (tile.index == 2) {
             if ((player.body.blocked.up) || (player.prevY < player.y && player.crouching)) {
-                player.scene.collectibles.add(new Monedas(this.game, tile.worldX, tile.worldY - tile.height, this.coinSprite))
                 tile.index = 123;
                 tile.layer.dirty = true;
                 if (prizeType == 'coin')
-                    player.scene.collectibles.add(new Monedas(this.game, tile.worldX, tile.worldY + tile.height, this.coinSprite))
+                    player.scene.collectibles.add(new Monedas(this.game, tile.worldX, tile.worldY +(Math.sign(tile.worldY-player.y)*tile.height), this.coinSprite))
                 else if (prizeType == 'heart')
-                    player.scene.collectibles.add(new Corazones(this.game, tile.worldX, tile.worldY - tile.height, this.heartSprite, 0, 3))
+                    player.scene.collectibles.add(new Corazones(this.game, tile.worldX, tile.worldY +(Math.sign(tile.worldY-player.y)*tile.height), this.heartSprite, 0, 3))
                 else
-                    player.scene.collectibles.add(new Corazones(this.game, tile.worldX, tile.worldY - tile.height, this.heartSprite, 0, 6))
+                    player.scene.collectibles.add(new Corazones(this.game, tile.worldX, tile.worldY +(Math.sign(tile.worldY-player.y)*tile.height), this.heartSprite, 0, 6))
             }
         }
     }

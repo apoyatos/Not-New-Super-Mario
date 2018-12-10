@@ -52,6 +52,7 @@ Goomba.prototype.Collision = function (player, enemy) {
         {
             if (player.y + player.height < enemy.y + 10 && player.goombaCount < 4) //Se sube en el goomba
             {
+                console.log('hola')
                 player.goombaCount++;
                 enemy.kill();
                 player.recalculateBody();

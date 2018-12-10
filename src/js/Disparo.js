@@ -21,7 +21,7 @@ Shot.prototype.Shoot = function (target, speed) {
 }
 //Destrucción
 Shot.prototype.RemoveShot = function () {
-  if (this.inCamera)
+  if(this.x<this.game.camera.x ||this.x>this.game.camera.x+this.game.camera.width||this.y<this.game.camera.y ||this.y>this.game.camera.y+this.game.camera.height)
     this.destroy();
 }
 

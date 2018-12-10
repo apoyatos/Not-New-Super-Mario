@@ -3,9 +3,9 @@
 var Cappy = require('./Cappy.js');
 var Goomba = require('./Goomba.js');
 
-function Mario(game, x, y, sprite, frame,scene) {
+function Mario(game, x, y, sprite, frame, scene) {
     Phaser.Sprite.call(this, game, x, y, sprite, frame);
-    this.scene=scene;
+    this.scene = scene;
     //Cappy
     this.cappy = null;
     this.thrown = false;
@@ -48,10 +48,10 @@ function Mario(game, x, y, sprite, frame,scene) {
     //Propiedades
     this.game.world.addChild(this);
     this.game.physics.arcade.enable(this);
-    this.body.gravity.y = 500;
+    this.body.gravity.y = 600;
     this.body.collideWorldBounds = true;
     //Sprite y animaciones
-    this.scale.setTo(2,2);
+    this.scale.setTo(2, 2);
     this.originalHeight = this.body.height * this.scale.x;
     //Animaciones normales
     this.animations.add('runLeft', Phaser.Animation.generateFrameNames('walkLeft', 1, 3), 8, true);
@@ -142,10 +142,10 @@ function Mario(game, x, y, sprite, frame,scene) {
     this.animations.add('idleGoomba4', ['goombaLeft4'], 5, false);
     this.animations.add('hurtGoomba4', ['goombaLeft4', 'hurt'], 10, true);
 
-    this.animations.add('walkChompLeft',Phaser.Animation.generateFrameNames('ChompLeft', 1, 3),10,true);
-    this.animations.add('walkChompRight',Phaser.Animation.generateFrameNames('ChompRight', 1, 3),10,true);
-    this.animations.add('hurtChompLeft', ['ChompLeft1','hurt','ChompLeft2','hurt','ChompLeft3','hurt','ChompLeft2','hurt','ChompLeft1','hurt'],10,true)
-    this.animations.add('hurtChompRight', ['ChompRight','hurt','ChompRight2','hurt','ChompRight3','hurt','ChompRight2','hurt','ChompRight1','hurt'],10,true)
+    this.animations.add('walkChompLeft', Phaser.Animation.generateFrameNames('ChompLeft', 1, 3), 10, true);
+    this.animations.add('walkChompRight', Phaser.Animation.generateFrameNames('ChompRight', 1, 3), 10, true);
+    this.animations.add('hurtChompLeft', ['ChompLeft1', 'hurt', 'ChompLeft2', 'hurt', 'ChompLeft3', 'hurt', 'ChompLeft2', 'hurt', 'ChompLeft1', 'hurt'], 10, true)
+    this.animations.add('hurtChompRight', ['ChompRight', 'hurt', 'ChompRight2', 'hurt', 'ChompRight3', 'hurt', 'ChompRight2', 'hurt', 'ChompRight1', 'hurt'], 10, true)
 }
 Mario.prototype = Object.create(Phaser.Sprite.prototype);
 Mario.constructor = Mario;
@@ -153,7 +153,7 @@ Mario.constructor = Mario;
 //Comprueba si está en el suelo
 Mario.prototype.CheckOnFloor = function () {
     if (this.body.onFloor()) {
-        this.prevY=this.y
+        this.prevY = this.y
         this.tackling = false;
         this.bombJump = false;
     }
@@ -161,7 +161,7 @@ Mario.prototype.CheckOnFloor = function () {
 //Movimiento
 Mario.prototype.Move = function (dir) {
     this.facing = dir;
-    this.prevY=this.y;
+    this.prevY = this.y;
     if (!this.capture) //Si es Mario
     {
         if (!this.bombJump) //En el salto bomba no hay movimiento
@@ -177,7 +177,7 @@ Mario.prototype.Move = function (dir) {
                 this.body.velocity.x = this.facing * this.velocity * 1.5;
         }
     }
-    else  {
+    else {
         this.moving = true;
         this.enemy.MarioMove(this);
     }
@@ -189,14 +189,14 @@ Mario.prototype.NotMoving = function () {
         this.body.velocity.x = 0;
         this.moving = false;
     }
-    else  {
+    else {
         this.moving = false;
         this.enemy.MarioNotMoving(this);
     }
 }
 //Salto
 Mario.prototype.Jump = function () {
-    this.prevY=this.y;
+    this.prevY = this.y;
     if (!this.capture) //Si es Mario
     {
         if (this.body.onFloor() && !this.crouching) //Si está en el suelo y no está agachado puede saltar
@@ -206,13 +206,13 @@ Mario.prototype.Jump = function () {
             this.body.velocity.y = -this.jumpVelocity;
         }
     }
-    else if ((this.body.onFloor()|| this.body.touching.down)) {
+    else if ((this.body.onFloor() || this.body.touching.down)) {
         this.enemy.MarioJump(this);
     }
 }
 //Impulso tras el salto
 Mario.prototype.Tackle = function () {
-    this.prevY=this.y;
+    this.prevY = this.y;
     if (!this.capture) //Si es Mario
     {
         if (!this.body.onFloor() && this.tackles > 0) {
@@ -234,7 +234,7 @@ Mario.prototype.Crouch = function () {
                 this.crouching = true;
             }
             else {
-                this.prevY=this.y;
+                this.prevY = this.y;
                 this.body.velocity.y = 600;
                 this.body.velocity.x = 0;
                 this.tackles = 0;
@@ -251,7 +251,7 @@ Mario.prototype.NotCrouching = function () {
 Mario.prototype.Swim = function () {
     if (!this.capture) //Si es Mario
     {
-        this.prevY=this.y;
+        this.prevY = this.y;
         this.swimming = true;
         this.game.physics.arcade.gravity.y = 600;
 
@@ -290,7 +290,7 @@ Mario.prototype.EnemyCollision = function (enemy) {
             return false;
         }
     }
-    else{
+    else {
         this.enemy.Collision(this, enemy);
     }
 }
@@ -309,7 +309,7 @@ Mario.prototype.Hurt = function () {
 Mario.prototype.Die = function () {
     this.reset(this.spawnX, this.spawnY);
     this.life = 3;
-    this.goombaCount = 0;
+    this.goombaCount = 1;
     this.capture = false;
 
     if (this.cappy != null)
@@ -340,6 +340,8 @@ Mario.prototype.ThrowCappy = function () {
             this.capture = false;
             this.cappy.cappyCapture = false;
             this.recalculateBody();
+            if (this.enemy.type == 'chomp')
+                this.enemy.reset(this.enemy.x, this.enemy.y);
         }
     }
 }
