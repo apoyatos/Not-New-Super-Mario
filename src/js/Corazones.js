@@ -5,6 +5,7 @@ function Hearts(game, x, y, sprite, frame,amount) {
     this.game.world.addChild(this);
     this.game.physics.arcade.enable(this);
     this.amount=amount;
+    this.body.gravity.y = 500;
 }
 Hearts.prototype = Object.create(Phaser.Sprite.prototype);
 Hearts.constructor = Hearts;

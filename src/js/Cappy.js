@@ -25,7 +25,7 @@ function Cappy(game, x, y, name, player, dir) {
     this.game.physics.arcade.enable(this);
     this.body.allowGravity = false;
     //Sprite y animaciones
-
+    this.scale.setTo(2,2);
     this.animations.add("Thrown", [0, 1, 2], 8, true);
 }
 Cappy.prototype = Object.create(Phaser.Sprite.prototype);
@@ -71,7 +71,7 @@ Cappy.prototype.Collision = function () {
     }
     else if (this.game.physics.arcade.overlap(this.player.cappy, this.player) && this.cappyStopped) //Se reinicia después de que Mario salte sobre ella
     {
-        this.player.body.velocity.y = -this.player.jumpVelocity;
+        this.player.body.velocity.y = -this.player.jumpVelocity/1.5;
         this.player.tackling = false;
         this.player.tackles = 1;
         this.Reset();
@@ -91,7 +91,7 @@ Cappy.prototype.Capture = function (enemy) {
         enemy.kill();
         this.cappyCapture = true;
         this.player.capture = true;
-        this.player.enemy = enemy.type;
+        this.player.enemy = enemy;
         this.player.reset(enemy.body.position.x, enemy.body.position.y);
         this.Reset();
         this.player.recalculateBody();

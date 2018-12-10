@@ -14,19 +14,12 @@ function Goomba(game, x, y, sprite, frame, speed, movingTime, player) {
     this.movingTimer = 0;
     //Sprites y animaciones
     this.animations.add('walk', [0, 1], 5, true);
+    this.scale.setTo(2,2);
     this.originalHeight = this.body.height * this.scale.x;
 }
 Goomba.prototype = Object.create(Enemy.prototype);
 Goomba.constructor = Goomba;
 
-//Movimiento
-Goomba.prototype.Move = function () {
-    this.body.velocity.x = this.speed;
-    this.animations.play('walk');
-}
-Goomba.prototype.ChangeDir = function () {
-    this.speed = -this.speed;
-}
 //Muerte
 Goomba.prototype.Die = function () {
     if (this.game.physics.arcade.overlap(this, this.player) && this.player.y + this.player.height < this.y + 10 && !this.player.hurt && !this.player.capture) {
@@ -52,13 +45,14 @@ Goomba.prototype.MarioJump = function (player) {
     player.body.velocity.y = -player.jumpVelocity / 1.5;
 }
 //Colisiones capturado
-Goomba.prototype.GoombaCollision = function (player, enemy) {
+Goomba.prototype.Collision = function (player, enemy) {
     if (player.game.physics.arcade.overlap(enemy, player) && !player.hurt) //Si choca con un enemigo
     {
         if (enemy.type == 'goomba') //Si es un goomba
         {
             if (player.y + player.height < enemy.y + 10 && player.goombaCount < 4) //Se sube en el goomba
             {
+                console.log('hola')
                 player.goombaCount++;
                 enemy.kill();
                 player.recalculateBody();
@@ -79,6 +73,12 @@ Goomba.prototype.GoombaCollision = function (player, enemy) {
         player.hurt = false;
         return false;
     }
+}
+
+Goomba.prototype.BlockCollision = function (player, tile) {
+
+}
+Goomba.prototype.EBlockCollision = function (tile, prizeType) {
 }
 //Animaciones
 Goomba.prototype.handleAnimations = function (player) {

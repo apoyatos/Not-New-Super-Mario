@@ -7,6 +7,7 @@ function Shot(game, x, y, sprite, frame, animName, animFrames, animSpeed) {
   this.game.physics.arcade.enable(this);
   this.body.allowGravity = false;
   //Sprite y animaciones
+  this.scale.setTo(2,2);
   this.animName = animName;
   this.animations.add(this.animName, animFrames, animSpeed, true);
 }
@@ -20,7 +21,7 @@ Shot.prototype.Shoot = function (target, speed) {
 }
 //Destrucción
 Shot.prototype.RemoveShot = function () {
-  if (this.inCamera)
+  if(this.x<this.game.camera.x ||this.x>this.game.camera.x+this.game.camera.width||this.y<this.game.camera.y ||this.y>this.game.camera.y+this.game.camera.height)
     this.destroy();
 }
 

@@ -19,10 +19,12 @@ var PreloaderScene = {
     this.game.load.spritesheet('play', 'images/BotonPlay.png', 73, 30);
     this.game.load.spritesheet('options', 'images/BotonOptions.png', 95, 32);
 
-    this.game.load.image('moon', 'images/moon.png');
-    this.game.load.spritesheet('blockE', 'images/bloqueE.png',16,16);
+    this.game.load.image('flag', 'images/bloque2.png');
     this.game.load.image('block', 'images/bloque2.png');
+    this.game.load.image('moon', 'images/moon.png');
     this.game.load.image('coins', 'images/coins.png');
+
+    this.game.load.spritesheet('chomp', 'images/Chomp.png',31.75,29.5);
 
     this.game.load.spritesheet('vidas', 'images/Vidas.png', 55, 55);
     this.game.load.spritesheet('cappy', 'images/Gorra.png', 16, 8);
@@ -33,8 +35,16 @@ var PreloaderScene = {
 
     this.game.load.atlas('mario', 'images/Mario.png', 'images/sprites.json');
 
+    this.game.load.tilemap('map', 'tilemaps/level1.json', null, Phaser.Tilemap.TILED_JSON);
+    this.game.load.image('tiles3', 'tilemaps/tiles3G.png');
+    this.game.load.image('tiles1', 'tilemaps/tiles1G.png'); 
+    this.game.load.image('tiles2', 'tilemaps/tiles2G.png');    
+    /*
     this.game.load.tilemap('map', 'tilemaps/super_mario.json', null, Phaser.Tilemap.TILED_JSON);
-    this.game.load.image('tiles', 'tilemaps/super_mario.png');
+    this.game.load.image('tiles3', 'tilemaps/tiles3G.png');
+    this.game.load.image('tiles1', 'tilemaps/tiles1G.png'); 
+    this.game.load.image('tiles2', 'tilemaps/tiles2G.png');  
+    */
   },
   create: function () {
     this.game.state.start('menu');
