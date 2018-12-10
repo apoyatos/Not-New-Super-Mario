@@ -21,7 +21,7 @@ Planta.constructor = Planta;
 //Disparo
 Planta.prototype.Shoot = function (target) {
     if (!target.cappyPlant) {
-        var shot = this.EnemyShoot(target, 'shotFire', this);
+        var shot = this.EnemyShoot(target, 'fireball', this);
         this.Angle(target);
         return shot;
     }

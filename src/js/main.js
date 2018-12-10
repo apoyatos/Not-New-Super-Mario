@@ -40,19 +40,19 @@ var PreloaderScene = {
     this.game.load.tilemap('map', 'tilemaps/super_mario.json', null, Phaser.Tilemap.TILED_JSON);
     //Sonidos
     //Menu
-    this.game.load.audio('start', 'audio/Start.mp3');
+    this.game.load.audio('start', 'audio/Start.wav');
     //Juego
     this.game.load.audio('jump', 'audio/Jump.wav');
     this.game.load.audio('swim', 'audio/Swim.wav');
-    this.game.load.audio('throw', 'audio/Throw.mp3');
-    this.game.load.audio('capture', 'audio/Capture.mp3');
+    this.game.load.audio('throw', 'audio/Throw.wav');
+    this.game.load.audio('capture', 'audio/Capture.wav');
     this.game.load.audio('kick', 'audio/Kick.wav');
     this.game.load.audio('kill', 'audio/Kill.wav');
     this.game.load.audio('hurt', 'audio/Hurt.wav');
     this.game.load.audio('hit', 'audio/Hit.wav');
     this.game.load.audio('break', 'audio/Break.wav');
     this.game.load.audio('coin', 'audio/Coin.wav');
-    this.game.load.audio('moon', 'audio/Moon.mp3');
+    this.game.load.audio('moon', 'audio/Moon.wav');
     this.game.load.audio('fireball', 'audio/Fireball.wav');
     this.game.load.audio('level1', 'audio/Level1.mp3');
   },

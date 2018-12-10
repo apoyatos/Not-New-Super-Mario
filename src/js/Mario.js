@@ -163,20 +163,17 @@ Mario.prototype.CheckOnFloor = function () {
 Mario.prototype.Move = function (dir) {
     this.facing = dir;
     this.prevY = this.y;
-    if (!this.capture) //Si es Mario
+    if (!this.capture && !this.bombJump) //Si es Mario. En el salto bomba no hay movimiento
     {
-        if (!this.bombJump) //En el salto bomba no hay movimiento
-        {
-            this.moving = true;
-            if (!this.crouching && !this.running) //Si no está agachado y no está corriendo
-                this.body.velocity.x = this.facing * this.velocity;
-            else if (this.crouching && !this.running) //Si está agachado
-                this.body.velocity.x = this.facing * (this.velocity / 3);
-            else if (!this.crouching && this.running) //Si está corriendo
-                this.body.velocity.x = this.facing * this.velocity * 1.75;
-            else if (this.crouching && this.running) //Si está agachado corriendo
-                this.body.velocity.x = this.facing * this.velocity * 1.5;
-        }
+        this.moving = true;
+        if (!this.crouching && !this.running) //Si no está agachado y no está corriendo
+            this.body.velocity.x = this.facing * this.velocity;
+        else if (this.crouching && !this.running) //Si está agachado
+            this.body.velocity.x = this.facing * (this.velocity / 3);
+        else if (!this.crouching && this.running) //Si está corriendo
+            this.body.velocity.x = this.facing * this.velocity * 1.75;
+        else if (this.crouching && this.running) //Si está agachado corriendo
+            this.body.velocity.x = this.facing * this.velocity * 1.5;
     }
     else if (this.enemy = 'goomba') {
         this.moving = true;
@@ -198,15 +195,12 @@ Mario.prototype.NotMoving = function () {
 //Salto
 Mario.prototype.Jump = function () {
     this.prevY = this.y;
-    if (!this.capture) //Si es Mario
+    if (!this.capture && this.body.onFloor() && !this.crouching) //Si es Mario, Si está en el suelo y no está agachado puede saltar
     {
-        if (this.body.onFloor() && !this.crouching) //Si está en el suelo y no está agachado puede saltar
-        {
-            this.swimming = false;
-            this.tackles = 1;
-            this.body.velocity.y = -this.jumpVelocity;
-            this.jumpSound.play();
-        }
+        this.swimming = false;
+        this.tackles = 1;
+        this.body.velocity.y = -this.jumpVelocity;
+        this.jumpSound.play();
     }
     else if ((this.enemy = 'goomba') && (this.body.onFloor() || this.body.touching.down)) {
         Goomba.prototype.MarioJump(this);
@@ -215,7 +209,7 @@ Mario.prototype.Jump = function () {
 //Impulso tras el salto
 Mario.prototype.Tackle = function () {
     this.prevY = this.y;
-    if (!this.capture) //Si es Mario
+    if (!this.capture && !this.body.onFloor() && this.tackles > 0) //Si es Mario. Si está en el aire se puede impulsar
     {
         if (!this.body.onFloor() && this.tackles > 0) {
             this.body.velocity.y = -this.jumpVelocity / 2;
@@ -227,23 +221,23 @@ Mario.prototype.Tackle = function () {
         }
     }
 }
+//Salto bomba
+Mario.prototype.JumpBomb = function () {
+    if (!this.capture && !this.swimming && !this.body.onFloor()) //Si es Mario. Solo puede hacer el salto bomba si no esta nadando
+    {
+        this.prevY = this.y;
+        this.body.velocity.y = 600;
+        this.body.velocity.x = 0;
+        this.tackles = 0;
+        this.bombJump = true;
+        //this.bombSound.play();
+    }
+}
 //Agacharse
 Mario.prototype.Crouch = function () {
-    if (!this.capture) //Si es Mario
+    if (!this.capture && !this.swimming && this.body.onFloor()) //Si es Mario. Solo puede agacharse si no esta nadando
     {
-        if (!this.swimming) //Solo puede agacharse o hacer salto bomba si no esta nadando
-        {
-            if (this.body.onFloor()) {
-                this.crouching = true;
-            }
-            else {
-                this.prevY = this.y;
-                this.body.velocity.y = 600;
-                this.body.velocity.x = 0;
-                this.tackles = 0;
-                this.bombJump = true;
-            }
-        }
+        this.crouching = true;
     }
 }
 //No agacharse
@@ -262,13 +256,13 @@ Mario.prototype.Swim = function () {
             this.body.velocity.y = -200;
     }
     else {
-        //
+        //Movimiento del pez (DLC)
     }
 }
 //Colisión con objetos
-Mario.prototype.CollectibleCollision = function (object) {
+Mario.prototype.CollectibleCollision = function (object, scene) {
     if (this.game.physics.arcade.overlap(object, this)) {
-        object.Collision(this);
+        object.Collision(this, scene);
     }
 }
 //Colisión con enemigos
@@ -285,7 +279,8 @@ Mario.prototype.EnemyCollision = function (enemy) {
                 this.cappyPlant = false;
                 this.cappy.Reset();
             }
-            else {
+            else //Si se choca con un enemigo
+            {
                 this.Hurt();
                 return true;
             }
@@ -436,6 +431,7 @@ Mario.prototype.handleAnimations = function () {
         Goomba.prototype.handleAnimations(this);
     }
 }
+//Recalcula la caja de colisiones
 Mario.prototype.recalculateBody = function () {
     this.handleAnimations();
     this.body.height = this.height;

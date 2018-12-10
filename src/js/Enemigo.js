@@ -23,12 +23,12 @@ Enemy.prototype.EnemyShoot = function (target, sprite, enemy) {
     //Crea el disparo
     if (sprite == 'fireball') {
       var shot = new Shot(enemy.game, enemy.x, enemy.y, sprite, 0, 'fireball', [0, 1, 2, 3], 5);
-      shot.Shoot(target, enemy.shootingVel);
+      shot.Shoot(target, enemy.shootingSpeed);
       this.shootingTimer = enemy.game.time.totalElapsedSeconds() + this.shootingTime;
       return shot;
     }
     else {
-      //Disparo del tanque
+      //Disparo del tanque (DLC)
     }
   }
 }

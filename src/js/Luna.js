@@ -12,10 +12,18 @@ Luna.prototype = Object.create(Phaser.Sprite.prototype);
 Luna.constructor = Luna;
 
 //Colisión con Mario
-Luna.prototype.Collision = function (player) {
+Luna.prototype.Collision = function (player, scene) {
     player.moons++;
     this.kill();
+    scene.pause = true;
+    scene.level1Sound.stop();
     this.moonSound.play();
+    this.moonSound.onStop.add(Continue, this);
+    function Continue() {
+        scene.pause = false;
+        scene.level1Sound.play();
+        scene.level1Sound.loop = true;
+    }
 }
 
 module.exports = Luna;
