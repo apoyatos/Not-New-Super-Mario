@@ -24,9 +24,12 @@ function Cappy(game, x, y, name, player, dir) {
     this.game.world.addChild(this);
     this.game.physics.arcade.enable(this);
     this.body.allowGravity = false;
+    //Sonidos
+    this.throwSound = this.game.add.audio('throw');
+    this.captureSound = this.game.add.audio('capture');
     //Sprite y animaciones
-    this.scale.setTo(2,2);
-    this.animations.add("Thrown", [0, 1, 2], 8, true);
+    this.scale.setTo(2, 2);
+    this.animations.add("thrown", [0, 1, 2], 8, true);
 }
 Cappy.prototype = Object.create(Phaser.Sprite.prototype);
 Cappy.constructor = Cappy;
@@ -37,9 +40,10 @@ Cappy.prototype.Throw = function () {
     {
         if (!this.player.thrown) {
             this.body.velocity.x = this.velocity * this.dir;
-            this.animations.play("Thrown");
+            this.animations.play("thrown");
             this.player.thrown = true;
             this.cappyHold = true;
+            this.throwSound.play();
             this.cappyTimer = this.game.time.totalElapsedSeconds() + this.cappyTime;
         }
     }
@@ -71,7 +75,7 @@ Cappy.prototype.Collision = function () {
     }
     else if (this.game.physics.arcade.overlap(this.player.cappy, this.player) && this.cappyStopped) //Se reinicia después de que Mario salte sobre ella
     {
-        this.player.body.velocity.y = -this.player.jumpVelocity/1.5;
+        this.player.body.velocity.y = -this.player.jumpVelocity / 1.5;
         this.player.tackling = false;
         this.player.tackles = 1;
         this.Reset();
@@ -84,17 +88,31 @@ Cappy.prototype.Reset = function () {
     this.cappyStopped = false;
     this.cappyReturning = false;
     this.player.cappy.kill();
+    if (this.throwSound.isPlaying)
+        this.throwSound.stop();
 }
 //Captura al enemigo con Cappy
-Cappy.prototype.Capture = function (enemy) {
+Cappy.prototype.Capture = function (enemy, scene) {
     if (this.game.physics.arcade.overlap(this.player.cappy, enemy)) {
-        enemy.kill();
+        //Pausa la escena
+        scene.pause = true;
         this.cappyCapture = true;
         this.player.capture = true;
         this.player.enemy = enemy;
-        this.player.reset(enemy.body.position.x, enemy.body.position.y);
-        this.Reset();
-        this.player.recalculateBody();
+        //Reproduce el sonido
+        if (this.throwSound.isPlaying)
+            this.throwSound.stop();
+
+        this.captureSound.play();
+        this.captureSound.onStop.add(ResetMario, this);
+        function ResetMario() {
+            enemy.kill();
+            this.Reset();
+            this.player.reset(enemy.body.position.x, enemy.body.position.y);
+            this.player.recalculateBody();
+            //Reanuda la escena
+            scene.pause = false;
+        }
         return true;
     }
     else
@@ -102,9 +120,11 @@ Cappy.prototype.Capture = function (enemy) {
 }
 //Bloquea a la Planta
 Cappy.prototype.Stunn = function (enemy) {
-    if (this.game.physics.arcade.overlap(this.player.cappy, enemy) && enemy.type == 'planta') {
+    if (this.game.physics.arcade.overlap(this.player.cappy, enemy) && enemy.type == 'plant') {
         this.player.cappyPlant = true;
         this.player.cappy.kill();
+        if (this.throwSound.isPlaying)
+            this.throwSound.stop();
     }
 }
 

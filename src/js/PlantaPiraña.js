@@ -9,7 +9,7 @@ function Planta(game, x, y, sprite, frame, shootingSpeed, shootingTime) {
     //Disparo
     this.angleShoot = 0;
     //Sprites y animaciones
-    this.scale.setTo(2,2);
+    this.scale.setTo(2, 2);
     this.animations.add('shoot1', [9, 8], 5, false);
     this.animations.add('shoot2', [7, 6], 5, false);
     this.animations.add('shoot3', [5, 4], 5, false);
@@ -22,7 +22,7 @@ Planta.constructor = Planta;
 //Disparo
 Planta.prototype.Shoot = function (target) {
     if (!target.cappyPlant) {
-        var shot = this.EnemyShoot(target, 'disparo-fuego', this);
+        var shot = this.EnemyShoot(target, 'fireball', this);
         this.Angle(target);
         return shot;
     }
