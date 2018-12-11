@@ -17,6 +17,7 @@ function Chomp(game, x, y, sprite, frame, speed, chain, distance, cooldown) {
     //Acciones
     this.attack = false;
     this.charging = false;
+    this.captured=false;
     //Temporizadores
     this.cooldown = cooldown;
     this.cooldownTimer = 0;
@@ -33,6 +34,7 @@ Chomp.constructor = Chomp
 
 //Movimiento
 Chomp.prototype.Move = function () {
+    this.captured=false;
     if (this.game.time.totalElapsedSeconds() > this.cooldownTimer) {
         if ((this.x + this.speed / 30 > (this.originX + this.chain)) || (this.x + this.speed / 30 < (this.originX - this.chain))) {
             if (this.attack) {
@@ -63,6 +65,7 @@ Chomp.prototype.Attack = function (player) {
 }
 //Movimiento capturado
 Chomp.prototype.MarioMove = function (player) {
+    this.captured=true;
     if ((player.x + player.velocity / 30 < (this.originX + this.chain)) && player.facing == 1) {
         player.body.velocity.x = player.velocity / 4;
         this.charged = false;
@@ -85,6 +88,7 @@ Chomp.prototype.MarioMove = function (player) {
 }
 //Ausencia de movimiento capturado
 Chomp.prototype.MarioNotMoving = function (player) {
+    this.captured=true;
     if (this.charged && ((player.x + player.velocity / 30 < (this.originX + this.chain) + 150) && player.facing == -1)) {
         player.body.velocity.x = 4 * player.velocity;
     }

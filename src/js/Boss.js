@@ -5,14 +5,19 @@ function Boss(game, x, y, sprite, frame, chompSprite, speed, life, player) {
     Phaser.Sprite.call(this, game, x, y, sprite, frame);
     this.game.world.addChild(this);
     this.game.physics.arcade.enable(this);
-    this.scale.setTo(4.25,4.5);
+    this.scale.setTo(4.25, 4.5);
     this.body.gravity.y = 600;
     //Mario
     this.player = player;
     //Movimiento
     this.speed = speed;
     this.chomp = new Chomp(this.game, this.x, this.y, chompSprite, 0, 2 * this.speed, 100, 100, 1);
+
     this.life = life;
+    this.hurt = false;
+    this.hurtTime = 0;
+    this.hurtTimer = 1;
+    this.capture = false;
     //Sprites y animaciones
     this.scale.setTo(2, 2);
     //this.animations.add('walk', [0, 1], 5, true);
@@ -22,19 +27,36 @@ Boss.prototype = Object.create(Phaser.Sprite.prototype);
 Boss.constructor = Boss;
 
 Boss.prototype.Move = function () {
-    this.body.velocity.x = this.speed;
-    this.chomp.originX=this.x;
+    if (!this.chomp.captured) {
+        this.body.velocity.x = this.speed;
+        this.chomp.originX = this.x;
+    }
+    else {
+        this.speed = this.speed * Math.sign(this.player.velocity.x)
+        console.log(this.speed)
+    }
 }
 Boss.prototype.ChangeDir = function () {
     this.speed = -this.speed;
 }
 Boss.prototype.Hurt = function () {
     if (this.chomp.charged && this.game.physics.arcade.overlap(this.player, this)) {
-        if (this.life > 1)
-            this.life--;
+        if (this.life > 1) {
+            if (!this.hurt) {
+                this.life--;
+                this.hurtTimer = this.hurtTime + this.game.time.totalElapsedSeconds()
+                this.hurt = true;
+            }
+            else {
+                if (this.hurtTimer < this.game.time.totalElapsedSeconds())
+                    this.hurt = false;
+            }
+
+        }
         else
-            destroy(this);
+            this.destroy();
     }
 }
+
 
 module.exports = Boss;
