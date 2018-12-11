@@ -34,9 +34,10 @@ var PlayScene = {
     this.layer = this.map.createLayer('World1');
     this.layer.resizeWorld();
     //Objetos del mapa
+    this.collectibles = this.game.add.group();
     this.map.createFromObjects('Monedas', 11, 'coins', 0, true, false, this.collectibles, Moneda);
     this.map.createFromObjects('Lunas', 1269, 'moon', 0, true, false, this.collectibles, Luna);
-    this.map.createFromObjects('Checkpoints', 1255, 'flag', 0, true, false, this.collectibles, Bandera);
+    this.map.createFromObjects('Checkpoints', 1255, 'checkpoint', 0, true, false, this.collectibles, Bandera);
     //this.map.createFromObjects('Enemigos', 1263, 'goomba', 0, true, false, this.goombas, Goomba);
     //this.map.createFromObjects('Enemigos', 1262, 'chomp', 0, true, false, this.chomps, Chomp);
     //this.map.createFromObjects('Enemigos', 1276, 'planta', 0, true, false, this.plants, Planta);
@@ -50,14 +51,14 @@ var PlayScene = {
     this.map.setCollisionByExclusion([], true, 'Muerte');
     this.blocks = this.map.createLayer('Bloques');
     this.map.setCollisionByExclusion([], true, 'Bloques');
-    this.eBlocks = this.map.createLayer('BloquesENormales');
+    this.eBlocks1 = this.map.createLayer('BloquesENormales');
     this.map.setCollisionByExclusion([], true, 'BloquesENormales');
-    this.eBlocks = this.map.createLayer('BloquesECorazones');
+    this.eBlocks2 = this.map.createLayer('BloquesECorazones');
     this.map.setCollisionByExclusion([], true, 'BloquesECorazones');
-    this.eBlocks = this.map.createLayer('BloquesESuperCorazones');
+    this.eBlocks3 = this.map.createLayer('BloquesESuperCorazones');
     this.map.setCollisionByExclusion([], true, 'BloquesESuperCorazones');
     //Grupos
-    this.collectibles = this.game.add.group();
+
     this.goombas = this.game.add.group();
     this.plants = this.game.add.group();
     this.chomps = this.game.add.group();
@@ -163,9 +164,15 @@ var PlayScene = {
     this.game.physics.arcade.collide(this.player, this.deathZone, function (player) { player.Die(); });
     //Colisiones de Mario con los bloques
     this.game.physics.arcade.collide(this.player, this.blocks, function (player, tile) { player.scene.blocksHandler.HitBlock(player, tile); });
-    this.game.physics.arcade.collide(this.player, this.eBlocks, function (player, tile) { player.scene.blocksHandler.HitEBlock(player, tile, 'coin'); });
+    this.game.physics.arcade.collide(this.player, this.eBlocks1, function (player, tile) { player.scene.blocksHandler.HitEBlock(player, tile, 'coin'); });
+    this.game.physics.arcade.collide(this.player, this.eBlocks2, function (player, tile) { player.scene.blocksHandler.HitEBlock(player, tile, 'heart'); });
+    this.game.physics.arcade.collide(this.player, this.eBlocks3, function (player, tile) { player.scene.blocksHandler.HitEBlock(player, tile, 'superHeart'); });
     //Colisiones de Cappy con el mapa
     this.game.physics.arcade.collide(this.player.cappy, this.collisions);
+    //colisiones objetos con el mapa
+    this.game.physics.arcade.collide(this.floor, this.collectibles);
+    this.game.physics.arcade.collide(this.eBlocks2, this.collectibles);
+    this.game.physics.arcade.collide(this.eBlocks3, this.collectibles);
     //Colisiones de enemigos con el mapa y los bloques
     this.enemies.forEach(
       function (item) {
@@ -174,7 +181,9 @@ var PlayScene = {
             this.game.physics.arcade.collide(item, this.floor);
             this.game.physics.arcade.collide(item, this.collisions, function (enemy) { enemy.ChangeDir(); });
             this.game.physics.arcade.collide(item, this.blocks);
-            this.game.physics.arcade.collide(item, this.eBlocks);
+            this.game.physics.arcade.collide(item, this.eBlocks1);
+            this.game.physics.arcade.collide(item, this.eBlocks2);
+            this.game.physics.arcade.collide(item, this.eBlocks3);
           }, this);
       }, this);
     //Pausa
@@ -252,7 +261,7 @@ var PlayScene = {
       //Colisiones de Mario con objetos
       this.collectibles.forEach(
         function (item) {
-          this.player.CollectibleCollision(item);
+          this.player.CollectibleCollision(item, this);
         }, this);
       //Colisiones de Mario con enemigos
       this.enemies.forEach(
@@ -267,7 +276,7 @@ var PlayScene = {
       //Colisiones de Mario con disparos
       this.shots.forEach(
         function (item) {
-          if (item.body.velocity.x == 0) {
+          if (item.body.velocity.x == 0 && this.planta!=undefined) {
             item.body.velocity.x = this.planta.shootingSpeed * item.posX;
             item.animations.play(item.sprite);
           }

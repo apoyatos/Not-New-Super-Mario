@@ -170,8 +170,9 @@ Mario.prototype.CheckOnFloor = function () {
 Mario.prototype.Move = function (dir) {
     this.facing = dir;
     this.prevY = this.y;
-    if (!this.capture && !this.bombJump) //Si es Mario. En el salto bomba no hay movimiento
+    if (!this.capture ) //Si es Mario. En el salto bomba no hay movimiento
     {
+        if( !this.bombJump){
         this.moving = true;
         if (!this.crouching && !this.running) //Si no está agachado y no está corriendo
             this.body.velocity.x = this.facing * this.velocity;
@@ -181,6 +182,7 @@ Mario.prototype.Move = function (dir) {
             this.body.velocity.x = this.facing * this.velocity * 1.75;
         else if (this.crouching && this.running) //Si está agachado corriendo
             this.body.velocity.x = this.facing * this.velocity * 1.5;
+        }
     }
     else {
         this.moving = true;

@@ -37,7 +37,7 @@ Bloque.prototype.HitEBlock = function (player, tile, prizeType) {
                 else if (prizeType == 'heart')
                     player.scene.collectibles.add(new Corazon(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - player.y) * tile.height), this.heartSprite, 0, 3));
                 else
-                    player.scene.collectibles.add(new Corazon(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - player.y) * tile.height), this.heartSprite, 0, 6));
+                    player.scene.collectibles.add(new Corazon(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - player.y) * tile.height), this.superHeartSprite, 0, 6));
 
                 this.hitSound.play();
             }

@@ -5,6 +5,7 @@ function Luna(game, x, y, sprite, frame) {
     //Propiedades
     this.game.world.addChild(this);
     this.game.physics.arcade.enable(this);
+    this.scale.setTo(2,2);
     //Sonidos
     this.moonSound = this.game.add.audio('moon');
 }

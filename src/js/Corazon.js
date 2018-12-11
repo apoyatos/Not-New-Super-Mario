@@ -7,13 +7,15 @@ function Corazon(game, x, y, sprite, frame, amount) {
     //Propiedades
     this.game.world.addChild(this);
     this.game.physics.arcade.enable(this);
+    this.body.gravity.y = 600;
 }
 Corazon.prototype = Object.create(Phaser.Sprite.prototype);
 Corazon.constructor = Corazon;
 
 //Colisión con Mario
 Corazon.prototype.Collision = function (player) {
-    player.life = amount;
+    if (player.life < this.amount)
+        player.life = this.amount;
     this.kill();
 }
 
