@@ -2,60 +2,63 @@
 
 var Enemy = require('./Enemigo.js');
 
-function Goomba(game, x, y, sprite, frame, speed, movingTime, player) {
+function Goomba(game, x, y, sprite, frame, speed, player) {
     Enemy.call(this, game, x, y, sprite, frame, 0, 0);
     //Mario
     this.player = player;
-    //Tipo
-    this.type = sprite;
     //Movimiento
     this.speed = speed;
-    this.movingTime = movingTime;
-    this.movingTimer = 0;
     //Sonidos
     this.killSound = this.game.add.audio('kill');
-    //Sprites y animaciones
-    this.scale.setTo(2, 2);
+    //Animación
     this.animations.add('walk', [0, 1], 5, true);
+    //Caja de colisión
     this.originalHeight = this.body.height * this.scale.x;
+    //Tipo
+    this.type = sprite;
 }
 Goomba.prototype = Object.create(Enemy.prototype);
 Goomba.constructor = Goomba;
 
-//Movimiento
-Enemy.prototype.Move = function () {
+//Movimiento del goomba
+Goomba.prototype.Move = function () {
     this.body.velocity.x = this.speed;
     this.animations.play('walk');
 }
-Enemy.prototype.ChangeDir = function () {
+//Cambia la dirección
+Goomba.prototype.ChangeDir = function () {
     this.speed = -this.speed;
 }
-//Muerte
-Goomba.prototype.Die = function () {
+//Mario pisa al goomba
+Goomba.prototype.Killed = function () {
     if (this.game.physics.arcade.overlap(this, this.player) && this.player.y + this.player.height < this.y + 10 && !this.player.hurt && !this.player.capture) {
-        this.kill();
+        this.Die();
         this.killSound.play();
         this.player.body.velocity.y = -this.player.jumpVelocity / 2;
         this.player.tackling = false;
         this.player.tackles = 1;
     }
 }
-//Movimiento capturado
+//Muerte del goomba
+Goomba.prototype.Die = function () {
+    this.kill();
+}
+//Movimiento del goomba capturado
 Goomba.prototype.MarioMove = function (player) {
     if (!player.running)
-        player.body.velocity.x = player.facing * player.velocity / 1.75;
+        player.body.velocity.x = player.facing * player.velocity / 1.7;
     else
-        player.body.velocity.x = player.facing * player.velocity;
+        player.body.velocity.x = player.facing * player.velocity / 1.5;
 }
-//Ausencia de movimiento capturado
+//Goomba capturado quieto
 Goomba.prototype.MarioNotMoving = function (player) {
     player.body.velocity.x = 0;
 }
-//Salto capturado
+//Salto del goomba capturado
 Goomba.prototype.MarioJump = function (player) {
-    player.body.velocity.y = -player.jumpVelocity / 1.5;
+    player.body.velocity.y = -player.jumpVelocity / 1.6;
 }
-//Colisiones capturado
+//Colisiones del goomba capturado con enemigos
 Goomba.prototype.Collision = function (player, enemy) {
     if (player.game.physics.arcade.overlap(enemy, player) && !player.hurt) //Si choca con un enemigo
     {
@@ -84,11 +87,9 @@ Goomba.prototype.Collision = function (player, enemy) {
         return false;
     }
 }
-Goomba.prototype.BlockCollision = function (player, tile) {
-
-}
-Goomba.prototype.EBlockCollision = function (tile, prizeType) {
-}
+//Colisiones del goomba capturado con bloqes
+Goomba.prototype.BlockCollision = function (player, tile) { }
+Goomba.prototype.EspecialBlockCollision = function (tile, prizeType) { }
 //Animaciones
 Goomba.prototype.handleAnimations = function (player) {
     if (player.hurt) //Si se hace daño

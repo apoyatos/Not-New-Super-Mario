@@ -1,6 +1,6 @@
 'use strict';
 
-function Corazon(game, x, y, sprite, frame, amount) {
+function Heart(game, x, y, sprite, frame, amount) {
     Phaser.Sprite.call(this, game, x, y, sprite, frame);
     //Cantidad de vida
     this.amount = amount;
@@ -9,14 +9,22 @@ function Corazon(game, x, y, sprite, frame, amount) {
     this.game.physics.arcade.enable(this);
     this.body.gravity.y = 600;
 }
-Corazon.prototype = Object.create(Phaser.Sprite.prototype);
-Corazon.constructor = Corazon;
+Heart.prototype = Object.create(Phaser.Sprite.prototype);
+Heart.constructor = Heart;
 
-//Colisión con Mario
-Corazon.prototype.Collision = function (player) {
-    if (player.life < this.amount)
-        player.life = this.amount;
+//Mario recoge el corazón
+Heart.prototype.Collision = function (player) {
+    //Cura a Mario y destruye el corazón
+    if (this.amount > 3)
+        player.life = 6;
+    else {
+        if (player.life > 3)
+            player.life = 6;
+        else
+            player.life = 3;
+    }
     this.kill();
+    //Sonido del corazón
 }
 
-module.exports = Corazon;
+module.exports = Heart;

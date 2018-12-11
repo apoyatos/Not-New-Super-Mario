@@ -24,35 +24,38 @@ function Cappy(game, x, y, name, player, dir) {
     this.game.world.addChild(this);
     this.game.physics.arcade.enable(this);
     this.body.allowGravity = false;
+    this.scale.setTo(2, 2);
     //Sonidos
     this.throwSound = this.game.add.audio('throw');
     this.captureSound = this.game.add.audio('capture');
-    //Sprite y animaciones
-    this.scale.setTo(2, 2);
+    //Animación
     this.animations.add("thrown", [0, 1, 2], 8, true);
 }
 Cappy.prototype = Object.create(Phaser.Sprite.prototype);
 Cappy.constructor = Cappy;
 
-//Movimiento al lanzarse
+//Movimiento de Cappy
 Cappy.prototype.Throw = function () {
     if (!this.cappyCapture && !this.player.capture) //Si es Mario
     {
-        if (!this.player.thrown) {
+        if (!this.player.thrown) //Al lanzar a Cappy
+        {
+            //Animación y sonido
             this.body.velocity.x = this.velocity * this.dir;
             this.animations.play("thrown");
+            this.throwSound.play();
             this.player.thrown = true;
             this.cappyHold = true;
-            this.throwSound.play();
             this.cappyTimer = this.game.time.totalElapsedSeconds() + this.cappyTime;
         }
     }
 }
-//Manejo de lanzamiento
+//Comprobaciones durante lanzamiento de Cappy
 Cappy.prototype.Check = function () {
     if (this.player.thrown && !this.cappyStopped && !this.player.cappyPlant) //Si se ha lanzado y no se ha mantenido en su posición
     {
-        if (this.game.time.totalElapsedSeconds() > this.cappyTimer) {
+        if (this.game.time.totalElapsedSeconds() > this.cappyTimer) //Mantiene su posición un tiempo
+        {
             this.body.velocity.x = 0;
             this.cappyStopped = true;
             this.cappyHoldTimer = this.game.time.totalElapsedSeconds() + this.cappyHoldTime;
@@ -61,21 +64,20 @@ Cappy.prototype.Check = function () {
     }
     else if (this.cappyStopped && !this.player.cappyPlant) //Tras mantenerse en su posición
     {
-        if ((this.cappyHold && this.game.time.totalElapsedSeconds() > this.cappyHoldTimer) || (!this.cappyHold && this.game.time.totalElapsedSeconds() > this.cappyStopTimer)) {
+        if ((this.cappyHold && this.game.time.totalElapsedSeconds() > this.cappyHoldTimer) || (!this.cappyHold && this.game.time.totalElapsedSeconds() > this.cappyStopTimer)) //Regresa a Mario
+        {
             this.game.physics.arcade.moveToObject(this.player.cappy, this.player, 500);
             this.cappyReturning = true;
         }
     }
 }
-//Manejo de colisiones
+//Colisiones de Cappy con Mario
 Cappy.prototype.Collision = function () {
     if (this.game.physics.arcade.overlap(this.player.cappy, this.player) && this.cappyReturning) //Se reinicia al volver a Mario
-    {
         this.Reset();
-    }
     else if (this.game.physics.arcade.overlap(this.player.cappy, this.player) && this.cappyStopped) //Se reinicia después de que Mario salte sobre ella
     {
-        this.player.body.velocity.y = -this.player.jumpVelocity / 1.5;
+        this.player.body.velocity.y = -this.player.jumpVelocity / 1.2;
         this.player.tackling = false;
         this.player.tackles = 1;
         this.Reset();
@@ -87,25 +89,29 @@ Cappy.prototype.Reset = function () {
     this.player.thrown = false;
     this.cappyStopped = false;
     this.cappyReturning = false;
+    //Mata a Cappy y para los sonidos
     this.player.cappy.kill();
     if (this.throwSound.isPlaying)
         this.throwSound.stop();
 }
 //Captura al enemigo con Cappy
 Cappy.prototype.Capture = function (enemy, scene) {
-    if (this.game.physics.arcade.overlap(this.player.cappy, enemy)) {
+    if (this.game.physics.arcade.overlap(this.player.cappy, enemy)) //Al chocar con un enemigo capturables
+    {
         //Pausa la escena
         scene.pause = true;
         this.cappyCapture = true;
         this.player.capture = true;
         this.player.enemy = enemy;
-        //Reproduce el sonido
+        //Para los sonidos
         if (this.throwSound.isPlaying)
             this.throwSound.stop();
-
+        //Reproduce el sonido de captura
         this.captureSound.play();
         this.captureSound.onStop.add(ResetMario, this);
+        //Tras reproducir el sonido
         function ResetMario() {
+            //Mata a Cappy y posee al enemigo
             enemy.kill();
             this.Reset();
             this.player.reset(enemy.body.position.x, enemy.body.position.y);
@@ -118,9 +124,11 @@ Cappy.prototype.Capture = function (enemy, scene) {
     else
         return false;
 }
-//Bloquea a la Planta
+//Bloquea a la planta con Cappy
 Cappy.prototype.Stunn = function (enemy) {
-    if (this.game.physics.arcade.overlap(this.player.cappy, enemy) && enemy.type == 'plant') {
+    if (this.game.physics.arcade.overlap(this.player.cappy, enemy) && enemy.type == 'plant') //Si choca con la planta
+    {
+        //Mata a Cappy y para los sonidos
         this.player.cappyPlant = true;
         this.player.cappy.kill();
         if (this.throwSound.isPlaying)

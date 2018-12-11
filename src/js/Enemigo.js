@@ -1,30 +1,32 @@
 'use strict';
 
-var Shot = require('./Disparo.js');
+var Disparo = require('./Disparo.js');
 
-function Enemy(game, x, y, sprite, frame, shootingSpeed, shootingTime) {
+function Enemy(game, x, y, sprite, frame, shootSpeed, shootTime) {
   Phaser.Sprite.call(this, game, x, y, sprite, frame);
   //Disparo
-  this.shootingSpeed = shootingSpeed;
-  this.shootingTime = shootingTime;
-  this.shootingTimer = 0;
+  this.shootSpeed = shootSpeed;
+  this.shootTime = shootTime;
+  this.shootTimer = 0;
   //Propiedades
   this.game.world.addChild(this);
   this.game.physics.arcade.enable(this);
   this.body.collideWorldBounds = true;
-  this.body.gravity.y = 500;
+  this.body.gravity.y = 600;
+  this.scale.setTo(2, 2);
 }
 Enemy.prototype = Object.create(Phaser.Sprite.prototype);
 Enemy.constructor = Enemy;
 
 //Disparo
 Enemy.prototype.EnemyShoot = function (target, sprite, enemy) {
-  if (enemy.game.time.totalElapsedSeconds() > this.shootingTimer) {
+  if (enemy.game.time.totalElapsedSeconds() > this.shootTimer) {
     //Crea el disparo
     if (sprite == 'fireball') {
-      var shot = new Shot(enemy.game, enemy.x, enemy.y, sprite, 0, 'fireball', [0, 1, 2, 3], 5);
-      shot.Shoot(target, enemy.shootingSpeed);
-      this.shootingTimer = enemy.game.time.totalElapsedSeconds() + this.shootingTime;
+      var shot = new Disparo(enemy.game, enemy.x, enemy.y, sprite, 0, 'fireball', [0, 1, 2, 3], 5);
+      //Lo lanza
+      shot.Shoot(target, enemy.shootSpeed);
+      this.shootTimer = enemy.game.time.totalElapsedSeconds() + this.shootTime;
       return shot;
     }
     else {

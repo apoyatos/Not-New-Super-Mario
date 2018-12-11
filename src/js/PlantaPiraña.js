@@ -2,35 +2,35 @@
 
 var Enemy = require('./Enemigo.js');
 
-function Planta(game, x, y, sprite, frame, shootingSpeed, shootingTime) {
-    Enemy.call(this, game, x, y, sprite, frame, shootingSpeed, shootingTime);
-    //Tipo
-    this.type = sprite;
+function Fireplant(game, x, y, sprite, frame, shootSpeed, shootTime) {
+    Enemy.call(this, game, x, y, sprite, frame, shootSpeed, shootTime);
     //Disparo
     this.angleShoot = 0;
-    //Sprites y animaciones
-    this.scale.setTo(2, 2);
+    //Animaciones
     this.animations.add('shoot1', [9, 8], 5, false);
     this.animations.add('shoot2', [7, 6], 5, false);
     this.animations.add('shoot3', [5, 4], 5, false);
     this.animations.add('shoot4', [3, 2], 5, false);
     this.animations.add('shoot5', [1, 0], 5, false);
+    //Tipo
+    this.type = sprite;
 }
-Planta.prototype = Object.create(Enemy.prototype);
-Planta.constructor = Planta;
+Fireplant.prototype = Object.create(Enemy.prototype);
+Fireplant.constructor = Fireplant;
 
-//Disparo
-Planta.prototype.Shoot = function (target) {
-    if (!target.cappyPlant) {
+//Disparo de la planta
+Fireplant.prototype.Shoot = function (target) {
+    if (!target.cappyPlant) //Si no se ha comido a Cappy dispara
+    {
         var shot = this.EnemyShoot(target, 'fireball', this);
         this.Angle(target);
         return shot;
     }
-    else {
+    else
         this.frame = 5;
-    }
 }
-Planta.prototype.Angle = function (target) {
+//Ángulo de disparo par aanimaciones
+Fireplant.prototype.Angle = function (target) {
     this.angleShoot = Math.abs((this.game.physics.arcade.angleBetween(this, target) * 180) / Math.PI);
     if (this.angleShoot <= 36)
         return this.animations.play('shoot1');
@@ -44,4 +44,4 @@ Planta.prototype.Angle = function (target) {
         return this.animations.play('shoot5');
 }
 
-module.exports = Planta;
+module.exports = Fireplant;

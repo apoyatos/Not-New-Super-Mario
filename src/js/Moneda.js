@@ -1,22 +1,26 @@
 'use strict';
 
-function Moneda(game, x, y, sprite, frame) {
+function Coin(game, x, y, sprite, frame) {
     Phaser.Sprite.call(this, game, x, y, sprite, frame);
     //Propiedades
     this.game.world.addChild(this);
     this.game.physics.arcade.enable(this);
-    this.scale.setTo(2,2);
+    this.scale.setTo(2, 2);
     //Sonidos
     this.coinSound = this.game.add.audio('coin');
+    //Animaciones
+    this.animations.add('coin', [0, 1, 2, 3], 5, true);
 }
-Moneda.prototype = Object.create(Phaser.Sprite.prototype);
-Moneda.constructor = Moneda;
+Coin.prototype = Object.create(Phaser.Sprite.prototype);
+Coin.constructor = Coin;
 
-//Colisión con Mario
-Moneda.prototype.Collision = function (player) {
+//Mario recoge la moneda
+Coin.prototype.Collision = function (player) {
+    //Destruye la moneda
     player.coins++;
     this.kill();
+    //Sonido de la moneda
     this.coinSound.play();
 }
 
-module.exports = Moneda;
+module.exports = Coin;
