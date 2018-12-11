@@ -6,16 +6,11 @@ var Spiny = require('./Spiny.js');
 var Planta = require('./PlantaPiraña.js');
 var Chomp = require('./Chomp.js');
 
-var Banderas = require('./Checkpoints.js');
-var Monedas = require('./Monedas.js');
-var Lunas = require('./Lunas.js');
-var Bloques = require('./Bloques.js');
-
-//var Bandera = require('./Bandera.js');
-//var Moneda = require('./Moneda.js');
-//var Luna = require('./Luna.js');
-//var Bloque = require('./Bloque.js');
-//var Corazon = require('./Corazon.js');
+var Bandera = require('./Bandera.js');
+var Moneda = require('./Moneda.js');
+var Luna = require('./Luna.js');
+var Bloque = require('./Bloque.js');
+var Corazon = require('./Corazon.js');
 
 var PlayScene = {
   create: function () {
@@ -39,9 +34,9 @@ var PlayScene = {
     this.layer = this.map.createLayer('World1');
     this.layer.resizeWorld();
     //Objetos del mapa
-    this.map.createFromObjects('Monedas', 11, 'coins', 0, true, false, this.collectibles, Monedas);
-    this.map.createFromObjects('Lunas', 1269, 'moon', 0, true, false, this.collectibles, Lunas);
-    this.map.createFromObjects('Checkpoints', 1255, 'flag', 0, true, false, this.collectibles, Banderas);
+    this.map.createFromObjects('Monedas', 11, 'coins', 0, true, false, this.collectibles, Moneda);
+    this.map.createFromObjects('Lunas', 1269, 'moon', 0, true, false, this.collectibles, Luna);
+    this.map.createFromObjects('Checkpoints', 1255, 'flag', 0, true, false, this.collectibles, Bandera);
     //this.map.createFromObjects('Enemigos', 1263, 'goomba', 0, true, false, this.goombas, Goomba);
     //this.map.createFromObjects('Enemigos', 1262, 'chomp', 0, true, false, this.chomps, Chomp);
     //this.map.createFromObjects('Enemigos', 1276, 'planta', 0, true, false, this.plants, Planta);
@@ -53,13 +48,20 @@ var PlayScene = {
     this.map.setCollisionByExclusion([], true, 'Suelo');
     this.deathZone = this.map.createLayer('Muerte');
     this.map.setCollisionByExclusion([], true, 'Muerte');
-    this.eBlocks = this.map.createLayer('BloquesEspeciales');
-    this.map.setCollisionByExclusion([], true, 'BloquesEspeciales');
     this.blocks = this.map.createLayer('Bloques');
     this.map.setCollisionByExclusion([], true, 'Bloques');
+    this.eBlocks = this.map.createLayer('BloquesENormales');
+    this.map.setCollisionByExclusion([], true, 'BloquesENormales');
+    this.eBlocks = this.map.createLayer('BloquesECorazones');
+    this.map.setCollisionByExclusion([], true, 'BloquesECorazones');
+    this.eBlocks = this.map.createLayer('BloquesESuperCorazones');
+    this.map.setCollisionByExclusion([], true, 'BloquesESuperCorazones');
     //Grupos
     this.collectibles = this.game.add.group();
     this.goombas = this.game.add.group();
+    this.plants = this.game.add.group();
+    this.chomps = this.game.add.group();
+    this.spinys = this.game.add.group();
     this.capturables = this.game.add.group();
     this.shots = this.game.add.group();
     //Arrays
@@ -78,7 +80,7 @@ var PlayScene = {
     this.spinys.add(new Spiny(this.game, 4900, 0, 'spiny', 0, 100, 2));
     this.plants.add(new Planta(this.game, 2600, 0, 'plant', 5, 300, 5));
     //Bloques
-    this.blocksHandler = new Bloques(this.game, 'block', 'block');
+    this.blocksHandler = new Bloque(this.game, 'coin', 'heart', 'superHeart');
     //Interfaz
     this.vidas = this.game.add.sprite(this.game.width, 0, 'life', 0);
     this.vidas.anchor.setTo(1.5, -0.2);
@@ -122,11 +124,6 @@ var PlayScene = {
     function Exit() {
       //En desarrollo
     }
-    //Grupos
-    this.goombas = this.game.add.group();
-    this.plants = this.game.add.group();
-    this.chomps = this.game.add.group();
-    this.spinys = this.game.add.group();
     //Array enemies
     this.enemies.push(this.goombas);
     this.enemies.push(this.chomps);

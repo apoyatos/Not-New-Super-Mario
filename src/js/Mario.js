@@ -1,10 +1,10 @@
 'use strict';
 
 var Cappy = require('./Cappy.js');
-var Goomba = require('./Goomba.js');
 
 function Mario(game, x, y, sprite, frame, scene) {
     Phaser.Sprite.call(this, game, x, y, sprite, frame);
+    //Escena
     this.scene = scene;
     //Cappy
     this.cappy = null;

@@ -10,26 +10,28 @@ function Chomp(game, x, y, sprite, frame, speed, chain, distance, cooldown) {
     this.type = sprite;
     //Movimiento
     this.speed = speed;
-    this.originalSpeed = speed;
     this.chain = chain;
-    this.originX = x;
     this.distance = distance;
+    this.originalSpeed = speed;
+    this.originX = x;
+    //Acciones
     this.attack = false;
-    this.cooldownTimer = 0;
+    this.charging = false;
+    //Temporizadores
     this.cooldown = cooldown;
+    this.cooldownTimer = 0;
     this.chargeTime = 1;
     this.chargeTimer = 0;
-    this.charging = false;
     //Sprites y animaciones
-    this.scale.setTo(2.5,2.5);
+    this.scale.setTo(2.5, 2.5);
     this.animations.add('walkLeft', [0, 1, 4, 1, 0], 5, true);
     this.animations.add('walkRight', [3, 2, 7, 2, 3], 5, true);
     this.originalHeight = this.body.height * this.scale.x;
-
 }
 Chomp.prototype = Object.create(Enemy.prototype);
 Chomp.constructor = Chomp
 
+//Movimiento
 Chomp.prototype.Move = function () {
     if (this.game.time.totalElapsedSeconds() > this.cooldownTimer) {
         if ((this.x + this.speed / 30 > (this.originX + this.chain)) || (this.x + this.speed / 30 < (this.originX - this.chain))) {
@@ -39,7 +41,6 @@ Chomp.prototype.Move = function () {
                 this.cooldownTimer = this.game.time.totalElapsedSeconds() + this.cooldown;
             }
             this.speed = -this.speed;
-
         }
         this.body.velocity.x = this.speed;
         if (this.speed < 0)
@@ -49,9 +50,8 @@ Chomp.prototype.Move = function () {
     }
     else
         this.body.velocity.x = 0;
-
 }
-
+//Ataque
 Chomp.prototype.Attack = function (player) {
     if (this.game.time.totalElapsedSeconds() > this.cooldownTimer) {
         if (!this.attack && (Math.sign(this.speed) == Math.sign(player.x - this.x) && Math.abs(player.x - this.x) < this.distance)) {
@@ -60,9 +60,7 @@ Chomp.prototype.Attack = function (player) {
             this.attack = true;
         }
     }
-
 }
-
 //Movimiento capturado
 Chomp.prototype.MarioMove = function (player) {
     if ((player.x + player.velocity / 30 < (this.originX + this.chain)) && player.facing == 1) {
@@ -83,9 +81,7 @@ Chomp.prototype.MarioMove = function (player) {
         }
         else if (this.game.time.totalElapsedSeconds() > this.chargeTimer)
             this.charged = true;
-
     }
-
 }
 //Ausencia de movimiento capturado
 Chomp.prototype.MarioNotMoving = function (player) {
@@ -116,13 +112,10 @@ Chomp.prototype.Collision = function (player, enemy) {
         return false;
     }
 }
-
 Chomp.prototype.BlockCollision = function (tile, player) {
     if (this.charged) {
-        player.scene.map.removeTile(tile.x,tile.y,player.scene.blocks)
+        player.scene.map.removeTile(tile.x, tile.y, player.scene.blocks)
     }
-
-
 }
 Chomp.prototype.EBlockCollision = function (tile, prizeType) {
     if (tile.index == 2) {
@@ -138,6 +131,7 @@ Chomp.prototype.EBlockCollision = function (tile, prizeType) {
         }
     }
 }
+//Animaciones
 Chomp.prototype.handleAnimations = function (player) {
     if (player.hurt) {
         if (!this.charged) {
@@ -167,7 +161,6 @@ Chomp.prototype.handleAnimations = function (player) {
                 player.animations.play('walkChompRight');
         }
     }
-
 }
 
 module.exports = Chomp;

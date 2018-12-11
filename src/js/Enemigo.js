@@ -17,17 +17,6 @@ function Enemy(game, x, y, sprite, frame, shootingSpeed, shootingTime) {
 Enemy.prototype = Object.create(Phaser.Sprite.prototype);
 Enemy.constructor = Enemy;
 
-
-//Movimiento
-Enemy.prototype.Move = function () {
-  this.body.velocity.x = this.speed;
-  this.animations.play('walk');
-}
-
-Enemy.prototype.ChangeDir = function () {
-  this.speed = -this.speed;
-}
-
 //Disparo
 Enemy.prototype.EnemyShoot = function (target, sprite, enemy) {
   if (enemy.game.time.totalElapsedSeconds() > this.shootingTimer) {
