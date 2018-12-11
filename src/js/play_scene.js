@@ -11,6 +11,7 @@ var Moneda = require('./Moneda.js');
 var Luna = require('./Luna.js');
 var Bloque = require('./Bloque.js');
 var Corazon = require('./Corazon.js');
+var Boss = require('./Boss.js');
 
 var PlayScene = {
   create: function () {
@@ -70,14 +71,17 @@ var PlayScene = {
     this.capturables = [];
     //Objetos: jugador y enemigos
     //Mario
-    this.player = new Mario(this.game, 0, 150, 'mario', 5, this);
+    this.player = new Mario(this.game, 4000, 150, 'mario', 5, this);
     this.game.camera.follow(this.player);
+    //Boss
+    this.boss = new Boss(this.game, 4300, 0, 'plant', 0,'chomp', 100, 3, this.player);
     //Enemigos
     this.goombas.add(new Goomba(this.game, 1150, 0, 'goomba', 0, 100, 2, this.player));
     this.goombas.add(new Goomba(this.game, 1500, 0, 'goomba', 0, -100, 2, this.player));
     this.goombas.add(new Goomba(this.game, 1800, 0, 'goomba', 0, -100, 2, this.player));
     this.goombas.add(new Goomba(this.game, 1600, 0, 'goomba', 0, 100, 2, this.player));
     this.chomps.add(new Chomp(this.game, 3800, 0, 'chomp', 0, 50, 150, 300, 1));
+    this.chomps.add(this.boss.chomp);
     this.spinys.add(new Spiny(this.game, 4900, 0, 'spiny', 0, 100, 2));
     this.plants.add(new Planta(this.game, 2600, 0, 'plant', 5, 300, 5));
     //Bloques
@@ -186,6 +190,13 @@ var PlayScene = {
             this.game.physics.arcade.collide(item, this.eBlocks3);
           }, this);
       }, this);
+
+    this.game.physics.arcade.collide(this.boss, this.floor);
+    this.game.physics.arcade.collide(this.boss, this.collisions, function (enemy) { enemy.ChangeDir(); });
+    this.game.physics.arcade.collide(this.boss, this.blocks);
+    this.game.physics.arcade.collide(this.boss, this.eBlocks1);
+    this.game.physics.arcade.collide(this.boss, this.eBlocks2);
+    this.game.physics.arcade.collide(this.boss, this.eBlocks3);
     //Pausa
     if (!this.pause && !this.pauseButton) {
       //Andar
@@ -276,7 +287,7 @@ var PlayScene = {
       //Colisiones de Mario con disparos
       this.shots.forEach(
         function (item) {
-          if (item.body.velocity.x == 0 && this.planta!=undefined) {
+          if (item.body.velocity.x == 0 && this.planta != undefined) {
             item.body.velocity.x = this.planta.shootingSpeed * item.posX;
             item.animations.play(item.sprite);
           }
@@ -340,6 +351,8 @@ var PlayScene = {
           item.body.velocity.x = 0;
           item.animations.stop();
         }, this);
+        this.boss.Move();
+        this.boss.Hurt();
     }
   }
 };
