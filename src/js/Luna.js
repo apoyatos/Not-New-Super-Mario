@@ -16,13 +16,12 @@ Luna.prototype.Collision = function (player, scene) {
     player.moons++;
     this.kill();
     scene.pause = true;
-    scene.level1Sound.stop();
+    scene.level1Sound.pause();
     this.moonSound.play();
     this.moonSound.onStop.add(Continue, this);
     function Continue() {
         scene.pause = false;
-        scene.level1Sound.play();
-        scene.level1Sound.loop = true;
+        scene.level1Sound.resume();
     }
 }
 

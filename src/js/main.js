@@ -18,6 +18,10 @@ var PreloaderScene = {
     this.game.load.image('logo', 'images/Logo.png');
     this.game.load.spritesheet('start', 'images/Start.png', 306, 56);
     this.game.load.spritesheet('options', 'images/Options.png', 306, 56);
+    //Menu pausa
+    this.game.load.image('pause', 'images/MenuPausa.png');
+    this.game.load.spritesheet('continue', 'images/Continue.png', 306, 56);
+    this.game.load.spritesheet('exit', 'images/Exit.png', 306, 56);
     //Objetos del mapa
     this.game.load.spritesheet('superBlock', 'images/SuperBloque.png', 33, 32);
     this.game.load.image('block', 'images/Bloque.png');
@@ -54,7 +58,7 @@ var PreloaderScene = {
     this.game.load.audio('coin', 'audio/Coin.wav');
     this.game.load.audio('moon', 'audio/Moon.wav');
     this.game.load.audio('fireball', 'audio/Fireball.wav');
-    this.game.load.audio('level1', 'audio/Level1.mp3');
+    this.game.load.audio('level1', 'audio/Level1.wav');
   },
   create: function () {
     this.game.state.start('menu');
@@ -69,24 +73,24 @@ var Menu = {
     this.logo.scale.setTo(3, 3);
     this.logo.anchor.setTo(-1.2, -0.2);
 
-    this.buttonPlay = this.game.add.button(0, 0, 'start', playSound, this, 0, 2, 1);
+    this.buttonPlay = this.game.add.button(0, 0, 'start', PlaySound, this, 0, 2, 1);
     this.buttonPlay.scale.setTo(2, 2);
     this.buttonPlay.anchor.setTo(-0.6, -4);
     this.startSound = this.game.add.audio('start');
 
-    this.buttonOptions = this.game.add.button(0, 0, 'options', options, this, 0, 2, 1);
+    this.buttonOptions = this.game.add.button(0, 0, 'options', Options, this, 0, 2, 1);
     this.buttonOptions.scale.setTo(2, 2);
     this.buttonOptions.anchor.setTo(-0.6, -5.2);
 
-    function playSound() {
+    function PlaySound() {
       this.startSound.play();
-      this.startSound.onStop.add(play, this);
+      this.startSound.onStop.add(Play, this);
     }
-    function play() {
+    function Play() {
       this.game.state.start('play');
     }
-    function options() {
-
+    function Options() {
+      //En desarrollo
     }
   }
 };

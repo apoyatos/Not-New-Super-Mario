@@ -43,7 +43,6 @@ Cappy.prototype.Throw = function () {
             this.player.thrown = true;
             this.cappyHold = true;
             this.throwSound.play();
-            this.throwSound.loop = true;
             this.cappyTimer = this.game.time.totalElapsedSeconds() + this.cappyTime;
         }
     }

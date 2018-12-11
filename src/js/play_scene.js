@@ -13,14 +13,13 @@ var Bloque = require('./Bloque.js');
 var PlayScene = {
   create: function () {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
-    //Pausa
-    this.pause = false;
     //Sonido nivel 1
     this.level1Sound = this.game.add.audio('level1');
     this.level1Sound.play();
     this.level1Sound.loop = true;
     //Teclas para input
     this.teclas = this.game.input.keyboard.createCursorKeys();
+    this.pausar = this.game.input.keyboard.addKey(Phaser.Keyboard.X);
     this.saltar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     this.correr = this.game.input.keyboard.addKey(Phaser.Keyboard.SHIFT);
     this.lanzar = this.game.input.keyboard.addKey(Phaser.Keyboard.Z);
@@ -83,6 +82,33 @@ var PlayScene = {
     this.textSuperCoins = this.game.add.text(0, 0, this.player.superCoins, { font: "16px Arial", fill: "#ffffff", align: "center" });
     this.textSuperCoins.anchor.setTo(-9, -0.3);
     this.textSuperCoins.fixedToCamera = true;
+    //Pausa
+    this.pause = false;
+    this.pauseButton = false;
+    this.pauseMenuOpen = false;
+
+    this.pauseBackground = this.game.add.sprite(0, 0, 'pause');
+    this.pauseBackground.visible = false;
+
+    this.buttonContinue = this.game.add.button(0, 0, 'continue', Continue, this, 0, 2, 1);
+    this.buttonContinue.scale.setTo(2, 2);
+    this.buttonContinue.anchor.setTo(-0.6, -4);
+    this.buttonContinue.visible = false;
+
+    function Continue() {
+      this.pauseButton = false;
+      this.pauseMenuOpen = false;
+      this.level1Sound.resume();
+    }
+
+    this.buttonExit = this.game.add.button(0, 0, 'exit', Exit, this, 0, 2, 1);
+    this.buttonExit.scale.setTo(2, 2);
+    this.buttonExit.anchor.setTo(-0.6, -5.2);
+    this.buttonExit.visible = false;
+
+    function Exit() {
+      //En desarrollo
+    }
     //Array enemies
     this.enemies.push(this.goomba);
     this.enemies.push(this.goomba1);
@@ -105,6 +131,25 @@ var PlayScene = {
     this.goombas.push(this.goomba4);
   },
   update: function () {
+    //Menu pausa
+    this.pausar.onDown.add(PauseMenu, this);
+    function PauseMenu() {
+      if (!this.pause && !this.pauseButton) {
+        this.pauseButton = true;
+        this.pauseMenuOpen = true;
+      }
+    }
+    if (this.pauseMenuOpen) {
+      this.pauseBackground.visible = true;
+      this.buttonContinue.visible = true;
+      this.buttonExit.visible = true;
+      this.level1Sound.pause();
+    }
+    else {
+      this.pauseBackground.visible = false;
+      this.buttonContinue.visible = false;
+      this.buttonExit.visible = false;
+    }
     //Vida
     this.vidas.frame = this.player.life - 1;
     this.textCoins.setText(this.player.coins);
@@ -125,7 +170,7 @@ var PlayScene = {
         this.game.physics.arcade.collide(item, this.collisions, function (enemy) { enemy.ChangeDir(); });
       }, this);
     //Pausa
-    if (!this.pause) {
+    if (!this.pause && !this.pauseButton) {
       //Andar
       if (this.teclas.right.isDown)
         this.player.Move(1);
@@ -156,6 +201,7 @@ var PlayScene = {
       else if (this.player.cappy != null)
         this.player.cappy.cappyHold = false;
       //Control de eventos de Mario
+      this.player.body.gravity.y = 500;
       this.player.CheckOnFloor();
       this.player.handleAnimations();
       //Control de eventos de Cappy
@@ -210,7 +256,9 @@ var PlayScene = {
     }
     else {
       //Mario
+      this.player.body.gravity.y = 0;
       this.player.body.velocity.x = 0;
+      this.player.body.velocity.y = 0;
       this.player.animations.stop();
       //Cappy
       if (this.player.cappy != null) {
