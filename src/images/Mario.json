@@ -6,7 +6,7 @@
                 "x": 75,
                 "y": 0,
                 "w": 16,
-                "h": 27
+                "h": 28
             },
             "rotated": false,
             "trimmed": false,
@@ -27,7 +27,7 @@
                 "x": 101,
                 "y": 0,
                 "w": 14,
-                "h": 27
+                "h": 28
             },
             "rotated": false,
             "trimmed": false,
@@ -48,7 +48,7 @@
                 "x": 126,
                 "y": 0,
                 "w": 14,
-                "h": 27
+                "h": 28
             },
             "rotated": false,
             "trimmed": false,
@@ -69,7 +69,7 @@
                 "x": 149,
                 "y": 0,
                 "w": 16,
-                "h": 27
+                "h": 28
             },
             "rotated": false,
             "trimmed": false,
@@ -111,7 +111,7 @@
                 "x": 49,
                 "y": 1,
                 "w": 16,
-                "h": 26
+                "h": 27
             },
             "rotated": false,
             "trimmed": false,
@@ -132,7 +132,7 @@
                 "x": 175,
                 "y": 1,
                 "w": 16,
-                "h": 26
+                "h": 27
             },
             "rotated": false,
             "trimmed": false,
@@ -172,7 +172,7 @@
             "filename": "crouchLeft1",
             "frame": {
                 "x": 0,
-                "y": 1,
+                "y": 0,
                 "w": 14,
                 "h": 27
             },
@@ -182,18 +182,18 @@
                 "x": 0,
                 "y": 0,
                 "w": 14,
-                "h": 18
+                "h": 19
             },
             "sourceSize": {
                 "w": 14,
-                "h": 18
+                "h": 19
             }
         },
         {
             "filename": "crouchRight1",
             "frame": {
                 "x": 226,
-                "y": 1,
+                "y": 0,
                 "w": 14,
                 "h": 27
             },
@@ -203,11 +203,11 @@
                 "x": 0,
                 "y": 0,
                 "w": 14,
-                "h": 18
+                "h": 19
             },
             "sourceSize": {
                 "w": 14,
-                "h": 18
+                "h": 19
             }
         },
         {
@@ -382,7 +382,7 @@
             "filename": "crouchLeft2",
             "frame": {
                 "x": 0,
-                "y": 29,
+                "y": 28,
                 "w": 14,
                 "h": 27
             },
@@ -392,18 +392,18 @@
                 "x": 0,
                 "y": 0,
                 "w": 14,
-                "h": 18
+                "h": 19
             },
             "sourceSize": {
                 "w": 14,
-                "h": 18
+                "h": 19
             }
         },
         {
             "filename": "crouchRight2",
             "frame": {
                 "x": 226,
-                "y": 29,
+                "y": 28,
                 "w": 14,
                 "h": 27
             },
@@ -413,11 +413,11 @@
                 "x": 0,
                 "y": 0,
                 "w": 14,
-                "h": 18
+                "h": 19
             },
             "sourceSize": {
                 "w": 14,
-                "h": 18
+                "h": 19
             }
         },
         {
@@ -466,9 +466,9 @@
             "filename": "walkLeftCappy2",
             "frame": {
                 "x": 75,
-                "y": 57,
+                "y": 56,
                 "w": 16,
-                "h": 26
+                "h": 27
             },
             "rotated": false,
             "trimmed": false,
@@ -487,9 +487,9 @@
             "filename": "walkLeftCappy1",
             "frame": {
                 "x": 101,
-                "y": 57,
+                "y": 56,
                 "w": 14,
-                "h": 26
+                "h": 27
             },
             "rotated": false,
             "trimmed": false,
@@ -508,9 +508,9 @@
             "filename": "walkRightCappy1",
             "frame": {
                 "x": 126,
-                "y": 57,
+                "y": 56,
                 "w": 14,
-                "h": 26
+                "h": 27
             },
             "rotated": false,
             "trimmed": false,
@@ -529,9 +529,9 @@
             "filename": "walkRightCappy2",
             "frame": {
                 "x": 149,
-                "y": 57,
+                "y": 56,
                 "w": 16,
-                "h": 26
+                "h": 27
             },
             "rotated": false,
             "trimmed": false,
@@ -550,9 +550,9 @@
             "filename": "walkLeftCappy3",
             "frame": {
                 "x": 49,
-                "y": 59,
+                "y": 57,
                 "w": 16,
-                "h": 24
+                "h": 26
             },
             "rotated": false,
             "trimmed": false,
@@ -571,9 +571,9 @@
             "filename": "walkRightCappy3",
             "frame": {
                 "x": 175,
-                "y": 59,
+                "y": 57,
                 "w": 16,
-                "h": 24
+                "h": 26
             },
             "rotated": false,
             "trimmed": false,
@@ -592,9 +592,9 @@
             "filename": "crouchLeftCappy1",
             "frame": {
                 "x": 0,
-                "y": 57,
+                "y": 56,
                 "w": 14,
-                "h": 27
+                "h": 28
             },
             "rotated": false,
             "trimmed": false,
@@ -613,9 +613,9 @@
             "filename": "crouchRightCappy1",
             "frame": {
                 "x": 226,
-                "y": 57,
+                "y": 56,
                 "w": 14,
-                "h": 27
+                "h": 28
             },
             "rotated": false,
             "trimmed": false,
@@ -736,7 +736,7 @@
             }
         },
         {
-            "filename": "swimLeftCappy3",
+            "filename": "swimLeftCappy1",
             "frame": {
                 "x": 49,
                 "y": 87,
@@ -757,7 +757,7 @@
             }
         },
         {
-            "filename": "swimRightCappy3",
+            "filename": "swimRightCappy1",
             "frame": {
                 "x": 172,
                 "y": 87,
@@ -802,9 +802,9 @@
             "filename": "crouchLeftCappy2",
             "frame": {
                 "x": 0,
-                "y": 85,
+                "y": 84,
                 "w": 14,
-                "h": 27
+                "h": 28
             },
             "rotated": false,
             "trimmed": false,
@@ -823,9 +823,9 @@
             "filename": "crouchRightCappy2",
             "frame": {
                 "x": 226,
-                "y": 85,
+                "y": 84,
                 "w": 14,
-                "h": 27
+                "h": 28
             },
             "rotated": false,
             "trimmed": false,
@@ -844,9 +844,9 @@
             "filename": "throwLeft",
             "frame": {
                 "x": 101,
-                "y": 115,
+                "y": 116,
                 "w": 16,
-                "h": 27
+                "h": 26
             },
             "rotated": false,
             "trimmed": false,
@@ -854,20 +854,20 @@
                 "x": 0,
                 "y": 0,
                 "w": 16,
-                "h": 28
+                "h": 26
             },
             "sourceSize": {
                 "w": 16,
-                "h": 28
+                "h": 26
             }
         },
         {
             "filename": "throwRight",
             "frame": {
                 "x": 124,
-                "y": 115,
+                "y": 116,
                 "w": 16,
-                "h": 27
+                "h": 26
             },
             "rotated": false,
             "trimmed": false,
@@ -875,20 +875,20 @@
                 "x": 0,
                 "y": 0,
                 "w": 16,
-                "h": 28
+                "h": 26
             },
             "sourceSize": {
                 "w": 16,
-                "h": 28
+                "h": 26
             }
         },
         {
             "filename": "kickLeft",
             "frame": {
                 "x": 72,
-                "y": 116,
+                "y": 115,
                 "w": 21,
-                "h": 26
+                "h": 27
             },
             "rotated": false,
             "trimmed": false,
@@ -907,146 +907,125 @@
             "filename": "kickRight",
             "frame": {
                 "x": 148,
-                "y": 116,
+                "y": 115,
                 "w": 21,
-                "h": 26
+                "h": 27
             },
             "rotated": false,
             "trimmed": false,
             "spriteSourceSize": {
                 "x": 0,
                 "y": 0,
-                "w": 21,
-                "h": 25
-            },
-            "sourceSize": {
                 "w": 21,
                 "h": 25
-            }
-        },
-        {
-            "filename": "crouchingLeft3",
-            "frame": {
-                "x": 51,
-                "y": 145,
-                "w": 19,
-                "h": 28
-            },
-            "rotated": false,
-            "trimmed": false,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 19,
-                "h": 20
             },
             "sourceSize": {
-                "w": 19,
-                "h": 20
-            }
-        },
-        {
-            "filename": "crouchingLeft1",
-            "frame": {
-                "x": 98,
-                "y": 145,
-                "w": 19,
-                "h": 28
-            },
-            "rotated": false,
-            "trimmed": false,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 19,
-                "h": 20
-            },
-            "sourceSize": {
-                "w": 19,
-                "h": 20
-            }
-        },
-        {
-            "filename": "crouchingRight1",
-            "frame": {
-                "x": 124,
-                "y": 145,
-                "w": 19,
-                "h": 28
-            },
-            "rotated": false,
-            "trimmed": false,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 19,
-                "h": 20
-            },
-            "sourceSize": {
-                "w": 19,
-                "h": 20
-            }
-        },
-        {
-            "filename": "crouchingRight3",
-            "frame": {
-                "x": 171,
-                "y": 145,
-                "w": 19,
-                "h": 28
-            },
-            "rotated": false,
-            "trimmed": false,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 19,
-                "h": 20
-            },
-            "sourceSize": {
-                "w": 19,
-                "h": 20
+                "w": 21,
+                "h": 25
             }
         },
         {
             "filename": "crouchingLeft4",
             "frame": {
                 "x": 27,
-                "y": 145,
-                "w": 20,
-                "h": 28
+                "y": 144,
+                "w": 19,
+                "h": 27
             },
             "rotated": false,
             "trimmed": false,
             "spriteSourceSize": {
                 "x": 0,
                 "y": 0,
-                "w": 20,
+                "w": 19,
                 "h": 19
             },
             "sourceSize": {
-                "w": 20,
+                "w": 19,
                 "h": 19
             }
         },
         {
-            "filename": "crouchingLef2",
+            "filename": "crouchingLeft3",
             "frame": {
-                "x": 74,
-                "y": 145,
-                "w": 20,
-                "h": 28
+                "x": 51,
+                "y": 144,
+                "w": 19,
+                "h": 27
             },
             "rotated": false,
             "trimmed": false,
             "spriteSourceSize": {
                 "x": 0,
                 "y": 0,
-                "w": 20,
+                "w": 19,
                 "h": 19
             },
             "sourceSize": {
-                "w": 20,
+                "w": 19,
+                "h": 19
+            }
+        },
+        {
+            "filename": "crouchingLeft2",
+            "frame": {
+                "x": 75,
+                "y": 144,
+                "w": 19,
+                "h": 27
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 19,
+                "h": 19
+            },
+            "sourceSize": {
+                "w": 19,
+                "h": 19
+            }
+        },
+        {
+            "filename": "crouchingLeft1",
+            "frame": {
+                "x": 98,
+                "y": 144,
+                "w": 19,
+                "h": 27
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 19,
+                "h": 19
+            },
+            "sourceSize": {
+                "w": 19,
+                "h": 19
+            }
+        },
+        {
+            "filename": "crouchingRight1",
+            "frame": {
+                "x": 124,
+                "y": 144,
+                "w": 19,
+                "h": 27
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 19,
+                "h": 19
+            },
+            "sourceSize": {
+                "w": 19,
                 "h": 19
             }
         },
@@ -1054,29 +1033,71 @@
             "filename": "crouchingRight2",
             "frame": {
                 "x": 147,
-                "y": 145,
-                "w": 20,
-                "h": 28
+                "y": 144,
+                "w": 19,
+                "h": 27
             },
             "rotated": false,
             "trimmed": false,
             "spriteSourceSize": {
                 "x": 0,
                 "y": 0,
-                "w": 20,
+                "w": 19,
                 "h": 19
             },
             "sourceSize": {
-                "w": 20,
+                "w": 19,
+                "h": 19
+            }
+        },
+        {
+            "filename": "crouchingRight3",
+            "frame": {
+                "x": 171,
+                "y": 144,
+                "w": 19,
+                "h": 27
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 19,
+                "h": 19
+            },
+            "sourceSize": {
+                "w": 19,
                 "h": 19
             }
         },
         {
             "filename": "crouchingRight4",
             "frame": {
-                "x": 194,
-                "y": 145,
-                "w": 20,
+                "x": 195,
+                "y": 144,
+                "w": 19,
+                "h": 27
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 19,
+                "h": 19
+            },
+            "sourceSize": {
+                "w": 19,
+                "h": 19
+            }
+        },
+        {
+            "filename": "crouchingLeftCappy4",
+            "frame": {
+                "x": 27,
+                "y": 175,
+                "w": 17,
                 "h": 28
             },
             "rotated": false,
@@ -1084,12 +1105,12 @@
             "spriteSourceSize": {
                 "x": 0,
                 "y": 0,
-                "w": 20,
-                "h": 19
+                "w": 17,
+                "h": 17
             },
             "sourceSize": {
-                "w": 20,
-                "h": 19
+                "w": 17,
+                "h": 17
             }
         },
         {
@@ -1106,11 +1127,32 @@
                 "x": 0,
                 "y": 0,
                 "w": 17,
-                "h": 20
+                "h": 17
             },
             "sourceSize": {
                 "w": 17,
-                "h": 20
+                "h": 17
+            }
+        },
+        {
+            "filename": "crouchingLeftCappy2",
+            "frame": {
+                "x": 77,
+                "y": 175,
+                "w": 17,
+                "h": 28
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 17,
+                "h": 17
+            },
+            "sourceSize": {
+                "w": 17,
+                "h": 17
             }
         },
         {
@@ -1127,11 +1169,11 @@
                 "x": 0,
                 "y": 0,
                 "w": 17,
-                "h": 20
+                "h": 17
             },
             "sourceSize": {
                 "w": 17,
-                "h": 20
+                "h": 17
             }
         },
         {
@@ -1148,11 +1190,32 @@
                 "x": 0,
                 "y": 0,
                 "w": 17,
-                "h": 20
+                "h": 17
             },
             "sourceSize": {
                 "w": 17,
-                "h": 20
+                "h": 17
+            }
+        },
+        {
+            "filename": "crouchingRightCappy2",
+            "frame": {
+                "x": 147,
+                "y": 175,
+                "w": 17,
+                "h": 28
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 17,
+                "h": 17
+            },
+            "sourceSize": {
+                "w": 17,
+                "h": 17
             }
         },
         {
@@ -1169,40 +1232,19 @@
                 "x": 0,
                 "y": 0,
                 "w": 17,
-                "h": 20
-            },
-            "sourceSize": {
-                "w": 17,
-                "h": 20
-            }
-        },
-        {
-            "filename": "crouchingLeftCappy4",
-            "frame": {
-                "x": 27,
-                "y": 175,
-                "w": 20,
-                "h": 28
-            },
-            "rotated": false,
-            "trimmed": false,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 20,
                 "h": 17
             },
             "sourceSize": {
-                "w": 20,
+                "w": 17,
                 "h": 17
             }
         },
         {
             "filename": "crouchingRightCappy4",
             "frame": {
-                "x": 194,
+                "x": 197,
                 "y": 175,
-                "w": 20,
+                "w": 17,
                 "h": 28
             },
             "rotated": false,
@@ -1210,53 +1252,11 @@
             "spriteSourceSize": {
                 "x": 0,
                 "y": 0,
-                "w": 20,
+                "w": 17,
                 "h": 17
             },
             "sourceSize": {
-                "w": 20,
-                "h": 17
-            }
-        },
-        {
-            "filename": "crouchingLeftCappy2",
-            "frame": {
-                "x": 74,
-                "y": 175,
-                "w": 20,
-                "h": 28
-            },
-            "rotated": false,
-            "trimmed": false,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 20,
-                "h": 17
-            },
-            "sourceSize": {
-                "w": 20,
-                "h": 17
-            }
-        },
-        {
-            "filename": "crouchingRightCappy2",
-            "frame": {
-                "x": 147,
-                "y": 175,
-                "w": 20,
-                "h": 28
-            },
-            "rotated": false,
-            "trimmed": false,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 20,
-                "h": 17
-            },
-            "sourceSize": {
-                "w": 20,
+                "w": 17,
                 "h": 17
             }
         },
@@ -1429,73 +1429,31 @@
             }
         },
         {
-            "filename": "hurt",
+            "filename": "ChompLeft2",
             "frame": {
-                "x": 30,
-                "y": 120,
-                "w": 14,
-                "h": 27
+                "x": 57,
+                "y": 304,
+                "w": 29,
+                "h": 30
             },
             "rotated": false,
             "trimmed": false,
             "spriteSourceSize": {
                 "x": 0,
                 "y": 0,
-                "w": 14,
-                "h": 27
+                "w": 29,
+                "h": 30
             },
             "sourceSize": {
-                "w": 14,
-                "h": 27
+                "w": 29,
+                "h": 30
             }
         },
         {
             "filename": "ChompLeft1",
             "frame": {
-                "x": 57,
-                "y": 303,
-                "w": 29,
-                "h": 30
-            },
-            "rotated": false,
-            "trimmed": false,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 29,
-                "h": 30
-            },
-            "sourceSize": {
-                "w": 29,
-                "h": 30
-            }
-        },
-        {
-            "filename": "ChompLeft2",
-            "frame": {
                 "x": 89,
-                "y": 303,
-                "w": 29,
-                "h": 30
-            },
-            "rotated": false,
-            "trimmed": false,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 29,
-                "h": 30
-            },
-            "sourceSize": {
-                "w": 29,
-                "h": 30
-            }
-        },
-        {
-            "filename": "ChompRight2",
-            "frame": {
-                "x": 124,
-                "y": 303,
+                "y": 304,
                 "w": 29,
                 "h": 30
             },
@@ -1515,8 +1473,29 @@
         {
             "filename": "ChompRight1",
             "frame": {
+                "x": 124,
+                "y": 304,
+                "w": 29,
+                "h": 30
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 29,
+                "h": 30
+            },
+            "sourceSize": {
+                "w": 29,
+                "h": 30
+            }
+        },
+        {
+            "filename": "ChompRight2",
+            "frame": {
                 "x": 156,
-                "y": 303,
+                "y": 304,
                 "w": 29,
                 "h": 30
             },
@@ -1537,7 +1516,7 @@
             "filename": "ChompLeft3",
             "frame": {
                 "x": 57,
-                "y": 335,
+                "y": 336,
                 "w": 29,
                 "h": 30
             },
@@ -1558,7 +1537,7 @@
             "filename": "ChompRight3",
             "frame": {
                 "x": 156,
-                "y": 335,
+                "y": 336,
                 "w": 29,
                 "h": 30
             },
@@ -1574,6 +1553,27 @@
                 "w": 29,
                 "h": 30
             }
+        },
+        {
+            "filename": "hurt",
+            "frame": {
+                "x": 0,
+                "y": 120,
+                "w": 16,
+                "h": 28
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 16,
+                "h": 27
+            },
+            "sourceSize": {
+                "w": 16,
+                "h": 27
+            }
         }
     ],
     "meta": {
@@ -1582,7 +1582,7 @@
         "image": "spritesheet.png",
         "size": {
             "w": 240,
-            "h": 280
+            "h": 366
         },
         "scale": 1
     }

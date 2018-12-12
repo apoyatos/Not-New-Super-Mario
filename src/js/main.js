@@ -25,19 +25,19 @@ var PreloaderScene = {
     this.game.load.spritesheet('exit', 'images/Exit.png', 306, 56);
     //Objetos del mapa
     this.game.load.image('block', 'images/Bloque.png');
-    this.game.load.spritesheet('superBlock', 'images/SuperBloque.png', 33, 32);
-    this.game.load.spritesheet('coin', 'images/Moneda.png', 14, 16);
-    this.game.load.spritesheet('superCoin', 'images/SuperMoneda.png', 14, 16);
+    this.game.load.spritesheet('superBlock', 'images/SuperBloque.png', 34, 32);
+    this.game.load.spritesheet('coin', 'images/Moneda.png', 15, 16);
+    this.game.load.spritesheet('superCoin', 'images/SuperMoneda.png', 16, 16);
     this.game.load.image('heart', 'images/Corazon.png');
     this.game.load.image('superHeart', 'images/SuperCorazon.png');
     this.game.load.image('moon', 'images/Energiluna.png');
-    this.game.load.spritesheet('checkpoint', 'images/Bandera.png', 25, 32);
+    this.game.load.spritesheet('checkpoint', 'images/Bandera.png', 26, 32);
     //Mario y enemigos
-    this.game.load.atlas('mario', 'images/Mario.png', 'images/sprites.json');
+    this.game.load.atlas('mario', 'images/Mario.png', 'images/Mario.json');
     this.game.load.spritesheet('cappy', 'images/Gorra.png', 16, 8);
-    this.game.load.spritesheet('life', 'images/Vida.png', 55, 55);
+    this.game.load.spritesheet('life', 'images/Vida.png', 56, 55);
     this.game.load.spritesheet('goomba', 'images/Goomba.png', 25, 24);
-    this.game.load.spritesheet('spiny', 'images/Spiny.png', 18.5, 16);
+    this.game.load.spritesheet('spiny', 'images/Spiny.png', 19, 16);
     this.game.load.spritesheet('plant', 'images/PlantaPiraña.png', 18, 34);
     this.game.load.spritesheet('chomp', 'images/Chomp.png', 31.75, 29.5);
     this.game.load.spritesheet('fireball', 'images/Disparo-Fuego.png', 9, 9);

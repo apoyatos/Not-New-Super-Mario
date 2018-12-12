@@ -262,14 +262,14 @@ var PlayScene = {
       //Colisiones de Mario con objetos
       this.objects.forEach(
         function (item) {
-          this.player.ObjectCollision(item, this);
+          this.player.ObjectCollision(item);
         }, this);
       //Colisiones de Mario con enemigos
       this.enemies.forEach(
         function (item) {
           item.forEach(
             function (item) {
-              this.player.EnemyCollision(item, this);
+              this.player.EnemyCollision(item);
               if (this.player.cappy != null)
                 this.player.cappy.Stunn(item);
             }, this);

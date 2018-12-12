@@ -78,8 +78,6 @@ function Mario(game, x, y, sprite, frame, scene) {
     this.animations.add('bombRight', ['bombRight'], 10, false);
     this.animations.add('crouchingLeft', Phaser.Animation.generateFrameNames('crouchingLeft', 1, 4), 10, false);
     this.animations.add('crouchingRight', Phaser.Animation.generateFrameNames('crouchingRight', 1, 4), 10, false);
-    this.animations.add('throwLeft', ['throwLeft'], 10, false);
-    this.animations.add('throwRight', ['throwRight'], 10, false);
     //Animaciones sin Cappy
     this.animations.add('runLeftCappy', Phaser.Animation.generateFrameNames('walkLeftCappy', 1, 3), 8, true);
     this.animations.add('runRightCappy', Phaser.Animation.generateFrameNames('walkRightCappy', 1, 3), 8, true);
@@ -99,6 +97,8 @@ function Mario(game, x, y, sprite, frame, scene) {
     this.animations.add('bombRightCappy', ['bombRightCappy'], 10, false);
     this.animations.add('crouchingLeftCappy', Phaser.Animation.generateFrameNames('crouchingLeftCappy', 1, 4), 10, false);
     this.animations.add('crouchingRightCappy', Phaser.Animation.generateFrameNames('crouchingRightCappy', 1, 4), 10, false);
+    this.animations.add('throwLeft', ['throwLeft'], 10, false);
+    this.animations.add('throwRight', ['throwRight'], 10, false);
     this.animations.add('kickLeft', ['kickLeft'], 10, false);
     this.animations.add('kickRight', ['kickRight'], 10, false);
     //Animaciones herido
@@ -270,13 +270,13 @@ Mario.prototype.Swim = function () {
     }
 }
 //Colisión de Mario con objetos
-Mario.prototype.ObjectCollision = function (object, scene) {
+Mario.prototype.ObjectCollision = function (object) {
     if (this.game.physics.arcade.overlap(object, this)) {
-        object.Collision(this, scene);
+        object.Collision(this, this.scene);
     }
 }
 //Colisión de Mario con enemigos
-Mario.prototype.EnemyCollision = function (enemy, scene) {
+Mario.prototype.EnemyCollision = function (enemy) {
     if (!this.capture) //Si es Mario
     {
         if (this.game.physics.arcade.overlap(enemy, this) && !this.hurt) {
@@ -293,7 +293,7 @@ Mario.prototype.EnemyCollision = function (enemy, scene) {
             }
             else //Si se choca con un enemigo
             {
-                this.Hurt(scene);
+                this.Hurt();
                 return true;
             }
         }
@@ -306,7 +306,7 @@ Mario.prototype.EnemyCollision = function (enemy, scene) {
         return this.enemy.Collision(this, enemy);
 }
 //Daño de Mario
-Mario.prototype.Hurt = function (scene) {
+Mario.prototype.Hurt = function () {
     if (this.life > 1) //Su vida es 1 o más
     {
         //Reduce la vida en uno y reproduce el sonido
@@ -316,10 +316,10 @@ Mario.prototype.Hurt = function (scene) {
         this.hurtTimer = this.game.time.totalElapsedSeconds() + this.hurtTime;
     }
     else //Su vida es 0
-        this.Die(scene);
+        this.Die();
 }
 //Muerte de Mario
-Mario.prototype.Die = function (scene) {
+Mario.prototype.Die = function () {
     //Reinicia su posición, su vida, etc
     this.reset(this.spawnX, this.spawnY);
     this.life = 3;
@@ -330,7 +330,7 @@ Mario.prototype.Die = function (scene) {
     if (this.cappy != null)
         this.cappy.Reset();
     //Revive a todos los enemigos
-    scene.enemies.forEach(
+    this.scene.enemies.forEach(
         function (item) {
             item.forEach(
                 function (item) {
@@ -359,7 +359,7 @@ Mario.prototype.ThrowCappy = function () {
         else if (this.capture) //Sale del estado de captura
         {
             //Impulsa a Mario
-            this.body.velocity.y = -this.jumpVelocity / 2;
+            this.body.velocity.y = -this.jumpVelocity / 1.7;
             this.tackling = false;
             this.tackles = 1;
             //Reinicia a Cappy, etc
