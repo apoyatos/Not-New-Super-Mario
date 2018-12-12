@@ -67,12 +67,12 @@ Chomp.prototype.Attack = function (player) {
 Chomp.prototype.MarioMove = function (player) {
     this.captured=true;
     if ((player.x + player.velocity / 30 < (this.originX + this.chain)) && player.facing == 1) {
-        player.body.velocity.x = player.velocity / 4;
+        player.body.velocity.x = player.velocity / 2;
         this.charged = false;
         this.charging = false;
     }
     else if ((player.x - player.velocity / 30 > (this.originX - this.chain)) && player.facing == -1) {
-        player.body.velocity.x = -player.velocity / 4;
+        player.body.velocity.x = -player.velocity / 2;
         this.charged = false;
     }
     else {

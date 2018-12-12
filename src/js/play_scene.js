@@ -74,7 +74,7 @@ var PlayScene = {
     this.player = new Mario(this.game, 4200, 150, 'mario', 5, this);
     this.game.camera.follow(this.player);
     //Boss
-    this.boss = new Boss(this.game, 4300, 0, 'plant', 0, 'chomp', 100, 3, this.player);
+    this.boss = new Boss(this.game, 4300, 0, 'plant', 0, 'chomp', 50, 3, this.player);
     //Enemigos
     this.goombas.add(new Goomba(this.game, 1150, 0, 'goomba', 0, 100, 2, this.player));
     this.goombas.add(new Goomba(this.game, 1500, 0, 'goomba', 0, -100, 2, this.player));

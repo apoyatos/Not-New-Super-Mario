@@ -11,12 +11,12 @@ function Boss(game, x, y, sprite, frame, chompSprite, speed, life, player) {
     this.player = player;
     //Movimiento
     this.speed = speed;
-    this.chomp = new Chomp(this.game, this.x, this.y, chompSprite, 0, 2 * this.speed, 100, 100, 1);
+    this.chomp = new Chomp(this.game, this.x, this.y, chompSprite, 0, 2 * this.speed, 300, 200, 0);
 
     this.life = life;
     this.hurt = false;
-    this.hurtTime = 0;
-    this.hurtTimer = 1;
+    this.hurtTime = 1;
+    this.hurtTimer = 0;
     this.capture = false;
     //Sprites y animaciones
     this.scale.setTo(2, 2);
@@ -28,24 +28,25 @@ Boss.constructor = Boss;
 
 Boss.prototype.Move = function () {
     if (!this.chomp.captured) {
-        this.body.velocity.x = this.speed;
         this.chomp.originX = this.x;
+        this.body.velocity.x = Math.sign(this.player.x - this.x) * this.speed;
     }
-    else {
-        this.speed = this.speed * Math.sign(this.player.velocity.x)
-        console.log(this.speed)
-    }
+    else
+        this.body.velocity.x = 0;
+
 }
 Boss.prototype.ChangeDir = function () {
     this.speed = -this.speed;
 }
 Boss.prototype.Hurt = function () {
-    if (this.chomp.charged && this.game.physics.arcade.overlap(this.player, this)) {
+    if (this.chomp.captured && this.chomp.charged && this.game.physics.arcade.overlap(this.player, this)) {
         if (this.life > 1) {
+            console.log(this.hurt)
             if (!this.hurt) {
                 this.life--;
                 this.hurtTimer = this.hurtTime + this.game.time.totalElapsedSeconds()
                 this.hurt = true;
+                this.player.ThrowCappy();
             }
             else {
                 if (this.hurtTimer < this.game.time.totalElapsedSeconds())
@@ -53,8 +54,11 @@ Boss.prototype.Hurt = function () {
             }
 
         }
-        else
+        else {
+            this.player.ThrowCappy();
+            this.chomp.destroy();
             this.destroy();
+        }
     }
 }
 
