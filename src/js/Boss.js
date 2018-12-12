@@ -11,7 +11,7 @@ function Boss(game, x, y, sprite, frame, chompSprite, speed, life, player) {
     this.player = player;
     //Movimiento
     this.speed = speed;
-    this.chomp = new Chomp(this.game, this.x, this.y, chompSprite, 0, 2 * this.speed, 300, 200, 0,this.player);
+    this.chomp = new Chomp(this.game, this.x, this.y, chompSprite, 0, 3 * this.speed, 200, 200, 1, this.player);
 
     this.life = life;
     this.hurt = false;
@@ -40,24 +40,27 @@ Boss.prototype.ChangeDir = function () {
 }
 Boss.prototype.Hurt = function () {
     if (this.chomp.charged && this.game.physics.arcade.overlap(this.chomp, this)) {
+        console.log(this.life)
         if (this.life > 1) {
-            console.log(this.hurt)
+
             if (!this.hurt) {
                 this.life--;
                 this.hurtTimer = this.hurtTime + this.game.time.totalElapsedSeconds()
                 this.hurt = true;
-                this.player.ThrowCappy();
+
             }
             else {
                 if (this.hurtTimer < this.game.time.totalElapsedSeconds())
                     this.hurt = false;
             }
+            console.log(this.life)
 
         }
         else {
-            this.player.ThrowCappy();
-            this.chomp.destroy();
-            this.destroy();
+            if (!this.hurt) {
+                this.chomp.destroy();
+                this.destroy();
+            }
         }
     }
 }
