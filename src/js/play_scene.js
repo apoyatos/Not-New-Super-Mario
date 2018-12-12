@@ -190,7 +190,15 @@ var PlayScene = {
             this.game.physics.arcade.collide(item, this.eBlocks3);
           }, this);
       }, this);
-
+    //Colisiones chomp bloques
+    this.chomps.forEach(
+      function (item) {
+        this.game.physics.arcade.collide(item, this.blocks, function (chomp, tile) { chomp.BlockCollision(tile, chomp.player); });
+        this.game.physics.arcade.collide(item, this.eBlocks1, function (chomp, tile) { chomp.EBlockCollision(tile, 'coin'); });
+        this.game.physics.arcade.collide(item, this.eBlocks2, function (chomp, tile) { chomp.EBlockCollision(tile, 'heart'); });
+        this.game.physics.arcade.collide(item, this.eBlocks3, function (chomp, tile) { chomp.EBlockCollision(tile, 'superHeart'); });
+      }, this);
+    //Colisiones Boss
     this.game.physics.arcade.collide(this.boss, this.floor);
     this.game.physics.arcade.collide(this.boss, this.collisions, function (enemy) { enemy.ChangeDir(); });
     this.game.physics.arcade.collide(this.boss, this.blocks);

@@ -349,7 +349,7 @@ Mario.prototype.ThrowCappy = function () {
             this.cappy.cappyCapture = false;
             this.recalculateBody();
             if (this.enemy.type == 'chomp')
-                this.enemy.reset(this.enemy.originX, this.enemy.y);
+                this.enemy.reset(this.x+this.enemy.width*-this.facing, this.enemy.y);
         }
     }
 }
