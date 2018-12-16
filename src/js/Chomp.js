@@ -2,11 +2,11 @@
 
 var Enemy = require('./Enemigo.js');
 
-function Chomp(game, x, y, sprite, frame, speed, chain, distance, cooldown,player) {
+function Chomp(game, x, y, sprite, frame, speed, chain, distance, cooldown, player) {
     Enemy.call(this, game, x, y, sprite, frame, 0, 0);
     //Mario
     this.charged = false;
-    this.player=player;
+    this.player = player;
     //Tipo
     this.type = sprite;
     //Movimiento
@@ -43,51 +43,52 @@ Chomp.constructor = Chomp
 
 //Movimiento del chomp
 Chomp.prototype.Move = function () {
-    this.captured = false;
-    if (this.charged) {
-        if ((this.x + (this.speed * this.dir) / 20 > (this.originX + this.chain + this.offset))) {
-            this.charged = false;
-            this.x = this.originX + this.chain;
-            this.cooldownTimer = this.game.time.totalElapsedSeconds() + 2*this.cooldown;
-        }
-        else if ((this.x - (this.speed * this.dir) / 20 < (this.originX - this.chain - this.offset))) {
-            this.charged = false;
-            this.x = this.originX - this.chain;
-            this.cooldownTimer = this.game.time.totalElapsedSeconds() + 2*this.cooldown;
-        }
-        this.body.velocity.x=this.speed*this.dir;
-    }
-    else {
-        if (this.game.time.totalElapsedSeconds() > this.cooldownTimer) {
-            if ((this.x + (this.speed * this.dir) / 20 > (this.originX + this.chain)) || (this.x + (this.speed * this.dir) / 20 < (this.originX - this.chain))) {
-                if (this.chargeAttack) {
-
-                    this.speed = 8 * this.originalSpeed;
-                    this.chargeAttack = false;
-                    this.attack = true;
-                }
-                else if (this.attack) {
-                    this.cooldownTimer = this.game.time.totalElapsedSeconds() + this.cooldown;
-                    this.speed = this.originalSpeed;
-                    this.attack = false;
-                }
-                this.dir = -this.dir;
+    if (!this.captured) {
+        if (this.charged) {
+            if ((this.x + (this.speed * this.dir) / 20 > (this.originX + this.chain + this.offset))) {
+                this.charged = false;
+                this.x = this.originX + this.chain-this.speed/20;
+                this.cooldownTimer = this.game.time.totalElapsedSeconds() + 2 * this.cooldown;
             }
-
+            else if ((this.x - (this.speed * this.dir) / 20 < (this.originX - this.chain - this.offset))) {
+                this.charged = false;
+                this.x = this.originX - this.chain+this.speed/20;
+                this.cooldownTimer = this.game.time.totalElapsedSeconds() + 2 * this.cooldown;
+            }
             this.body.velocity.x = this.speed * this.dir;
-            if ((this.dir < 0 && !this.chargeAttack) || (this.dir > 0 && this.chargeAttack))
-                this.animations.play('walkLeft');
-            else if ((this.dir > 0 && !this.chargeAttack) || (this.dir < 0 && this.chargeAttack))
-                this.animations.play('walkRight');
         }
-        else
-            this.body.velocity.x = 0;
+        else {
+            if (this.game.time.totalElapsedSeconds() > this.cooldownTimer) {
+                if ((this.x + (this.speed * this.dir) / 20 > (this.originX + this.chain)) || (this.x + (this.speed * this.dir) / 20 < (this.originX - this.chain))) {
+                    if (this.chargeAttack) {
+
+                        this.speed = 8 * this.originalSpeed;
+                        this.chargeAttack = false;
+                        this.attack = true;
+                    }
+                    else if (this.attack) {
+                        this.cooldownTimer = this.game.time.totalElapsedSeconds() + this.cooldown;
+                        this.speed = this.originalSpeed;
+                        this.attack = false;
+                    }
+                    this.dir = -this.dir;
+                }
+
+                this.body.velocity.x = this.speed * this.dir;
+            }
+            else
+                this.body.velocity.x = 0;
+        }
+        if ((this.dir < 0 && !this.chargeAttack) || (this.dir > 0 && this.chargeAttack))
+            this.animations.play('walkLeft');
+        else if ((this.dir > 0 && !this.chargeAttack) || (this.dir < 0 && this.chargeAttack))
+            this.animations.play('walkRight');
     }
 }
 //Ataque del chomp
 Chomp.prototype.Attack = function (player) {
     if (this.game.time.totalElapsedSeconds() > this.cooldownTimer) {
-        if (!this.chargeAttack && !this.attack && this.dir == Math.sign(player.x - this.x) && Math.abs(player.x - this.x) < this.distance) {
+        if (!this.chargeAttack && !this.attack && !this.charged && this.dir == Math.sign(player.x - this.x) && Math.abs(player.x - this.x) < this.distance) {
             this.speed = 4 * this.originalSpeed;
             this.dir = -this.dir
             this.chargeAttack = true;
@@ -96,14 +97,13 @@ Chomp.prototype.Attack = function (player) {
 }
 //Movimiento del chomp capturado
 Chomp.prototype.MarioMove = function (player) {
-    this.captured = true;
     if ((player.x + player.velocity / 30 < (this.originX + this.chain)) && player.facing == 1) {
-        player.body.velocity.x = player.velocity / 2;
+        player.body.velocity.x = player.velocity / 3;
         this.charged = false;
         this.charging = false;
     }
     else if ((player.x - player.velocity / 30 > (this.originX - this.chain)) && player.facing == -1) {
-        player.body.velocity.x = -player.velocity / 2;
+        player.body.velocity.x = -player.velocity / 3;
         this.charged = false;
         this.charging = false;
     }
@@ -121,17 +121,19 @@ Chomp.prototype.MarioMove = function (player) {
 }
 //Chomp capturado quieto o atacando
 Chomp.prototype.MarioNotMoving = function (player) {
-    this.captured = true;
-    if (this.charged) {
-        player.ThrowCappy();
-        this.speed = 8 * this.originalSpeed;
-        this.dir=-player.facing
-    }
-    else //Quieto
-    {
-        player.body.velocity.x = 0;
-        this.charged = false;
-        this.charging = false;
+    if (this.captured) {
+        if (this.charged) {
+            this.dir = -player.facing
+            this.chargeAttack = false
+            player.ThrowCappy();
+            this.speed = 8 * this.originalSpeed;
+        }
+        else //Quieto
+        {
+            player.body.velocity.x = 0;
+            this.charged = false;
+            this.charging = false;
+        }
     }
 }
 //Salto del chomp capturado

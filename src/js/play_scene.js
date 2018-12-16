@@ -81,7 +81,7 @@ var PlayScene = {
     this.enemies.push(this.chomps);
     this.enemies.push(this.plants);
     this.enemies.push(this.spinys);
-    this.chomps.add(this.boss.chomp);
+   // this.chomps.add(this.boss.chomp);
     //Array capturables
     this.capturables.push(this.goombas);
     this.capturables.push(this.chomps);

@@ -368,6 +368,7 @@ Mario.prototype.ThrowCappy = function () {
             this.cappy.cappyCapture = false;
             this.goombaCount = 1;
             this.recalculateBody();
+            this.enemy.captured=false
             //Si el enemigo era un chomp reaparece
             if (this.enemy.type == 'chomp')
                 this.enemy.reset(this.x+this.enemy.width*-this.facing, this.enemy.y);

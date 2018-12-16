@@ -100,6 +100,7 @@ Cappy.prototype.Capture = function (enemy, scene) {
     {
         //Pausa la escena
         scene.pause = true;
+        enemy.captured=true;
         this.cappyCapture = true;
         this.player.capture = true;
         this.player.enemy = enemy;
