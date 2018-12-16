@@ -29,7 +29,7 @@ Fireplant.prototype.Shoot = function (target) {
     else
         this.frame = 5;
 }
-//Ángulo de disparo par aanimaciones
+//Ángulo de disparo para animaciones
 Fireplant.prototype.Angle = function (target) {
     this.angleShoot = Math.abs((this.game.physics.arcade.angleBetween(this, target) * 180) / Math.PI);
     if (this.angleShoot <= 36)

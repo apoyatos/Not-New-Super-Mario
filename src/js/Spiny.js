@@ -9,6 +9,8 @@ function Spiny(game, x, y, sprite, frame, speed) {
     //Animaciones
     this.animations.add('walkLeft', [0, 1], 5, true);
     this.animations.add('walkRight', [2, 3], 5, true);
+    //Tipo
+    this.type = sprite;
 }
 Spiny.prototype = Object.create(Enemy.prototype);
 Spiny.constructor = Spiny;

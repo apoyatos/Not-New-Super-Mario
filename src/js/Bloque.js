@@ -14,7 +14,7 @@ function Block(game, coinSprite, heartSprite, superHeartSprite) {
     this.hitSound = this.game.add.audio('hit');
 }
 
-//Bloque normal
+//Bloques normales
 Block.prototype.HitBlock = function (player, tile) {
     if (!player.capture) //Si es Mario
     {
@@ -27,7 +27,7 @@ Block.prototype.HitBlock = function (player, tile) {
     else //Enemigos poseidos
         player.enemy.BlockCollision(tile, player);
 }
-//Bloque Especial
+//Bloques especiales
 Block.prototype.HitEspecialBlock = function (player, tile, prizeType) {
     if (!player.capture) //Si es Mario
     {
@@ -56,7 +56,7 @@ Block.prototype.HitEspecialBlock = function (player, tile, prizeType) {
             this.hitSound.play();
     }
     else //Enemigos poseidos
-        player.enemy.EBlockCollision(tile, prizeType);
+        player.enemy.EspecialBlockCollision(tile, prizeType);
 }
 
 module.exports = Block;

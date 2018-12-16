@@ -5,10 +5,8 @@ var Enemy = require('./Enemigo.js');
 function Chomp(game, x, y, sprite, frame, speed, chain, distance, cooldown, player) {
     Enemy.call(this, game, x, y, sprite, frame, 0, 0);
     //Mario
-    this.charged = false;
     this.player = player;
-    //Tipo
-    this.type = sprite;
+    this.charged = false;
     //Movimiento
     this.speed = speed;
     this.dir = 1;
@@ -18,12 +16,12 @@ function Chomp(game, x, y, sprite, frame, speed, chain, distance, cooldown, play
     this.originX = x;
     this.offset = 150;
     //Acciones
-    this.chargeAttack = false;
     this.attack = false;
     this.charging = false;
+    this.chargeAttack = false;
     this.captured = false;
     //Temporizadores
-    this.cooldown = cooldown;
+    this.cooldownTime = cooldown;
     this.cooldownTimer = 0;
     this.chargeTime = 1;
     this.chargeTimer = 0;
@@ -43,42 +41,48 @@ Chomp.constructor = Chomp
 
 //Movimiento del chomp
 Chomp.prototype.Move = function () {
-    if (!this.captured) {
-        if (this.charged) {
-            if ((this.x + (this.speed * this.dir) / 20 > (this.originX + this.chain + this.offset))) {
+    if (!this.captured) //Si es el chomp
+    {
+        if (this.charged) //Cargando
+        {
+            if ((this.x + (this.speed * this.dir) / 20 > (this.originX + this.chain + this.offset))) //Derecha
+            {
                 this.charged = false;
-                this.x = this.originX + this.chain-this.speed/20;
-                this.cooldownTimer = this.game.time.totalElapsedSeconds() + 2 * this.cooldown;
+                this.x = this.originX + this.chain - this.speed / 20;
+                this.cooldownTimer = this.game.time.totalElapsedSeconds() + 2 * this.cooldownTime;
             }
-            else if ((this.x - (this.speed * this.dir) / 20 < (this.originX - this.chain - this.offset))) {
+            else if ((this.x - (this.speed * this.dir) / 20 < (this.originX - this.chain - this.offset))) //Izquierda
+            {
                 this.charged = false;
-                this.x = this.originX - this.chain+this.speed/20;
-                this.cooldownTimer = this.game.time.totalElapsedSeconds() + 2 * this.cooldown;
+                this.x = this.originX - this.chain + this.speed / 20;
+                this.cooldownTimer = this.game.time.totalElapsedSeconds() + 2 * this.cooldownTime;
             }
             this.body.velocity.x = this.speed * this.dir;
         }
-        else {
+        else //cargado
+        {
             if (this.game.time.totalElapsedSeconds() > this.cooldownTimer) {
                 if ((this.x + (this.speed * this.dir) / 20 > (this.originX + this.chain)) || (this.x + (this.speed * this.dir) / 20 < (this.originX - this.chain))) {
-                    if (this.chargeAttack) {
-
+                    if (this.chargeAttack) //Ataque cargado
+                    {
                         this.speed = 8 * this.originalSpeed;
                         this.chargeAttack = false;
                         this.attack = true;
                     }
-                    else if (this.attack) {
-                        this.cooldownTimer = this.game.time.totalElapsedSeconds() + this.cooldown;
+                    else if (this.attack) //Ataque normal
+                    {
+                        this.cooldownTimer = this.game.time.totalElapsedSeconds() + this.cooldownTime;
                         this.speed = this.originalSpeed;
                         this.attack = false;
                     }
                     this.dir = -this.dir;
                 }
-
                 this.body.velocity.x = this.speed * this.dir;
             }
-            else
+            else //Quieto
                 this.body.velocity.x = 0;
         }
+        //Animaciones
         if ((this.dir < 0 && !this.chargeAttack) || (this.dir > 0 && this.chargeAttack))
             this.animations.play('walkLeft');
         else if ((this.dir > 0 && !this.chargeAttack) || (this.dir < 0 && this.chargeAttack))
@@ -88,6 +92,7 @@ Chomp.prototype.Move = function () {
 //Ataque del chomp
 Chomp.prototype.Attack = function (player) {
     if (this.game.time.totalElapsedSeconds() > this.cooldownTimer) {
+        //Si no esta cargando o atacando y se encuentra a cierta distancia de Mario
         if (!this.chargeAttack && !this.attack && !this.charged && this.dir == Math.sign(player.x - this.x) && Math.abs(player.x - this.x) < this.distance) {
             this.speed = 4 * this.originalSpeed;
             this.dir = -this.dir
@@ -97,13 +102,15 @@ Chomp.prototype.Attack = function (player) {
 }
 //Movimiento del chomp capturado
 Chomp.prototype.MarioMove = function (player) {
-    if ((player.x + player.velocity / 30 < (this.originX + this.chain)) && player.facing == 1) {
-        player.body.velocity.x = player.velocity / 3;
+    if ((player.x + player.velocity / 30 < (this.originX + this.chain)) && player.facing == 1) //Derecha
+    {
+        player.body.velocity.x = player.velocity / 2;
         this.charged = false;
         this.charging = false;
     }
-    else if ((player.x - player.velocity / 30 > (this.originX - this.chain)) && player.facing == -1) {
-        player.body.velocity.x = -player.velocity / 3;
+    else if ((player.x - player.velocity / 30 > (this.originX - this.chain)) && player.facing == -1) //Izquierda
+    {
+        player.body.velocity.x = -player.velocity / 2;
         this.charged = false;
         this.charging = false;
     }
@@ -119,10 +126,11 @@ Chomp.prototype.MarioMove = function (player) {
             this.charged = true;
     }
 }
-//Chomp capturado quieto o atacando
+//Chomp capturado cargando o quieto
 Chomp.prototype.MarioNotMoving = function (player) {
     if (this.captured) {
-        if (this.charged) {
+        if (this.charged) //Cargando
+        {
             this.dir = -player.facing
             this.chargeAttack = false
             player.ThrowCappy();
@@ -156,10 +164,13 @@ Chomp.prototype.BlockCollision = function (tile, player) {
         this.breakSound.play();
     }
 }
-//Colisiones del chomp capturado con bloques normales
+//Colisiones del chomp capturado con bloques especiales
 Chomp.prototype.EspecialBlockCollision = function (tile, prizeType) {
-    if (tile.index == 2) {
-        if (this.charged) {
+    if (tile.index == 2) //Bloque sin activar
+    {
+        if (this.charged) //Si está cargado
+        {
+            //Al chocar con el bloque crea el premio
             tile.index = 123;
             tile.layer.dirty = true;
 

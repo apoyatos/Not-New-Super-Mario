@@ -56,7 +56,7 @@ Goomba.prototype.MarioNotMoving = function (player) {
 }
 //Salto del goomba capturado
 Goomba.prototype.MarioJump = function (player) {
-    player.body.velocity.y = -player.jumpVelocity / 1.6;
+    player.body.velocity.y = -player.jumpVelocity / 1.7;
 }
 //Colisiones del goomba capturado con enemigos
 Goomba.prototype.Collision = function (player, enemy) {

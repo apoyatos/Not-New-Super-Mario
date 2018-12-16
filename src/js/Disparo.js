@@ -30,7 +30,7 @@ Shot.prototype.Shoot = function (target, speed) {
   if (this.sprite == 'fireball')
     this.fireballSound.play();
   else {
-    //Disparo del tanque (Expansión)
+    //Disparo del tanque (DLC)
   }
 }
 //Destrucción del disparo

@@ -173,12 +173,10 @@ Mario.prototype.Move = function (dir) {
         if (!this.bombJump) //En el salto bomba no hay movimiento
         {
             this.moving = true;
-            if (!this.crouching && !this.running) //Si no está agachado y no está corriendo
+            if (!this.crouching) //Si no está agachado
                 this.body.velocity.x = this.facing * this.velocity;
             else if (this.crouching && !this.running) //Si está agachado
                 this.body.velocity.x = this.facing * (this.velocity / 3);
-            else if (!this.crouching && this.running) //Si está corriendo
-                this.body.velocity.x = this.facing * this.velocity * 1.5;
             else if (this.crouching && this.running) //Si está agachado corriendo
                 this.body.velocity.x = this.facing * this.velocity * 1.7;
         }
@@ -223,7 +221,7 @@ Mario.prototype.Tackle = function () {
     if (!this.capture && !this.body.onFloor() && this.tackles > 0) //Si es Mario. Si está en el aire se puede impulsar
     {
         if (!this.body.onFloor() && this.tackles > 0) {
-            this.body.velocity.y = -this.jumpVelocity / 2;
+            this.body.velocity.y = -this.jumpVelocity / 1.8;
             this.body.velocity.x = this.facing * (this.velocity / 2);
 
             this.tackles--;
@@ -266,7 +264,7 @@ Mario.prototype.Swim = function () {
     }
     else //Enemigos capturados
     {
-        //Movimiento del pez (Expansión)
+        //Movimiento del pez (DLC)
     }
 }
 //Colisión de Mario con objetos
@@ -359,7 +357,7 @@ Mario.prototype.ThrowCappy = function () {
         else if (this.capture) //Sale del estado de captura
         {
             //Impulsa a Mario
-            this.body.velocity.y = -this.jumpVelocity / 1.7;
+            this.body.velocity.y = -this.jumpVelocity / 1.2;
             this.tackling = false;
             this.tackles = 1;
             //Reinicia a Cappy, etc
@@ -368,10 +366,9 @@ Mario.prototype.ThrowCappy = function () {
             this.cappy.cappyCapture = false;
             this.goombaCount = 1;
             this.recalculateBody();
-            this.enemy.captured=false
-            //Si el enemigo era un chomp reaparece
-            if (this.enemy.type == 'chomp')
-                this.enemy.reset(this.x+this.enemy.width*-this.facing, this.enemy.y);
+            this.enemy.captured = false
+            //El enemigo reaparece
+            this.enemy.reset(this.x + this.enemy.width * -this.facing, this.enemy.y);
         }
     }
 }
@@ -468,7 +465,7 @@ Mario.prototype.handleAnimations = function () {
     else //Animaciones de enemigo capturado
         this.enemy.handleAnimations(this);
 }
-//Recalcula la caja de colisiones
+//Recalcula la caja de colisiones de Mario
 Mario.prototype.recalculateBody = function () {
     this.handleAnimations();
     this.body.height = this.height;

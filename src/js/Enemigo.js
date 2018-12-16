@@ -24,7 +24,7 @@ Enemy.prototype.EnemyShoot = function (target, sprite, enemy) {
     //Crea el disparo
     if (sprite == 'fireball') {
       var shot = new Disparo(enemy.game, enemy.x, enemy.y, sprite, 0, 'fireball', [0, 1, 2, 3], 5);
-      //Lo lanza
+      //Lo dispara
       shot.Shoot(target, enemy.shootSpeed);
       this.shootTimer = enemy.game.time.totalElapsedSeconds() + this.shootTime;
       return shot;

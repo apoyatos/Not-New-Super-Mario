@@ -13,7 +13,7 @@ Checkpoint.constructor = Checkpoint;
 //Guarda la posición de reaparición de Mario
 Checkpoint.prototype.Collision = function (player) {
     player.spawnX = this.x;
-    player.spawnY = this.y;
+    player.spawnY = this.y - 64;
     this.frame = 1;
     //Sonido de la bandera
 }

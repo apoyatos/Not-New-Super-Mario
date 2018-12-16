@@ -58,6 +58,8 @@ Cappy.prototype.Check = function () {
         {
             this.body.velocity.x = 0;
             this.cappyStopped = true;
+            this.throwSound.stop();
+            this.throwSound.play();
             this.cappyHoldTimer = this.game.time.totalElapsedSeconds() + this.cappyHoldTime;
             this.cappyStopTimer = this.game.time.totalElapsedSeconds() + this.cappyStopTime;
         }
@@ -96,11 +98,11 @@ Cappy.prototype.Reset = function () {
 }
 //Captura al enemigo con Cappy
 Cappy.prototype.Capture = function (enemy, scene) {
-    if (this.game.physics.arcade.overlap(this.player.cappy, enemy)) //Al chocar con un enemigo capturables
+    if (this.game.physics.arcade.overlap(this.player.cappy, enemy)) //Al chocar con un enemigo capturable
     {
         //Pausa la escena
         scene.pause = true;
-        enemy.captured=true;
+        enemy.captured = true;
         this.cappyCapture = true;
         this.player.capture = true;
         this.player.enemy = enemy;
