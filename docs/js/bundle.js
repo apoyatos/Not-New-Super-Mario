@@ -14,7 +14,7 @@ Checkpoint.constructor = Checkpoint;
 //Guarda la posición de reaparición de Mario
 Checkpoint.prototype.Collision = function (player) {
     player.spawnX = this.x;
-    player.spawnY = this.y;
+    player.spawnY = this.y - 64;
     this.frame = 1;
     //Sonido de la bandera
 }
@@ -38,7 +38,7 @@ function Block(game, coinSprite, heartSprite, superHeartSprite) {
     this.hitSound = this.game.add.audio('hit');
 }
 
-//Bloque normal
+//Bloques normales
 Block.prototype.HitBlock = function (player, tile) {
     if (!player.capture) //Si es Mario
     {
@@ -51,15 +51,15 @@ Block.prototype.HitBlock = function (player, tile) {
     else //Enemigos poseidos
         player.enemy.BlockCollision(tile, player);
 }
-//Bloque Especial
+//Bloques especiales
 Block.prototype.HitEspecialBlock = function (player, tile, prizeType) {
     if (!player.capture) //Si es Mario
     {
-        if (tile.index == 2) //Bloque sin activar
+        if (tile.index == 498) //Bloque sin activar
         {
             if ((player.body.blocked.up) || (player.prevY < player.y && player.crouching)) //Al chocar con el bloque crea el premio
             {
-                tile.index = 123;
+                tile.index = 619;
                 tile.layer.dirty = true;
 
                 if (prizeType == 'coin') //Crea una moneda
@@ -80,12 +80,87 @@ Block.prototype.HitEspecialBlock = function (player, tile, prizeType) {
             this.hitSound.play();
     }
     else //Enemigos poseidos
-        player.enemy.EBlockCollision(tile, prizeType);
+        player.enemy.EspecialBlockCollision(tile, prizeType);
 }
 
 module.exports = Block;
 
-},{"./Corazon.js":5,"./Moneda.js":11}],3:[function(require,module,exports){
+},{"./Corazon.js":6,"./Moneda.js":12}],3:[function(require,module,exports){
+'use strict';
+
+var Chomp = require('./Chomp.js')
+
+function Boss(game, x, y, sprite, frame, chompSprite, speed, life, player) {
+    Phaser.Sprite.call(this, game, x, y, sprite, frame);
+    //Mario
+    this.player = player;
+    //Chomp
+    this.chomp = new Chomp(this.game, this.x, this.y, chompSprite, 0, 50, 100, 300, 1, this.player);
+    this.capture = false;
+    //Movimiento
+    this.speed = speed;
+    //Vida y daño
+    this.life = life;
+    this.hurt = false;
+    this.hurtTime = 1;
+    this.hurtTimer = 0;
+    //Propiedades
+    this.game.world.addChild(this);
+    this.game.physics.arcade.enable(this);
+    this.body.collideWorldBounds = true;
+    this.body.gravity.y = 600;
+    this.scale.setTo(3, 3);
+    //Caja de colisión
+    this.originalHeight = this.body.height * this.scale.x;
+}
+Boss.prototype = Object.create(Phaser.Sprite.prototype);
+Boss.constructor = Boss;
+
+//Movimiento del Boss
+Boss.prototype.Move = function () {
+    if (!this.chomp.captured) //Si el chomp no está capturado modifica su punto de anclaje
+    {
+        this.chomp.originX = this.x;
+        this.body.velocity.x = Math.sign(this.player.x - this.x) * this.speed;
+    }
+    else
+        this.body.velocity.x = Math.sign(this.player.x - this.x) * this.speed;;
+
+}
+//Cammbia la dirección
+Boss.prototype.ChangeDir = function () {
+    this.speed = -this.speed;
+}
+//Vidas y daño recibido
+Boss.prototype.Hurt = function () {
+    if (this.chomp.charged && this.game.physics.arcade.overlap(this.chomp, this)) //Si se choca con el chomp cargado
+    {
+        if (this.life > 1) //Su vida es 1 o más
+        {
+            if (!this.hurt) //Se hace daño
+            {
+                this.life--;
+                this.hurtTimer = this.hurtTime + this.game.time.totalElapsedSeconds()
+                this.hurt = true;
+            }
+            else {
+                if (this.hurtTimer < this.game.time.totalElapsedSeconds())
+                    this.hurt = false;
+            }
+        }
+        else //Se muere y desaparece junto al chomp
+        {
+            if (!this.hurt) {
+                this.chomp.destroy();
+                this.destroy();
+            }
+        }
+    }
+}
+
+
+module.exports = Boss;
+},{"./Chomp.js":5}],4:[function(require,module,exports){
 'use strict';
 
 function Cappy(game, x, y, name, player, dir) {
@@ -146,6 +221,8 @@ Cappy.prototype.Check = function () {
         {
             this.body.velocity.x = 0;
             this.cappyStopped = true;
+            this.throwSound.stop();
+            this.throwSound.play();
             this.cappyHoldTimer = this.game.time.totalElapsedSeconds() + this.cappyHoldTime;
             this.cappyStopTimer = this.game.time.totalElapsedSeconds() + this.cappyStopTime;
         }
@@ -184,10 +261,11 @@ Cappy.prototype.Reset = function () {
 }
 //Captura al enemigo con Cappy
 Cappy.prototype.Capture = function (enemy, scene) {
-    if (this.game.physics.arcade.overlap(this.player.cappy, enemy)) //Al chocar con un enemigo capturables
+    if (this.game.physics.arcade.overlap(this.player.cappy, enemy)) //Al chocar con un enemigo capturable
     {
         //Pausa la escena
         scene.pause = true;
+        enemy.captured = true;
         this.cappyCapture = true;
         this.player.capture = true;
         this.player.enemy = enemy;
@@ -226,26 +304,31 @@ Cappy.prototype.Stunn = function (enemy) {
 
 module.exports = Cappy;
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 
 var Enemy = require('./Enemigo.js');
 
-function Chomp(game, x, y, sprite, frame, speed, chain, distance, cooldown) {
+function Chomp(game, x, y, sprite, frame, speed, chain, distance, cooldown, player) {
     Enemy.call(this, game, x, y, sprite, frame, 0, 0);
     //Mario
+    this.player = player;
     this.charged = false;
     //Movimiento
     this.speed = speed;
+    this.dir = 1;
     this.chain = chain;
     this.distance = distance;
     this.originalSpeed = speed;
     this.originX = x;
+    this.offset = 150;
     //Acciones
     this.attack = false;
     this.charging = false;
+    this.chargeAttack = false;
+    this.captured = false;
     //Temporizadores
-    this.cooldown = cooldown;
+    this.cooldownTime = cooldown;
     this.cooldownTimer = 0;
     this.chargeTime = 1;
     this.chargeTimer = 0;
@@ -253,8 +336,8 @@ function Chomp(game, x, y, sprite, frame, speed, chain, distance, cooldown) {
     this.breakSound = this.game.add.audio('break');
     this.hitSound = this.game.add.audio('hit');
     //Animaciones
-    this.animations.add('walkLeft', [0, 1, 4, 1, 0], 5, true);
-    this.animations.add('walkRight', [3, 2, 7, 2, 3], 5, true);
+    this.animations.add('walkLeft', [2, 1, 3], 5, true);
+    this.animations.add('walkRight', [5, 6, 4], 5, true);
     //Caja de colisión
     this.originalHeight = this.body.height * this.scale.x;
     //Tipo
@@ -265,50 +348,80 @@ Chomp.constructor = Chomp
 
 //Movimiento del chomp
 Chomp.prototype.Move = function () {
-    if (this.game.time.totalElapsedSeconds() > this.cooldownTimer) {
-        if ((this.x + this.speed / 30 > (this.originX + this.chain)) || (this.x + this.speed / 30 < (this.originX - this.chain))) //Si está en el area de la cadena
+    if (!this.captured) //Si es el chomp
+    {
+        if (this.charged) //Cargando
         {
-            if (this.attack) //Ataque cargando contra Mario
+            if ((this.x + (this.speed * this.dir) / 20 > (this.originX + this.chain + this.offset))) //Derecha
             {
-                this.speed = this.originalSpeed * Math.sign(this.speed);
-                this.attack = false;
-                this.cooldownTimer = this.game.time.totalElapsedSeconds() + this.cooldown;
+                this.charged = false;
+                this.x = this.originX + this.chain - this.speed / 20;
+                this.cooldownTimer = this.game.time.totalElapsedSeconds() + 2 * this.cooldownTime;
             }
-            this.speed = -this.speed;
+            else if ((this.x - (this.speed * this.dir) / 20 < (this.originX - this.chain - this.offset))) //Izquierda
+            {
+                this.charged = false;
+                this.x = this.originX - this.chain + this.speed / 20;
+                this.cooldownTimer = this.game.time.totalElapsedSeconds() + 2 * this.cooldownTime;
+            }
+            this.body.velocity.x = this.speed * this.dir;
         }
-        this.body.velocity.x = this.speed;
+        else //cargado
+        {
+            if (this.game.time.totalElapsedSeconds() > this.cooldownTimer) {
+                if ((this.x + (this.speed * this.dir) / 20 > (this.originX + this.chain)) || (this.x + (this.speed * this.dir) / 20 < (this.originX - this.chain))) {
+                    if (this.chargeAttack) //Ataque cargado
+                    {
+                        this.speed = 8 * this.originalSpeed;
+                        this.chargeAttack = false;
+                        this.attack = true;
+                    }
+                    else if (this.attack) //Ataque normal
+                    {
+                        this.cooldownTimer = this.game.time.totalElapsedSeconds() + this.cooldownTime;
+                        this.speed = this.originalSpeed;
+                        this.attack = false;
+                    }
+                    this.dir = -this.dir;
+                }
+                this.body.velocity.x = this.speed * this.dir;
+            }
+            else //Quieto
+                this.body.velocity.x = 0;
+        }
         //Animaciones
-        if (this.speed < 0)
+        if ((this.dir < 0 && !this.chargeAttack) || (this.dir > 0 && this.chargeAttack))
             this.animations.play('walkLeft');
-        else
+        else if ((this.dir > 0 && !this.chargeAttack) || (this.dir < 0 && this.chargeAttack))
             this.animations.play('walkRight');
     }
-    else
-        this.body.velocity.x = 0;
 }
+//Cambia la dirección
+Chomp.prototype.ChangeDir = function () { }
 //Ataque del chomp
 Chomp.prototype.Attack = function (player) {
     if (this.game.time.totalElapsedSeconds() > this.cooldownTimer) {
-        if (!this.attack && (Math.sign(this.speed) == Math.sign(player.x - this.x) && Math.abs(player.x - this.x) < this.distance)) //Si Mario está en rango ataca
-        {
-            this.x = this.originX + this.chain * Math.sign(-this.speed);
-            this.speed = 4 * this.speed;
-            this.attack = true;
+        //Si no esta cargando o atacando y se encuentra a cierta distancia de Mario
+        if (!this.chargeAttack && !this.attack && !this.charged && this.dir == Math.sign(player.x - this.x) && Math.abs(player.x - this.x) < this.distance) {
+            this.speed = 4 * this.originalSpeed;
+            this.dir = -this.dir
+            this.chargeAttack = true;
         }
     }
 }
 //Movimiento del chomp capturado
 Chomp.prototype.MarioMove = function (player) {
-    if ((player.x + player.velocity / 30 < (this.originX + this.chain)) && player.facing == 1) //Movimiento hacia la derecha
+    if ((player.x + player.velocity / 30 < (this.originX + this.chain)) && player.facing == 1) //Derecha
     {
-        player.body.velocity.x = player.velocity / 3;
+        player.body.velocity.x = player.velocity / 2;
         this.charged = false;
         this.charging = false;
     }
-    else if ((player.x - player.velocity / 30 > (this.originX - this.chain)) && player.facing == -1) //Movimiento hacia la izquierda
+    else if ((player.x - player.velocity / 30 > (this.originX - this.chain)) && player.facing == -1) //Izquierda
     {
-        player.body.velocity.x = -player.velocity / 3;
+        player.body.velocity.x = -player.velocity / 2;
         this.charged = false;
+        this.charging = false;
     }
     else {
         player.body.velocity.x = 0;
@@ -322,21 +435,22 @@ Chomp.prototype.MarioMove = function (player) {
             this.charged = true;
     }
 }
-//Chomp capturado quieto o atacando
+//Chomp capturado cargando o quieto
 Chomp.prototype.MarioNotMoving = function (player) {
-    if (this.charged && ((player.x + player.velocity / 30 < (this.originX + this.chain) + 150) && player.facing == -1)) //Movimiento cargado hacia la derecha
-    {
-        player.body.velocity.x = 4 * player.velocity;
-    }
-    else if (this.charged && ((player.x - player.velocity / 30 > (this.originX - this.chain) - 150) && player.facing == 1)) //Movimiento cargado hacia la izquierda
-    {
-        player.body.velocity.x = -4 * player.velocity;
-    }
-    else //Quieto
-    {
-        player.body.velocity.x = 0;
-        this.charged = false;
-        this.charging = false;
+    if (this.captured) {
+        if (this.charged) //Cargando
+        {
+            this.dir = -player.facing
+            this.chargeAttack = false
+            player.ThrowCappy();
+            this.speed = 8 * this.originalSpeed;
+        }
+        else //Quieto
+        {
+            player.body.velocity.x = 0;
+            this.charged = false;
+            this.charging = false;
+        }
     }
 }
 //Salto del chomp capturado
@@ -359,11 +473,14 @@ Chomp.prototype.BlockCollision = function (tile, player) {
         this.breakSound.play();
     }
 }
-//Colisiones del chomp capturado con bloques normales
+//Colisiones del chomp capturado con bloques especiales
 Chomp.prototype.EspecialBlockCollision = function (tile, prizeType) {
-    if (tile.index == 2) {
-        if (this.charged) {
-            tile.index = 123;
+    if (tile.index == 498) //Bloque sin activar
+    {
+        if (this.charged) //Si está cargado
+        {
+            //Al chocar con el bloque crea el premio
+            tile.index = 619;
             tile.layer.dirty = true;
 
             if (prizeType == 'coin') //Crea una moneda
@@ -385,28 +502,45 @@ Chomp.prototype.EspecialBlockCollision = function (tile, prizeType) {
 Chomp.prototype.handleAnimations = function (player) {
     if (player.hurt) //Si se hace daño
     {
-        if (!this.charged) {
+        if (this.charging) //Si está cargando
+        {
+            if (player.facing == -1)
+                player.animations.play('hurtChargeChompLeft');
+            else
+                player.animations.play('hurtChargeChompRight');
+        }
+        else if (!this.charged) //Si no está atacando
+        {
             if (player.facing == -1)
                 player.animations.play('hurtChompLeft');
             else
                 player.animations.play('hurtChompRight');
         }
-        else {
+        else if (this.charged) //Si está atacando
+        {
             if (player.facing == 1)
                 player.animations.play('hurtChompLeft');
             else
                 player.animations.play('hurtChompRight');
         }
     }
-    else //Si se mueve
-    {
-        if (!this.charged) {
+    else {
+        if (this.charging) //Si está cargando
+        {
+            if (player.facing == -1)
+                player.animations.play('chargeChompLeft');
+            else
+                player.animations.play('chargeChompRight');
+        }
+        else if (!this.charged) //Si no está atacando
+        {
             if (player.facing == -1)
                 player.animations.play('walkChompLeft');
             else
                 player.animations.play('walkChompRight');
         }
-        else {
+        else if (this.charged) //Si está atacando
+        {
             if (player.facing == 1)
                 player.animations.play('walkChompLeft');
             else
@@ -417,7 +551,7 @@ Chomp.prototype.handleAnimations = function (player) {
 
 module.exports = Chomp;
 
-},{"./Enemigo.js":7}],5:[function(require,module,exports){
+},{"./Enemigo.js":8}],6:[function(require,module,exports){
 'use strict';
 
 function Heart(game, x, y, sprite, frame, amount) {
@@ -449,7 +583,7 @@ Heart.prototype.Collision = function (player) {
 
 module.exports = Heart;
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 
 function Shot(game, x, y, sprite, frame, animName, animFrames, animSpeed) {
@@ -482,7 +616,7 @@ Shot.prototype.Shoot = function (target, speed) {
   if (this.sprite == 'fireball')
     this.fireballSound.play();
   else {
-    //Disparo del tanque (Expansión)
+    //Disparo del tanque (DLC)
   }
 }
 //Destrucción del disparo
@@ -494,7 +628,7 @@ Shot.prototype.RemoveShot = function () {
 
 module.exports = Shot;
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 
 var Disparo = require('./Disparo.js');
@@ -521,7 +655,7 @@ Enemy.prototype.EnemyShoot = function (target, sprite, enemy) {
     //Crea el disparo
     if (sprite == 'fireball') {
       var shot = new Disparo(enemy.game, enemy.x, enemy.y, sprite, 0, 'fireball', [0, 1, 2, 3], 5);
-      //Lo lanza
+      //Lo dispara
       shot.Shoot(target, enemy.shootSpeed);
       this.shootTimer = enemy.game.time.totalElapsedSeconds() + this.shootTime;
       return shot;
@@ -534,7 +668,7 @@ Enemy.prototype.EnemyShoot = function (target, sprite, enemy) {
 
 module.exports = Enemy;
 
-},{"./Disparo.js":6}],8:[function(require,module,exports){
+},{"./Disparo.js":7}],9:[function(require,module,exports){
 'use strict';
 
 var Enemy = require('./Enemigo.js');
@@ -543,12 +677,16 @@ function Goomba(game, x, y, sprite, frame, speed, player) {
     Enemy.call(this, game, x, y, sprite, frame, 0, 0);
     //Mario
     this.player = player;
+    this.count = 1;
     //Movimiento
     this.speed = speed;
     //Sonidos
     this.killSound = this.game.add.audio('kill');
     //Animación
-    this.animations.add('walk', [0, 1], 5, true);
+    this.animations.add('walk1', ['walkLeft1', 'walkRight1'], 5, true);
+    this.animations.add('walk2', ['walkLeft2', 'walkRight2'], 5, true);
+    this.animations.add('walk3', ['walkLeft3', 'walkRight3'], 5, true);
+    this.animations.add('walk4', ['walkLeft4', 'walkRight4'], 5, true);
     //Caja de colisión
     this.originalHeight = this.body.height * this.scale.x;
     //Tipo
@@ -560,7 +698,15 @@ Goomba.constructor = Goomba;
 //Movimiento del goomba
 Goomba.prototype.Move = function () {
     this.body.velocity.x = this.speed;
-    this.animations.play('walk');
+    if (this.count == 1)
+        this.animations.play('walk1');
+    else if (this.count == 2)
+        this.animations.play('walk2');
+    else if (this.count == 3)
+        this.animations.play('walk3');
+    else
+        this.animations.play('walk4');
+    this.recalculateBody();
 }
 //Cambia la dirección
 Goomba.prototype.ChangeDir = function () {
@@ -579,6 +725,7 @@ Goomba.prototype.Killed = function () {
 //Muerte del goomba
 Goomba.prototype.Die = function () {
     this.kill();
+    this.count = 1;
 }
 //Movimiento del goomba capturado
 Goomba.prototype.MarioMove = function (player) {
@@ -593,7 +740,7 @@ Goomba.prototype.MarioNotMoving = function (player) {
 }
 //Salto del goomba capturado
 Goomba.prototype.MarioJump = function (player) {
-    player.body.velocity.y = -player.jumpVelocity / 1.6;
+    player.body.velocity.y = -player.jumpVelocity / 1.7;
 }
 //Colisiones del goomba capturado con enemigos
 Goomba.prototype.Collision = function (player, enemy) {
@@ -663,10 +810,15 @@ Goomba.prototype.handleAnimations = function (player) {
             player.animations.play('walkGoomba4');
     }
 }
+//Recalcula la caja de colisiones del goomba
+Goomba.prototype.recalculateBody = function () {
+    this.body.height = this.height;
+    this.body.width = this.width;
+}
 
 module.exports = Goomba;
 
-},{"./Enemigo.js":7}],9:[function(require,module,exports){
+},{"./Enemigo.js":8}],10:[function(require,module,exports){
 'use strict';
 
 function Moon(game, x, y, sprite, frame) {
@@ -706,7 +858,7 @@ Moon.prototype.Collision = function (player, scene) {
 
 module.exports = Moon;
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 'use strict';
 
 var Cappy = require('./Cappy.js');
@@ -857,10 +1009,19 @@ function Mario(game, x, y, sprite, frame, scene) {
     this.animations.add('idleGoomba4', ['goombaLeft4'], 5, false);
     this.animations.add('hurtGoomba4', ['goombaLeft4', 'hurt'], 10, true);
     //Animaciones del Chomp
-    this.animations.add('walkChompLeft', Phaser.Animation.generateFrameNames('ChompLeft', 1, 3), 10, true);
-    this.animations.add('walkChompRight', Phaser.Animation.generateFrameNames('ChompRight', 1, 3), 10, true);
-    this.animations.add('hurtChompLeft', ['ChompLeft1', 'hurt', 'ChompLeft2', 'hurt', 'ChompLeft3', 'hurt', 'ChompLeft2', 'hurt', 'ChompLeft1', 'hurt'], 10, true)
-    this.animations.add('hurtChompRight', ['ChompRight', 'hurt', 'ChompRight2', 'hurt', 'ChompRight3', 'hurt', 'ChompRight2', 'hurt', 'ChompRight1', 'hurt'], 10, true)
+    this.animations.add('walkChompLeft', Phaser.Animation.generateFrameNames('ChompLeft', 1, 3), 5, true);
+    this.animations.add('walkChompRight', Phaser.Animation.generateFrameNames('ChompRight', 1, 3), 5, true);
+    this.animations.add('hurtChompLeft', ['ChompLeft1', 'hurt', 'ChompLeft2', 'hurt', 'ChompLeft3', 'hurt'], 5, true);
+    this.animations.add('hurtChompRight', ['ChompRight1', 'hurt', 'ChompRight2', 'hurt', 'ChompRight3', 'hurt'], 5, true);
+    this.animations.add('chargeChompRight', ['ChompChargeRight'], 5, false);
+    this.animations.add('chargeChompLeft', ['ChompChargeLeft'], 5, false);
+    this.animations.add('hurtChargeChompRight', ['ChompChargeRight', 'hurt'], 5, true);
+    this.animations.add('hurtChargeChompLeft', ['ChompChargeLeft', 'hurt'], 5, true);
+    //Animaciones del T-Rex
+    this.animations.add('walkDinoLeft', Phaser.Animation.generateFrameNames('DinoLeft', 1, 10), 5, true);
+    this.animations.add('walkDinoRight', Phaser.Animation.generateFrameNames('DinoRight', 1, 10), 5, true);
+    this.animations.add('idleDinoLeft', ['DinoLeft9'], 5, false);
+    this.animations.add('idleDinoRight', ['DinoRight9'], 5, false);
 }
 Mario.prototype = Object.create(Phaser.Sprite.prototype);
 Mario.constructor = Mario;
@@ -882,12 +1043,10 @@ Mario.prototype.Move = function (dir) {
         if (!this.bombJump) //En el salto bomba no hay movimiento
         {
             this.moving = true;
-            if (!this.crouching && !this.running) //Si no está agachado y no está corriendo
+            if (!this.crouching) //Si no está agachado
                 this.body.velocity.x = this.facing * this.velocity;
             else if (this.crouching && !this.running) //Si está agachado
                 this.body.velocity.x = this.facing * (this.velocity / 3);
-            else if (!this.crouching && this.running) //Si está corriendo
-                this.body.velocity.x = this.facing * this.velocity * 1.5;
             else if (this.crouching && this.running) //Si está agachado corriendo
                 this.body.velocity.x = this.facing * this.velocity * 1.7;
         }
@@ -932,7 +1091,7 @@ Mario.prototype.Tackle = function () {
     if (!this.capture && !this.body.onFloor() && this.tackles > 0) //Si es Mario. Si está en el aire se puede impulsar
     {
         if (!this.body.onFloor() && this.tackles > 0) {
-            this.body.velocity.y = -this.jumpVelocity / 2;
+            this.body.velocity.y = -this.jumpVelocity / 1.8;
             this.body.velocity.x = this.facing * (this.velocity / 2);
 
             this.tackles--;
@@ -975,7 +1134,7 @@ Mario.prototype.Swim = function () {
     }
     else //Enemigos capturados
     {
-        //Movimiento del pez (Expansión)
+        //Movimiento del pez (DLC)
     }
 }
 //Colisión de Mario con objetos
@@ -1068,18 +1227,27 @@ Mario.prototype.ThrowCappy = function () {
         else if (this.capture) //Sale del estado de captura
         {
             //Impulsa a Mario
-            this.body.velocity.y = -this.jumpVelocity / 1.7;
+            this.body.velocity.y = -this.jumpVelocity / 1.2;
             this.tackling = false;
             this.tackles = 1;
             //Reinicia a Cappy, etc
             this.cappy.Reset()
             this.capture = false;
             this.cappy.cappyCapture = false;
+            //Guarda el número de goombas en la torre
+            if (this.enemy.type == 'goomba')
+                this.enemy.count = this.goombaCount;
             this.goombaCount = 1;
+            this.scale.setTo(2, 2);
             this.recalculateBody();
-            //Si el enemigo era un chomp reaparece
-            if (this.enemy.type == 'chomp')
-                this.enemy.reset(this.enemy.x, this.enemy.y);
+            this.enemy.captured = false
+            //El enemigo reaparece pero si es un T-Rex se muere
+            if (this.enemy.type != 't-rex') {
+                if (this.enemy.type != 'goomba')
+                    this.enemy.reset(this.x + this.enemy.width * -this.facing, this.enemy.y);
+                else //Si es un goomba varia la reaparición según la altura de la torre de goombas
+                    this.enemy.reset(this.x + this.enemy.width * -this.facing, this.enemy.y - this.enemy.count * 25);
+            }
         }
     }
 }
@@ -1176,7 +1344,7 @@ Mario.prototype.handleAnimations = function () {
     else //Animaciones de enemigo capturado
         this.enemy.handleAnimations(this);
 }
-//Recalcula la caja de colisiones
+//Recalcula la caja de colisiones de Mario
 Mario.prototype.recalculateBody = function () {
     this.handleAnimations();
     this.body.height = this.height;
@@ -1185,7 +1353,7 @@ Mario.prototype.recalculateBody = function () {
 
 module.exports = Mario;
 
-},{"./Cappy.js":3}],11:[function(require,module,exports){
+},{"./Cappy.js":4}],12:[function(require,module,exports){
 'use strict';
 
 function Coin(game, x, y, sprite, frame) {
@@ -1213,7 +1381,7 @@ Coin.prototype.Collision = function (player) {
 
 module.exports = Coin;
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 
 var Enemy = require('./Enemigo.js');
@@ -1245,7 +1413,7 @@ Fireplant.prototype.Shoot = function (target) {
     else
         this.frame = 5;
 }
-//Ángulo de disparo par aanimaciones
+//Ángulo de disparo para animaciones
 Fireplant.prototype.Angle = function (target) {
     this.angleShoot = Math.abs((this.game.physics.arcade.angleBetween(this, target) * 180) / Math.PI);
     if (this.angleShoot <= 36)
@@ -1262,7 +1430,7 @@ Fireplant.prototype.Angle = function (target) {
 
 module.exports = Fireplant;
 
-},{"./Enemigo.js":7}],13:[function(require,module,exports){
+},{"./Enemigo.js":8}],14:[function(require,module,exports){
 'use strict';
 
 var Enemy = require('./Enemigo.js');
@@ -1274,6 +1442,8 @@ function Spiny(game, x, y, sprite, frame, speed) {
     //Animaciones
     this.animations.add('walkLeft', [0, 1], 5, true);
     this.animations.add('walkRight', [2, 3], 5, true);
+    //Tipo
+    this.type = sprite;
 }
 Spiny.prototype = Object.create(Enemy.prototype);
 Spiny.constructor = Spiny;
@@ -1298,7 +1468,100 @@ Spiny.prototype.Die = function () {
 
 module.exports = Spiny;
 
-},{"./Enemigo.js":7}],14:[function(require,module,exports){
+},{"./Enemigo.js":8}],15:[function(require,module,exports){
+'use strict';
+
+var Enemy = require('./Enemigo.js');
+
+function TRex(game, x, y, sprite, frame, player) {
+    Enemy.call(this, game, x, y, sprite, frame, 0, 0);
+    this.scale.setTo(0.95, 0.95);
+    //Mario
+    this.player = player;
+    //Sonidos
+    this.breakSound = this.game.add.audio('break');
+    this.hitSound = this.game.add.audio('hit');
+    //Caja de colisión
+    this.originalHeight = this.body.height * this.scale.x;
+    //Tipo
+    this.type = sprite;
+}
+TRex.prototype = Object.create(Enemy.prototype);
+TRex.constructor = TRex;
+
+//Cambia la dirección
+TRex.prototype.ChangeDir = function () { }
+//Movimiento del T-Rex capturado
+TRex.prototype.MarioMove = function (player) {
+    if (!player.running)
+        player.body.velocity.x = player.facing * player.velocity / 1.7;
+    else
+        player.body.velocity.x = player.facing * player.velocity / 1.5;
+}
+//T-Rex capturado quieto
+TRex.prototype.MarioNotMoving = function (player) {
+    player.body.velocity.x = 0;
+}
+//Salto del T-Rex capturado
+TRex.prototype.MarioJump = function (player) {
+    player.body.velocity.y = -player.jumpVelocity / 2;
+}
+//Colisiones del T-Rex capturado con enemigos
+TRex.prototype.Collision = function (player, enemy) {
+    if (player.game.physics.arcade.overlap(enemy, player)) //Si choca con un enemigo
+    {
+        enemy.kill();
+    }
+}
+//Colisiones del T-Rex capturado con bloques normales
+TRex.prototype.BlockCollision = function (tile, player) {
+    player.scene.map.removeTile(tile.x, tile.y, player.scene.blocks);
+    this.breakSound.play();
+}
+//Colisiones del T-Rex capturado con bloques especiales
+TRex.prototype.EspecialBlockCollision = function (tile, prizeType) {
+    if (tile.index == 498) //Bloque sin activar
+    {
+        //Al chocar con el bloque crea el premio
+        tile.index = 619;
+        tile.layer.dirty = true;
+
+        if (prizeType == 'coin') //Crea una moneda
+        {
+            this.coin = new Moneda(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - player.y) * tile.height), this.coinSprite);
+            player.scene.objects.add(this.coin);
+            this.coin.animations.play('coin');
+        }
+        else if (prizeType == 'heart') //Crea un corazón
+            player.scene.objects.add(new Corazon(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - player.y) * tile.height), this.heartSprite, 0, 3));
+        else //Crea un super corazón
+            player.scene.objects.add(new Corazon(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - player.y) * tile.height), this.superHeartSprite, 0, 6));
+
+        this.hitSound.play();
+    }
+}
+//Animaciones
+TRex.prototype.handleAnimations = function (player) {
+    player.scale.setTo(0.95, 0.95);
+    if (!player.moving) //Si no se mueve
+    {
+        if (player.facing == -1)
+            player.animations.play('idleDinoLeft');
+        else
+            player.animations.play('idleDinoRight');
+    }
+    else //Si se mueve
+    {
+        if (player.facing == -1)
+            player.animations.play('walkDinoLeft');
+        else
+            player.animations.play('walkDinoRight');
+    }
+}
+
+module.exports = TRex;
+
+},{"./Enemigo.js":8}],16:[function(require,module,exports){
 'use strict';
 
 var PlayScene = require('./play_scene.js');
@@ -1337,18 +1600,16 @@ var PreloaderScene = {
     this.game.load.atlas('mario', 'images/Mario.png', 'images/Mario.json');
     this.game.load.spritesheet('cappy', 'images/Gorra.png', 16, 8);
     this.game.load.spritesheet('life', 'images/Vida.png', 56, 55);
-    this.game.load.spritesheet('goomba', 'images/Goomba.png', 25, 24);
+    this.game.load.atlas('goomba', 'images/Goomba.png', 'images/Goomba.json');
     this.game.load.spritesheet('spiny', 'images/Spiny.png', 19, 16);
     this.game.load.spritesheet('plant', 'images/PlantaPiraña.png', 18, 34);
-    this.game.load.spritesheet('chomp', 'images/Chomp.png', 31.75, 29.5);
+    this.game.load.spritesheet('chomp', 'images/Chomp.png', 38, 29);
+    this.game.load.image('t-rex', 'images/T-Rex.png');
     this.game.load.spritesheet('fireball', 'images/Disparo-Fuego.png', 9, 9);
     //Mapa
-    //this.game.load.image('tiles', 'tilemaps/super_mario.png');
-    //this.game.load.tilemap('map', 'tilemaps/super_mario.json', null, Phaser.Tilemap.TILED_JSON);
-    this.game.load.tilemap('map', 'tilemaps/level1.json', null, Phaser.Tilemap.TILED_JSON);
-    this.game.load.image('tiles1', 'tilemaps/tiles1G.png');
-    this.game.load.image('tiles2', 'tilemaps/tiles2G.png');
-    this.game.load.image('tiles3', 'tilemaps/tiles3G.png');
+    this.game.load.tilemap('tilemap', 'tilemaps/Nivel1.json', null, Phaser.Tilemap.TILED_JSON);
+    this.game.load.image('tiles1', 'tilemaps/Tiles1.png');
+    this.game.load.image('tiles2', 'tilemaps/Tiles2.png');
     //Sonidos:
 
     //Menu
@@ -1426,7 +1687,7 @@ window.onload = function () {
   game.state.start('boot');
 };
 
-},{"./play_scene.js":15}],15:[function(require,module,exports){
+},{"./play_scene.js":17}],17:[function(require,module,exports){
 'use strict';
 
 var Mario = require('./Mario.js');
@@ -1434,6 +1695,9 @@ var Goomba = require('./Goomba.js');
 var Spiny = require('./Spiny.js');
 var Planta = require('./PlantaPiraña.js');
 var Chomp = require('./Chomp.js');
+var Boss = require('./Boss.js');
+var TRex = require('./T-Rex.js');
+
 var Bandera = require('./Bandera.js');
 var Moneda = require('./Moneda.js');
 var Luna = require('./Luna.js');
@@ -1454,18 +1718,17 @@ var PlayScene = {
     this.lanzar = this.game.input.keyboard.addKey(Phaser.Keyboard.Z);
     this.pausar = this.game.input.keyboard.addKey(Phaser.Keyboard.X);
     //Mapa
-    this.game.stage.backgroundColor = '#787878';
-    this.map = this.game.add.tilemap('map');
-    this.map.addTilesetImage('tiles1G', 'tiles1');
-    this.map.addTilesetImage('tiles2G', 'tiles2');
-    this.map.addTilesetImage('tiles3G', 'tiles3');
-    this.layer = this.map.createLayer('World1');
+    this.map = this.game.add.tilemap('tilemap');
+    this.map.addTilesetImage('Tiles1', 'tiles1');
+    this.map.addTilesetImage('Tiles2', 'tiles2');
+    this.layer = this.map.createLayer(1);
     this.layer.resizeWorld();
     //Objetos del mapa
     this.objects = this.game.add.group();
-    this.map.createFromObjects('Banderas', 1255, 'checkpoint', 0, true, false, this.objects, Bandera);
-    this.map.createFromObjects('Monedas', 11, 'coins', 0, true, false, this.objects, Moneda);
-    this.map.createFromObjects('Lunas', 1269, 'moon', 0, true, false, this.objects, Luna);
+    this.map.createFromObjects('Banderas', 481, 'checkpoint', 0, true, false, this.objects, Bandera);
+    this.map.createFromObjects('Monedas', 481, 'coin', 0, true, false, this.objects, Moneda);
+    this.map.createFromObjects('SuperMonedas', 481, 'superCoin', 0, true, false, this.objects, Moneda);
+    this.map.createFromObjects('Lunas', 481, 'moon', 0, true, false, this.objects, Luna);
     //Colisiones del mapa
     this.collisions = this.map.createLayer('Colisiones');
     this.map.setCollisionByExclusion([], true, 'Colisiones');
@@ -1487,28 +1750,55 @@ var PlayScene = {
     this.plants = this.game.add.group();
     this.chomps = this.game.add.group();
     this.shots = this.game.add.group();
+    this.tRex = this.game.add.group();
     //Arrays
     this.enemies = [];
     this.capturables = [];
     //Mario
-    this.player = new Mario(this.game, 0, 150, 'mario', 5, this);
+    this.player = new Mario(this.game, 32, 2720, 'mario', 5, this);
     this.game.camera.follow(this.player);
-    //Enemigos
-    this.goombas.add(new Goomba(this.game, 1300, 0, 'goomba', 0, 100, this.player));
-    this.goombas.add(new Goomba(this.game, 1500, 0, 'goomba', 0, -100, this.player));
-    this.goombas.add(new Goomba(this.game, 1800, 0, 'goomba', 0, -100, this.player));
-    this.goombas.add(new Goomba(this.game, 1600, 0, 'goomba', 0, 100, this.player));
-    this.spinys.add(new Spiny(this.game, 5000, 0, 'spiny', 0, 100));
-    this.plants.add(new Planta(this.game, 2500, 0, 'plant', 5, 100, 5));
-    this.chomps.add(new Chomp(this.game, 3800, 0, 'chomp', 0, 50, 150, 300, 1));
+    //Boss
+    this.boss = new Boss(this.game, 5470, 446, 'plant', 0, 'chomp', 30, 3, this.player);
+    //T-Rex
+    this.tRex.add(new TRex(this.game, 1408, 2080, 't-rex', 0, this.player));
+    //Enemigos:
+
+    //Goombas
+    this.goombas.add(new Goomba(this.game, 960, 2816, 'goomba', 0, 100, this.player));
+    this.goombas.add(new Goomba(this.game, 1890, 2688, 'goomba', 0, -100, this.player));
+    this.goombas.add(new Goomba(this.game, 2018, 2688, 'goomba', 0, -100, this.player));
+    this.goombas.add(new Goomba(this.game, 2146, 2688, 'goomba', 0, 100, this.player));
+    this.goombas.add(new Goomba(this.game, 2274, 2688, 'goomba', 0, 100, this.player));
+    this.goombas.add(new Goomba(this.game, 4864, 2880, 'goomba', 0, -100, this.player));
+    this.goombas.add(new Goomba(this.game, 5088, 2880, 'goomba', 0, 100, this.player));
+    this.goombas.add(new Goomba(this.game, 4706, 2112, 'goomba', 0, -100, this.player));
+    this.goombas.add(new Goomba(this.game, 4992, 2112, 'goomba', 0, 100, this.player));
+    //Spinys
+    this.spinys.add(new Spiny(this.game, 4576, 2432, 'spiny', 0, -100));
+    this.spinys.add(new Spiny(this.game, 4704, 2432, 'spiny', 0, -100));
+    this.spinys.add(new Spiny(this.game, 4832, 2432, 'spiny', 0, -100));
+    this.spinys.add(new Spiny(this.game, 4960, 2432, 'spiny', 0, -100));
+    this.spinys.add(new Spiny(this.game, 5088, 2432, 'spiny', 0, -100));
+    //Plantas
+    this.plants.add(new Planta(this.game, 2434, 1568, 'plant', 5, 100, 5));
+    this.plants.add(new Planta(this.game, 3936, 1216, 'plant', 5, 100, 5));
+    this.plants.add(new Planta(this.game, 4736, 2688, 'plant', 5, 100, 5));
+    this.plants.add(new Planta(this.game, 5184, 1120, 'plant', 5, 100, 5));
+    //Chomps
+    this.chomps.add(new Chomp(this.game, 2912, 2848, 'chomp', 0, 50, 100, 300, 1, this.player));
+    this.chomps.add(new Chomp(this.game, 3968, 2382, 'chomp', 0, 50, 100, 300, 1, this.player));
+    this.chomps.add(new Chomp(this.game, 4960, 1312, 'chomp', 0, 50, 80, 300, 1, this.player));
+    this.chomps.add(this.boss.chomp);
     //Array enemies
     this.enemies.push(this.goombas);
     this.enemies.push(this.chomps);
     this.enemies.push(this.plants);
     this.enemies.push(this.spinys);
+    this.enemies.push(this.tRex);
     //Array capturables
     this.capturables.push(this.goombas);
     this.capturables.push(this.chomps);
+    this.capturables.push(this.tRex);
     //Bloques
     this.blocksHandler = new Bloque(this.game, 'coin', 'heart', 'superHeart');
     //Vidas
@@ -1596,9 +1886,11 @@ var PlayScene = {
     this.game.physics.arcade.collide(this.player, this.heartBlocks, function (player, tile) { player.scene.blocksHandler.HitEspecialBlock(player, tile, 'heart'); });
     this.game.physics.arcade.collide(this.player, this.superheartBlocks, function (player, tile) { player.scene.blocksHandler.HitEspecialBlock(player, tile, 'superHeart'); });
     //Colisiones de Cappy con el mapa
+    this.game.physics.arcade.collide(this.player.cappy, this.floor);
     this.game.physics.arcade.collide(this.player.cappy, this.collisions);
     //colisiones de objetos con el mapa
     this.game.physics.arcade.collide(this.objects, this.floor);
+    this.game.physics.arcade.collide(this.objects, this.collisions);
     this.game.physics.arcade.collide(this.objects, this.heartBlocks);
     this.game.physics.arcade.collide(this.objects, this.superheartBlocks);
     //Colisiones de enemigos con el mapa y los bloques
@@ -1609,12 +1901,27 @@ var PlayScene = {
             this.game.physics.arcade.collide(item, this.floor);
             this.game.physics.arcade.collide(item, this.collisions, function (enemy) { enemy.ChangeDir(); });
             this.game.physics.arcade.collide(item, this.deathZone, function (enemy) { enemy.Die(); });
-            this.game.physics.arcade.collide(item, this.blocks);
-            this.game.physics.arcade.collide(item, this.coinBlocks);
-            this.game.physics.arcade.collide(item, this.heartBlocks);
-            this.game.physics.arcade.collide(item, this.superheartBlocks);
+            if (item.type != 'chomp' || item.type != 't-rex') {
+              this.game.physics.arcade.collide(item, this.blocks);
+              this.game.physics.arcade.collide(item, this.coinBlocks);
+              this.game.physics.arcade.collide(item, this.heartBlocks);
+              this.game.physics.arcade.collide(item, this.superheartBlocks);
+            }
+            else {
+              this.game.physics.arcade.collide(item, this.blocks, function (chomp, tile) { chomp.BlockCollision(tile, chomp.player); });
+              this.game.physics.arcade.collide(item, this.coinBlocks, function (chomp, tile) { chomp.EspecialBlockCollision(tile, 'coin'); });
+              this.game.physics.arcade.collide(item, this.heartBlocks, function (chomp, tile) { chomp.EspecialBlockCollision(tile, 'heart'); });
+              this.game.physics.arcade.collide(item, this.superheartBlocks, function (chomp, tile) { chomp.EspecialBlockCollision(tile, 'superHeart'); });
+            }
           }, this);
       }, this);
+    //Colisiones de Boss con el mapa y los bloques
+    this.game.physics.arcade.collide(this.boss, this.floor);
+    this.game.physics.arcade.collide(this.boss, this.collisions, function (enemy) { enemy.ChangeDir(); });
+    this.game.physics.arcade.collide(this.boss, this.blocks);
+    this.game.physics.arcade.collide(this.boss, this.coinBlocks);
+    this.game.physics.arcade.collide(this.boss, this.heartBlocks);
+    this.game.physics.arcade.collide(this.boss, this.superheartBlocks);
     //Bucle del juego
     if (!this.pause && !this.pauseButton) //Condiciones de pausa. Juego activo
     {
@@ -1688,6 +1995,11 @@ var PlayScene = {
             item.Attack(this.player);
           }
         }, this);
+      //Boss
+      if (this.boss.alive) {
+        this.boss.Move();
+        this.boss.Hurt();
+      }
       //Colisiones de Mario con objetos
       this.objects.forEach(
         function (item) {
@@ -1716,8 +2028,8 @@ var PlayScene = {
       this.shots.forEach(
         function (item) {
           //Devuelve su movimiento
-          if (item.body.velocity.x == 0) {
-            item.body.velocity.x = item.shotSpeed * item.posX;
+          if (item.body.velocity.x == 0 && this.planta != undefined) {
+            item.body.velocity.x = this.planta.shootingSpeed * item.posX;
             item.animations.play(item.sprite);
           }
           if (this.player.EnemyCollision(item)) {
@@ -1727,8 +2039,8 @@ var PlayScene = {
             item.RemoveShot();
         }, this);
     }
-    else //Juego pausado
-    {
+    //Pausa
+    else {
       //Mario
       this.player.body.gravity.y = 0;
       this.player.body.velocity.x = 0;
@@ -1776,8 +2088,7 @@ var PlayScene = {
         }, this);
     }
   }
-};
-
+}
 module.exports = PlayScene;
 
-},{"./Bandera.js":1,"./Bloque.js":2,"./Chomp.js":4,"./Goomba.js":8,"./Luna.js":9,"./Mario.js":10,"./Moneda.js":11,"./PlantaPiraña.js":12,"./Spiny.js":13}]},{},[14]);
+},{"./Bandera.js":1,"./Bloque.js":2,"./Boss.js":3,"./Chomp.js":5,"./Goomba.js":9,"./Luna.js":10,"./Mario.js":11,"./Moneda.js":12,"./PlantaPiraña.js":13,"./Spiny.js":14,"./T-Rex.js":15}]},{},[16]);
