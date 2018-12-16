@@ -192,9 +192,6 @@ var PlayScene = {
             this.game.physics.arcade.collide(item, this.superheartBlocks);
           }, this);
       }, this);
-    //Bucle del juego
-    if (!this.pause && !this.pauseButton) //Condiciones de pausa. Juego activo
-    {
     //Colisiones chomp bloques
     this.chomps.forEach(
       function (item) {
@@ -210,8 +207,9 @@ var PlayScene = {
     this.game.physics.arcade.collide(this.boss, this.eBlocks1);
     this.game.physics.arcade.collide(this.boss, this.eBlocks2);
     this.game.physics.arcade.collide(this.boss, this.eBlocks3);
-    //Pausa
-    if (!this.pause && !this.pauseButton) {
+    //Bucle del juego
+    if (!this.pause && !this.pauseButton) //Condiciones de pausa. Juego activo
+    {
       //boss
       if (this.boss.alive) {
         this.boss.Move();
@@ -335,6 +333,7 @@ var PlayScene = {
             }, this);
         }, this);
     }
+    //Pausa
     else {
       //Mario
       this.player.body.gravity.y = 0;
@@ -383,6 +382,5 @@ var PlayScene = {
         }, this);
     }
   }
-};
-
+}
 module.exports = PlayScene;
