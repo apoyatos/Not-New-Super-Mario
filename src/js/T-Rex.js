@@ -7,6 +7,9 @@ function TRex(game, x, y, sprite, frame, player) {
     this.scale.setTo(0.95, 0.95);
     //Mario
     this.player = player;
+    //Sonidos
+    this.breakSound = this.game.add.audio('break');
+    this.hitSound = this.game.add.audio('hit');
     //Caja de colisión
     this.originalHeight = this.body.height * this.scale.x;
     //Tipo
@@ -46,10 +49,10 @@ TRex.prototype.BlockCollision = function (tile, player) {
 }
 //Colisiones del T-Rex capturado con bloques especiales
 TRex.prototype.EspecialBlockCollision = function (tile, prizeType) {
-    if (tile.index == 2) //Bloque sin activar
+    if (tile.index == 498) //Bloque sin activar
     {
         //Al chocar con el bloque crea el premio
-        tile.index = 123;
+        tile.index = 619;
         tile.layer.dirty = true;
 
         if (prizeType == 'coin') //Crea una moneda
@@ -64,6 +67,24 @@ TRex.prototype.EspecialBlockCollision = function (tile, prizeType) {
             player.scene.objects.add(new Corazon(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - player.y) * tile.height), this.superHeartSprite, 0, 6));
 
         this.hitSound.play();
+    }
+}
+//Animaciones
+TRex.prototype.handleAnimations = function (player) {
+    player.scale.setTo(0.95, 0.95);
+    if (!player.moving) //Si no se mueve
+    {
+        if (player.facing == -1)
+            player.animations.play('idleDinoLeft');
+        else
+            player.animations.play('idleDinoRight');
+    }
+    else //Si se mueve
+    {
+        if (player.facing == -1)
+            player.animations.play('walkDinoLeft');
+        else
+            player.animations.play('walkDinoRight');
     }
 }
 

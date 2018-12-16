@@ -148,10 +148,19 @@ function Mario(game, x, y, sprite, frame, scene) {
     this.animations.add('idleGoomba4', ['goombaLeft4'], 5, false);
     this.animations.add('hurtGoomba4', ['goombaLeft4', 'hurt'], 10, true);
     //Animaciones del Chomp
-    this.animations.add('walkChompLeft', Phaser.Animation.generateFrameNames('ChompLeft', 1, 3), 10, true);
-    this.animations.add('walkChompRight', Phaser.Animation.generateFrameNames('ChompRight', 1, 3), 10, true);
-    this.animations.add('hurtChompLeft', ['ChompLeft1', 'hurt', 'ChompLeft2', 'hurt', 'ChompLeft3', 'hurt', 'ChompLeft2', 'hurt', 'ChompLeft1', 'hurt'], 10, true)
-    this.animations.add('hurtChompRight', ['ChompRight', 'hurt', 'ChompRight2', 'hurt', 'ChompRight3', 'hurt', 'ChompRight2', 'hurt', 'ChompRight1', 'hurt'], 10, true)
+    this.animations.add('walkChompLeft', Phaser.Animation.generateFrameNames('ChompLeft', 1, 3), 5, true);
+    this.animations.add('walkChompRight', Phaser.Animation.generateFrameNames('ChompRight', 1, 3), 5, true);
+    this.animations.add('hurtChompLeft', ['ChompLeft1', 'hurt', 'ChompLeft2', 'hurt', 'ChompLeft3', 'hurt'], 5, true);
+    this.animations.add('hurtChompRight', ['ChompRight1', 'hurt', 'ChompRight2', 'hurt', 'ChompRight3', 'hurt'], 5, true);
+    this.animations.add('chargeChompRight', ['ChompChargeRight'], 5, false);
+    this.animations.add('chargeChompLeft', ['ChompChargeLeft'], 5, false);
+    this.animations.add('hurtChargeChompRight', ['ChompChargeRight', 'hurt'], 5, true);
+    this.animations.add('hurtChargeChompLeft', ['ChompChargeLeft', 'hurt'], 5, true);
+    //Animaciones del T-Rex
+    this.animations.add('walkDinoLeft', Phaser.Animation.generateFrameNames('DinoLeft', 1, 10), 5, true);
+    this.animations.add('walkDinoRight', Phaser.Animation.generateFrameNames('DinoRight', 1, 10), 5, true);
+    this.animations.add('idleDinoLeft', ['DinoLeft9'], 5, false);
+    this.animations.add('idleDinoRight', ['DinoRight9'], 5, false);
 }
 Mario.prototype = Object.create(Phaser.Sprite.prototype);
 Mario.constructor = Mario;
@@ -364,11 +373,20 @@ Mario.prototype.ThrowCappy = function () {
             this.cappy.Reset()
             this.capture = false;
             this.cappy.cappyCapture = false;
+            //Guarda el número de goombas en la torre
+            if (this.enemy.type == 'goomba')
+                this.enemy.count = this.goombaCount;
             this.goombaCount = 1;
+            this.scale.setTo(2, 2);
             this.recalculateBody();
             this.enemy.captured = false
-            //El enemigo reaparece
-            this.enemy.reset(this.x + this.enemy.width * -this.facing, this.enemy.y);
+            //El enemigo reaparece pero si es un T-Rex se muere
+            if (this.enemy.type != 't-rex') {
+                if (this.enemy.type != 'goomba')
+                    this.enemy.reset(this.x + this.enemy.width * -this.facing, this.enemy.y);
+                else //Si es un goomba varia la reaparición según la altura de la torre de goombas
+                    this.enemy.reset(this.x + this.enemy.width * -this.facing, this.enemy.y - this.enemy.count * 25);
+            }
         }
     }
 }

@@ -29,8 +29,8 @@ function Chomp(game, x, y, sprite, frame, speed, chain, distance, cooldown, play
     this.breakSound = this.game.add.audio('break');
     this.hitSound = this.game.add.audio('hit');
     //Animaciones
-    this.animations.add('walkLeft', [0, 1, 4, 1, 0], 5, true);
-    this.animations.add('walkRight', [3, 2, 7, 2, 3], 5, true);
+    this.animations.add('walkLeft', [2, 1, 3], 5, true);
+    this.animations.add('walkRight', [5, 6, 4], 5, true);
     //Caja de colisión
     this.originalHeight = this.body.height * this.scale.x;
     //Tipo
@@ -168,12 +168,12 @@ Chomp.prototype.BlockCollision = function (tile, player) {
 }
 //Colisiones del chomp capturado con bloques especiales
 Chomp.prototype.EspecialBlockCollision = function (tile, prizeType) {
-    if (tile.index == 2) //Bloque sin activar
+    if (tile.index == 498) //Bloque sin activar
     {
         if (this.charged) //Si está cargado
         {
             //Al chocar con el bloque crea el premio
-            tile.index = 123;
+            tile.index = 619;
             tile.layer.dirty = true;
 
             if (prizeType == 'coin') //Crea una moneda
@@ -195,28 +195,45 @@ Chomp.prototype.EspecialBlockCollision = function (tile, prizeType) {
 Chomp.prototype.handleAnimations = function (player) {
     if (player.hurt) //Si se hace daño
     {
-        if (!this.charged) {
+        if (this.charging) //Si está cargando
+        {
+            if (player.facing == -1)
+                player.animations.play('hurtChargeChompLeft');
+            else
+                player.animations.play('hurtChargeChompRight');
+        }
+        else if (!this.charged) //Si no está atacando
+        {
             if (player.facing == -1)
                 player.animations.play('hurtChompLeft');
             else
                 player.animations.play('hurtChompRight');
         }
-        else {
+        else if (this.charged) //Si está atacando
+        {
             if (player.facing == 1)
                 player.animations.play('hurtChompLeft');
             else
                 player.animations.play('hurtChompRight');
         }
     }
-    else //Si se mueve
-    {
-        if (!this.charged) {
+    else {
+        if (this.charging) //Si está cargando
+        {
+            if (player.facing == -1)
+                player.animations.play('chargeChompLeft');
+            else
+                player.animations.play('chargeChompRight');
+        }
+        else if (!this.charged) //Si no está atacando
+        {
             if (player.facing == -1)
                 player.animations.play('walkChompLeft');
             else
                 player.animations.play('walkChompRight');
         }
-        else {
+        else if (this.charged) //Si está atacando
+        {
             if (player.facing == 1)
                 player.animations.play('walkChompLeft');
             else

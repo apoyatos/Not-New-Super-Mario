@@ -31,11 +31,11 @@ Block.prototype.HitBlock = function (player, tile) {
 Block.prototype.HitEspecialBlock = function (player, tile, prizeType) {
     if (!player.capture) //Si es Mario
     {
-        if (tile.index == 2) //Bloque sin activar
+        if (tile.index == 498) //Bloque sin activar
         {
             if ((player.body.blocked.up) || (player.prevY < player.y && player.crouching)) //Al chocar con el bloque crea el premio
             {
-                tile.index = 123;
+                tile.index = 619;
                 tile.layer.dirty = true;
 
                 if (prizeType == 'coin') //Crea una moneda

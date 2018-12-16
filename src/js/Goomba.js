@@ -6,12 +6,16 @@ function Goomba(game, x, y, sprite, frame, speed, player) {
     Enemy.call(this, game, x, y, sprite, frame, 0, 0);
     //Mario
     this.player = player;
+    this.count = 1;
     //Movimiento
     this.speed = speed;
     //Sonidos
     this.killSound = this.game.add.audio('kill');
     //Animación
-    this.animations.add('walk', [0, 1], 5, true);
+    this.animations.add('walk1', ['walkLeft1', 'walkRight1'], 5, true);
+    this.animations.add('walk2', ['walkLeft2', 'walkRight2'], 5, true);
+    this.animations.add('walk3', ['walkLeft3', 'walkRight3'], 5, true);
+    this.animations.add('walk4', ['walkLeft4', 'walkRight4'], 5, true);
     //Caja de colisión
     this.originalHeight = this.body.height * this.scale.x;
     //Tipo
@@ -23,7 +27,15 @@ Goomba.constructor = Goomba;
 //Movimiento del goomba
 Goomba.prototype.Move = function () {
     this.body.velocity.x = this.speed;
-    this.animations.play('walk');
+    if (this.count == 1)
+        this.animations.play('walk1');
+    else if (this.count == 2)
+        this.animations.play('walk2');
+    else if (this.count == 3)
+        this.animations.play('walk3');
+    else
+        this.animations.play('walk4');
+    this.recalculateBody();
 }
 //Cambia la dirección
 Goomba.prototype.ChangeDir = function () {
@@ -42,6 +54,7 @@ Goomba.prototype.Killed = function () {
 //Muerte del goomba
 Goomba.prototype.Die = function () {
     this.kill();
+    this.count = 1;
 }
 //Movimiento del goomba capturado
 Goomba.prototype.MarioMove = function (player) {
@@ -125,6 +138,11 @@ Goomba.prototype.handleAnimations = function (player) {
         else
             player.animations.play('walkGoomba4');
     }
+}
+//Recalcula la caja de colisiones del goomba
+Goomba.prototype.recalculateBody = function () {
+    this.body.height = this.height;
+    this.body.width = this.width;
 }
 
 module.exports = Goomba;
