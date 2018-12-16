@@ -9,6 +9,8 @@ var Bandera = require('./Bandera.js');
 var Moneda = require('./Moneda.js');
 var Luna = require('./Luna.js');
 var Bloque = require('./Bloque.js');
+var Corazon = require('./Corazon.js');
+var Boss = require('./Boss.js');
 
 var PlayScene = {
   create: function () {
@@ -62,24 +64,28 @@ var PlayScene = {
     this.enemies = [];
     this.capturables = [];
     //Mario
-    this.player = new Mario(this.game, 0, 150, 'mario', 5, this);
+    this.player = new Mario(this.game, 4200, 150, 'mario', 5, this);
     this.game.camera.follow(this.player);
+    //Boss
+    this.boss = new Boss(this.game, 4300, 0, 'plant', 0, 'chomp', 50, 3, this.player);
     //Enemigos
     this.goombas.add(new Goomba(this.game, 1300, 0, 'goomba', 0, 100, this.player));
     this.goombas.add(new Goomba(this.game, 1500, 0, 'goomba', 0, -100, this.player));
     this.goombas.add(new Goomba(this.game, 1800, 0, 'goomba', 0, -100, this.player));
     this.goombas.add(new Goomba(this.game, 1600, 0, 'goomba', 0, 100, this.player));
-    this.spinys.add(new Spiny(this.game, 5000, 0, 'spiny', 0, 100));
-    this.plants.add(new Planta(this.game, 2500, 0, 'plant', 5, 100, 5));
+    this.spinys.add(new Spiny(this.game, 4900, 0, 'spiny', 0, 100, 2));
+    this.plants.add(new Planta(this.game, 2600, 0, 'plant', 5, 300, 5));
     this.chomps.add(new Chomp(this.game, 3800, 0, 'chomp', 0, 50, 150, 300, 1));
     //Array enemies
     this.enemies.push(this.goombas);
     this.enemies.push(this.chomps);
     this.enemies.push(this.plants);
     this.enemies.push(this.spinys);
+    this.chomps.add(this.boss.chomp);
     //Array capturables
     this.capturables.push(this.goombas);
     this.capturables.push(this.chomps);
+
     //Bloques
     this.blocksHandler = new Bloque(this.game, 'coin', 'heart', 'superHeart');
     //Vidas
@@ -189,6 +195,28 @@ var PlayScene = {
     //Bucle del juego
     if (!this.pause && !this.pauseButton) //Condiciones de pausa. Juego activo
     {
+    //Colisiones chomp bloques
+    this.chomps.forEach(
+      function (item) {
+        this.game.physics.arcade.collide(item, this.blocks, function (chomp, tile) { chomp.BlockCollision(tile, chomp.player); });
+        this.game.physics.arcade.collide(item, this.eBlocks1, function (chomp, tile) { chomp.EBlockCollision(tile, 'coin'); });
+        this.game.physics.arcade.collide(item, this.eBlocks2, function (chomp, tile) { chomp.EBlockCollision(tile, 'heart'); });
+        this.game.physics.arcade.collide(item, this.eBlocks3, function (chomp, tile) { chomp.EBlockCollision(tile, 'superHeart'); });
+      }, this);
+    //Colisiones Boss
+    this.game.physics.arcade.collide(this.boss, this.floor);
+    this.game.physics.arcade.collide(this.boss, this.collisions, function (enemy) { enemy.ChangeDir(); });
+    this.game.physics.arcade.collide(this.boss, this.blocks);
+    this.game.physics.arcade.collide(this.boss, this.eBlocks1);
+    this.game.physics.arcade.collide(this.boss, this.eBlocks2);
+    this.game.physics.arcade.collide(this.boss, this.eBlocks3);
+    //Pausa
+    if (!this.pause && !this.pauseButton) {
+      //boss
+      if (this.boss.alive) {
+        this.boss.Move();
+        this.boss.Hurt();
+      }
       //Andar
       if (this.teclas.right.isDown)
         this.player.Move(1);
@@ -287,8 +315,8 @@ var PlayScene = {
       this.shots.forEach(
         function (item) {
           //Devuelve su movimiento
-          if (item.body.velocity.x == 0) {
-            item.body.velocity.x = item.shotSpeed * item.posX;
+          if (item.body.velocity.x == 0 && this.planta != undefined) {
+            item.body.velocity.x = this.planta.shootingSpeed * item.posX;
             item.animations.play(item.sprite);
           }
           if (this.player.EnemyCollision(item)) {
@@ -297,9 +325,17 @@ var PlayScene = {
           if (item.alive)
             item.RemoveShot();
         }, this);
+      //Colisiones de Cappy con enemigos
+      this.capturables.forEach(
+        function (item) {
+          item.forEach(
+            function (item) {
+              if (this.player.cappy != null)
+                this.player.cappy.Capture(item, this);
+            }, this);
+        }, this);
     }
-    else //Juego pausado
-    {
+    else {
       //Mario
       this.player.body.gravity.y = 0;
       this.player.body.velocity.x = 0;

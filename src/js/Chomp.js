@@ -2,19 +2,26 @@
 
 var Enemy = require('./Enemigo.js');
 
-function Chomp(game, x, y, sprite, frame, speed, chain, distance, cooldown) {
+function Chomp(game, x, y, sprite, frame, speed, chain, distance, cooldown,player) {
     Enemy.call(this, game, x, y, sprite, frame, 0, 0);
     //Mario
     this.charged = false;
+    this.player=player;
+    //Tipo
+    this.type = sprite;
     //Movimiento
     this.speed = speed;
+    this.dir = 1;
     this.chain = chain;
     this.distance = distance;
     this.originalSpeed = speed;
     this.originX = x;
+    this.offset = 150;
     //Acciones
+    this.chargeAttack = false;
     this.attack = false;
     this.charging = false;
+    this.captured = false;
     //Temporizadores
     this.cooldown = cooldown;
     this.cooldownTimer = 0;
@@ -36,50 +43,69 @@ Chomp.constructor = Chomp
 
 //Movimiento del chomp
 Chomp.prototype.Move = function () {
-    if (this.game.time.totalElapsedSeconds() > this.cooldownTimer) {
-        if ((this.x + this.speed / 30 > (this.originX + this.chain)) || (this.x + this.speed / 30 < (this.originX - this.chain))) //Si está en el area de la cadena
-        {
-            if (this.attack) //Ataque cargando contra Mario
-            {
-                this.speed = this.originalSpeed * Math.sign(this.speed);
-                this.attack = false;
-                this.cooldownTimer = this.game.time.totalElapsedSeconds() + this.cooldown;
-            }
-            this.speed = -this.speed;
+    this.captured = false;
+    if (this.charged) {
+        if ((this.x + (this.speed * this.dir) / 20 > (this.originX + this.chain + this.offset))) {
+            this.charged = false;
+            this.x = this.originX + this.chain;
+            this.cooldownTimer = this.game.time.totalElapsedSeconds() + 2*this.cooldown;
         }
-        this.body.velocity.x = this.speed;
-        //Animaciones
-        if (this.speed < 0)
-            this.animations.play('walkLeft');
-        else
-            this.animations.play('walkRight');
+        else if ((this.x - (this.speed * this.dir) / 20 < (this.originX - this.chain - this.offset))) {
+            this.charged = false;
+            this.x = this.originX - this.chain;
+            this.cooldownTimer = this.game.time.totalElapsedSeconds() + 2*this.cooldown;
+        }
+        this.body.velocity.x=this.speed*this.dir;
     }
-    else
-        this.body.velocity.x = 0;
+    else {
+        if (this.game.time.totalElapsedSeconds() > this.cooldownTimer) {
+            if ((this.x + (this.speed * this.dir) / 20 > (this.originX + this.chain)) || (this.x + (this.speed * this.dir) / 20 < (this.originX - this.chain))) {
+                if (this.chargeAttack) {
+
+                    this.speed = 8 * this.originalSpeed;
+                    this.chargeAttack = false;
+                    this.attack = true;
+                }
+                else if (this.attack) {
+                    this.cooldownTimer = this.game.time.totalElapsedSeconds() + this.cooldown;
+                    this.speed = this.originalSpeed;
+                    this.attack = false;
+                }
+                this.dir = -this.dir;
+            }
+
+            this.body.velocity.x = this.speed * this.dir;
+            if ((this.dir < 0 && !this.chargeAttack) || (this.dir > 0 && this.chargeAttack))
+                this.animations.play('walkLeft');
+            else if ((this.dir > 0 && !this.chargeAttack) || (this.dir < 0 && this.chargeAttack))
+                this.animations.play('walkRight');
+        }
+        else
+            this.body.velocity.x = 0;
+    }
 }
 //Ataque del chomp
 Chomp.prototype.Attack = function (player) {
     if (this.game.time.totalElapsedSeconds() > this.cooldownTimer) {
-        if (!this.attack && (Math.sign(this.speed) == Math.sign(player.x - this.x) && Math.abs(player.x - this.x) < this.distance)) //Si Mario está en rango ataca
-        {
-            this.x = this.originX + this.chain * Math.sign(-this.speed);
-            this.speed = 4 * this.speed;
-            this.attack = true;
+        if (!this.chargeAttack && !this.attack && this.dir == Math.sign(player.x - this.x) && Math.abs(player.x - this.x) < this.distance) {
+            this.speed = 4 * this.originalSpeed;
+            this.dir = -this.dir
+            this.chargeAttack = true;
         }
     }
 }
 //Movimiento del chomp capturado
 Chomp.prototype.MarioMove = function (player) {
-    if ((player.x + player.velocity / 30 < (this.originX + this.chain)) && player.facing == 1) //Movimiento hacia la derecha
-    {
-        player.body.velocity.x = player.velocity / 3;
+    this.captured = true;
+    if ((player.x + player.velocity / 30 < (this.originX + this.chain)) && player.facing == 1) {
+        player.body.velocity.x = player.velocity / 2;
         this.charged = false;
         this.charging = false;
     }
-    else if ((player.x - player.velocity / 30 > (this.originX - this.chain)) && player.facing == -1) //Movimiento hacia la izquierda
-    {
-        player.body.velocity.x = -player.velocity / 3;
+    else if ((player.x - player.velocity / 30 > (this.originX - this.chain)) && player.facing == -1) {
+        player.body.velocity.x = -player.velocity / 2;
         this.charged = false;
+        this.charging = false;
     }
     else {
         player.body.velocity.x = 0;
@@ -95,13 +121,11 @@ Chomp.prototype.MarioMove = function (player) {
 }
 //Chomp capturado quieto o atacando
 Chomp.prototype.MarioNotMoving = function (player) {
-    if (this.charged && ((player.x + player.velocity / 30 < (this.originX + this.chain) + 150) && player.facing == -1)) //Movimiento cargado hacia la derecha
-    {
-        player.body.velocity.x = 4 * player.velocity;
-    }
-    else if (this.charged && ((player.x - player.velocity / 30 > (this.originX - this.chain) - 150) && player.facing == 1)) //Movimiento cargado hacia la izquierda
-    {
-        player.body.velocity.x = -4 * player.velocity;
+    this.captured = true;
+    if (this.charged) {
+        player.ThrowCappy();
+        this.speed = 8 * this.originalSpeed;
+        this.dir=-player.facing
     }
     else //Quieto
     {

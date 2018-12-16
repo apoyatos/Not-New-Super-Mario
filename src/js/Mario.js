@@ -370,7 +370,7 @@ Mario.prototype.ThrowCappy = function () {
             this.recalculateBody();
             //Si el enemigo era un chomp reaparece
             if (this.enemy.type == 'chomp')
-                this.enemy.reset(this.enemy.x, this.enemy.y);
+                this.enemy.reset(this.x+this.enemy.width*-this.facing, this.enemy.y);
         }
     }
 }
