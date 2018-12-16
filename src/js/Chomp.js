@@ -89,6 +89,8 @@ Chomp.prototype.Move = function () {
             this.animations.play('walkRight');
     }
 }
+//Cambia la dirección
+Chomp.prototype.ChangeDir = function () { }
 //Ataque del chomp
 Chomp.prototype.Attack = function (player) {
     if (this.game.time.totalElapsedSeconds() > this.cooldownTimer) {

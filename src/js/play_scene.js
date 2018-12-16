@@ -6,6 +6,7 @@ var Spiny = require('./Spiny.js');
 var Planta = require('./PlantaPiraña.js');
 var Chomp = require('./Chomp.js');
 var Boss = require('./Boss.js');
+var TRex = require('./T-Rex.js');
 
 var Bandera = require('./Bandera.js');
 var Moneda = require('./Moneda.js');
@@ -59,6 +60,7 @@ var PlayScene = {
     this.plants = this.game.add.group();
     this.chomps = this.game.add.group();
     this.shots = this.game.add.group();
+    this.tRex = this.game.add.group();
     //Arrays
     this.enemies = [];
     this.capturables = [];
@@ -67,6 +69,8 @@ var PlayScene = {
     this.game.camera.follow(this.player);
     //Boss
     this.boss = new Boss(this.game, 5470, 446, 'plant', 0, 'chomp', 30, 3, this.player);
+    //T-Rex
+    this.tRex.add(new TRex(this.game, 1408, 2080, 't-rex', 0, this.player));
     //Enemigos:
 
     //Goombas
@@ -100,9 +104,11 @@ var PlayScene = {
     this.enemies.push(this.chomps);
     this.enemies.push(this.plants);
     this.enemies.push(this.spinys);
+    this.enemies.push(this.tRex);
     //Array capturables
     this.capturables.push(this.goombas);
     this.capturables.push(this.chomps);
+    this.capturables.push(this.tRex);
     //Bloques
     this.blocksHandler = new Bloque(this.game, 'coin', 'heart', 'superHeart');
     //Vidas
@@ -205,7 +211,7 @@ var PlayScene = {
             this.game.physics.arcade.collide(item, this.floor);
             this.game.physics.arcade.collide(item, this.collisions, function (enemy) { enemy.ChangeDir(); });
             this.game.physics.arcade.collide(item, this.deathZone, function (enemy) { enemy.Die(); });
-            if (item.type != 'chomp') {
+            if (item.type != 'chomp' || item.type != 't-rex') {
               this.game.physics.arcade.collide(item, this.blocks);
               this.game.physics.arcade.collide(item, this.coinBlocks);
               this.game.physics.arcade.collide(item, this.heartBlocks);

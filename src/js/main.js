@@ -40,6 +40,7 @@ var PreloaderScene = {
     this.game.load.spritesheet('spiny', 'images/Spiny.png', 19, 16);
     this.game.load.spritesheet('plant', 'images/PlantaPiraña.png', 18, 34);
     this.game.load.spritesheet('chomp', 'images/Chomp.png', 31.75, 29.5);
+    this.game.load.image('t-rex', 'images/T-Rex.png');
     this.game.load.spritesheet('fireball', 'images/Disparo-Fuego.png', 9, 9);
     //Mapa
     this.game.load.tilemap('tilemap', 'tilemaps/Nivel1.json', null, Phaser.Tilemap.TILED_JSON);
