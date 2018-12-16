@@ -25,18 +25,17 @@ var PlayScene = {
     this.lanzar = this.game.input.keyboard.addKey(Phaser.Keyboard.Z);
     this.pausar = this.game.input.keyboard.addKey(Phaser.Keyboard.X);
     //Mapa
-    this.game.stage.backgroundColor = '#787878';
-    this.map = this.game.add.tilemap('map');
-    this.map.addTilesetImage('tiles1G', 'tiles1');
-    this.map.addTilesetImage('tiles2G', 'tiles2');
-    this.map.addTilesetImage('tiles3G', 'tiles3');
-    this.layer = this.map.createLayer('World1');
+    this.map = this.game.add.tilemap('tilemap');
+    this.map.addTilesetImage('Tiles1', 'tiles1');
+    this.map.addTilesetImage('Tiles2', 'tiles2');
+    this.layer = this.map.createLayer(1);
     this.layer.resizeWorld();
     //Objetos del mapa
     this.objects = this.game.add.group();
-    this.map.createFromObjects('Banderas', 1255, 'checkpoint', 0, true, false, this.objects, Bandera);
-    this.map.createFromObjects('Monedas', 11, 'coins', 0, true, false, this.objects, Moneda);
-    this.map.createFromObjects('Lunas', 1269, 'moon', 0, true, false, this.objects, Luna);
+    this.map.createFromObjects('Banderas', 481, 'checkpoint', 0, true, false, this.objects, Bandera);
+    this.map.createFromObjects('Monedas', 481, 'coin', 0, true, false, this.objects, Moneda);
+    this.map.createFromObjects('SuperMonedas', 481, 'superCoin', 0, true, false, this.objects, Moneda);
+    this.map.createFromObjects('Lunas', 481, 'moon', 0, true, false, this.objects, Luna);
     //Colisiones del mapa
     this.collisions = this.map.createLayer('Colisiones');
     this.map.setCollisionByExclusion([], true, 'Colisiones');
@@ -62,16 +61,30 @@ var PlayScene = {
     this.enemies = [];
     this.capturables = [];
     //Mario
-    this.player = new Mario(this.game, 0, 150, 'mario', 5, this);
+    this.player = new Mario(this.game, 32, 2720, 'mario', 5, this);
     this.game.camera.follow(this.player);
     //Enemigos
-    this.goombas.add(new Goomba(this.game, 1300, 0, 'goomba', 0, 100, this.player));
-    this.goombas.add(new Goomba(this.game, 1500, 0, 'goomba', 0, -100, this.player));
-    this.goombas.add(new Goomba(this.game, 1800, 0, 'goomba', 0, -100, this.player));
-    this.goombas.add(new Goomba(this.game, 1600, 0, 'goomba', 0, 100, this.player));
-    this.spinys.add(new Spiny(this.game, 5000, 0, 'spiny', 0, 100));
-    this.plants.add(new Planta(this.game, 2500, 0, 'plant', 5, 100, 5));
-    this.chomps.add(new Chomp(this.game, 3800, 0, 'chomp', 0, 50, 150, 300, 1));
+    this.goombas.add(new Goomba(this.game, 960, 2816, 'goomba', 0, 100, this.player));
+    this.goombas.add(new Goomba(this.game, 1890, 2688, 'goomba', 0, -100, this.player));
+    this.goombas.add(new Goomba(this.game, 2018, 2688, 'goomba', 0, -100, this.player));
+    this.goombas.add(new Goomba(this.game, 2146, 2688, 'goomba', 0, 100, this.player));
+    this.goombas.add(new Goomba(this.game, 2274, 2688, 'goomba', 0, 100, this.player));
+    this.goombas.add(new Goomba(this.game, 4864, 2880, 'goomba', 0, -100, this.player));
+    this.goombas.add(new Goomba(this.game, 5088, 2880, 'goomba', 0, 100, this.player));
+    this.goombas.add(new Goomba(this.game, 4706, 2112, 'goomba', 0, -100, this.player));
+    this.goombas.add(new Goomba(this.game, 4992, 2112, 'goomba', 0, 100, this.player));
+    this.spinys.add(new Spiny(this.game, 4576, 2432, 'spiny', 0, -100));
+    this.spinys.add(new Spiny(this.game, 4704, 2432, 'spiny', 0, -100));
+    this.spinys.add(new Spiny(this.game, 4832, 2432, 'spiny', 0, -100));
+    this.spinys.add(new Spiny(this.game, 4960, 2432, 'spiny', 0, -100));
+    this.spinys.add(new Spiny(this.game, 5088, 2432, 'spiny', 0, -100));
+    this.plants.add(new Planta(this.game, 2434, 1568, 'plant', 5, 100, 5));
+    this.plants.add(new Planta(this.game, 3936, 1216, 'plant', 5, 100, 5));
+    this.plants.add(new Planta(this.game, 4736, 2688, 'plant', 5, 100, 5));
+    this.plants.add(new Planta(this.game, 5184, 1120, 'plant', 5, 100, 5));
+    this.chomps.add(new Chomp(this.game, 2912, 2848, 'chomp', 0, 50, 180, 300, 1));
+    this.chomps.add(new Chomp(this.game, 3968, 2382, 'chomp', 0, 50, 180, 300, 1));
+    this.chomps.add(new Chomp(this.game, 4960, 1312, 'chomp', 0, 50, 80, 300, 1));
     //Array enemies
     this.enemies.push(this.goombas);
     this.enemies.push(this.chomps);

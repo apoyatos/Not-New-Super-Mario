@@ -42,12 +42,9 @@ var PreloaderScene = {
     this.game.load.spritesheet('chomp', 'images/Chomp.png', 31.75, 29.5);
     this.game.load.spritesheet('fireball', 'images/Disparo-Fuego.png', 9, 9);
     //Mapa
-    //this.game.load.image('tiles', 'tilemaps/super_mario.png');
-    //this.game.load.tilemap('map', 'tilemaps/super_mario.json', null, Phaser.Tilemap.TILED_JSON);
-    this.game.load.tilemap('map', 'tilemaps/level1.json', null, Phaser.Tilemap.TILED_JSON);
-    this.game.load.image('tiles1', 'tilemaps/tiles1G.png');
-    this.game.load.image('tiles2', 'tilemaps/tiles2G.png');
-    this.game.load.image('tiles3', 'tilemaps/tiles3G.png');
+    this.game.load.tilemap('tilemap', 'tilemaps/Nivel1.json', null, Phaser.Tilemap.TILED_JSON);
+    this.game.load.image('tiles1', 'tilemaps/Tiles1.png');
+    this.game.load.image('tiles2', 'tilemaps/Tiles2.png');
     //Sonidos:
 
     //Menu
