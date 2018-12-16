@@ -64,7 +64,7 @@ var PlayScene = {
     this.enemies = [];
     this.capturables = [];
     //Mario
-    this.player = new Mario(this.game, 4200, 150, 'mario', 5, this);
+    this.player = new Mario(this.game, 3400, 150, 'mario', 5, this);
     this.game.camera.follow(this.player);
     //Boss
     this.boss = new Boss(this.game, 4300, 0, 'plant', 0, 'chomp', 50, 3, this.player);
@@ -75,7 +75,7 @@ var PlayScene = {
     this.goombas.add(new Goomba(this.game, 1600, 0, 'goomba', 0, 100, this.player));
     this.spinys.add(new Spiny(this.game, 4900, 0, 'spiny', 0, 100, 2));
     this.plants.add(new Planta(this.game, 2600, 0, 'plant', 5, 300, 5));
-    this.chomps.add(new Chomp(this.game, 3800, 0, 'chomp', 0, 50, 150, 300, 1));
+    this.chomps.add(new Chomp(this.game, 3800, 0, 'chomp', 0, 50, 150, 300, 1, this.player));
     //Array enemies
     this.enemies.push(this.goombas);
     this.enemies.push(this.chomps);
@@ -186,27 +186,27 @@ var PlayScene = {
             this.game.physics.arcade.collide(item, this.floor);
             this.game.physics.arcade.collide(item, this.collisions, function (enemy) { enemy.ChangeDir(); });
             this.game.physics.arcade.collide(item, this.deathZone, function (enemy) { enemy.Die(); });
+            if(item.type!='chomp'){
             this.game.physics.arcade.collide(item, this.blocks);
             this.game.physics.arcade.collide(item, this.coinBlocks);
             this.game.physics.arcade.collide(item, this.heartBlocks);
             this.game.physics.arcade.collide(item, this.superheartBlocks);
+            }
+            else{
+              this.game.physics.arcade.collide(item, this.blocks, function (chomp, tile) { chomp.BlockCollision(tile, chomp.player); });
+              this.game.physics.arcade.collide(item, this.coinBlocks, function (chomp, tile) { chomp.EBlockCollision(tile, 'coin'); });
+              this.game.physics.arcade.collide(item, this.heartBlocks, function (chomp, tile) { chomp.EBlockCollision(tile, 'heart'); });
+              this.game.physics.arcade.collide(item, this.superheartBlocks, function (chomp, tile) { chomp.EBlockCollision(tile, 'superHeart'); });
+            }
           }, this);
-      }, this);
-    //Colisiones chomp bloques
-    this.chomps.forEach(
-      function (item) {
-        this.game.physics.arcade.collide(item, this.blocks, function (chomp, tile) { chomp.BlockCollision(tile, chomp.player); });
-        this.game.physics.arcade.collide(item, this.eBlocks1, function (chomp, tile) { chomp.EBlockCollision(tile, 'coin'); });
-        this.game.physics.arcade.collide(item, this.eBlocks2, function (chomp, tile) { chomp.EBlockCollision(tile, 'heart'); });
-        this.game.physics.arcade.collide(item, this.eBlocks3, function (chomp, tile) { chomp.EBlockCollision(tile, 'superHeart'); });
       }, this);
     //Colisiones Boss
     this.game.physics.arcade.collide(this.boss, this.floor);
     this.game.physics.arcade.collide(this.boss, this.collisions, function (enemy) { enemy.ChangeDir(); });
     this.game.physics.arcade.collide(this.boss, this.blocks);
-    this.game.physics.arcade.collide(this.boss, this.eBlocks1);
-    this.game.physics.arcade.collide(this.boss, this.eBlocks2);
-    this.game.physics.arcade.collide(this.boss, this.eBlocks3);
+    this.game.physics.arcade.collide(this.boss, this.coinBlocks);
+    this.game.physics.arcade.collide(this.boss, this.heartBlocks);
+    this.game.physics.arcade.collide(this.boss, this.superheartBlocks);
     //Bucle del juego
     if (!this.pause && !this.pauseButton) //Condiciones de pausa. Juego activo
     {
