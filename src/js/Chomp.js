@@ -1,6 +1,8 @@
 'use strict';
 
 var Enemy = require('./Enemigo.js');
+var Moneda = require('./Moneda.js');
+var Corazon = require('./Corazon.js');
 
 function Chomp(game, x, y, sprite, frame, speed, chain, distance, cooldown, player) {
     Enemy.call(this, game, x, y, sprite, frame, 0, 0);
@@ -90,7 +92,7 @@ Chomp.prototype.Move = function () {
     }
 }
 //Cambia la dirección
-Chomp.prototype.ChangeDir = function () { }
+Chomp.prototype.ChangeDir = function () { this.dir = -this.dir }
 //Ataque del chomp
 Chomp.prototype.Attack = function (player) {
     if (this.game.time.totalElapsedSeconds() > this.cooldownTimer) {
@@ -161,6 +163,7 @@ Chomp.prototype.Collision = function (player, enemy) {
 }
 //Colisiones del chomp capturado con bloques normales
 Chomp.prototype.BlockCollision = function (tile, player) {
+    console.log('hola')
     if (this.charged) {
         player.scene.map.removeTile(tile.x, tile.y, player.scene.blocks);
         this.breakSound.play();
@@ -178,14 +181,14 @@ Chomp.prototype.EspecialBlockCollision = function (tile, prizeType) {
 
             if (prizeType == 'coin') //Crea una moneda
             {
-                this.coin = new Moneda(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - player.y) * tile.height), this.coinSprite);
-                player.scene.objects.add(this.coin);
+                this.coin = new Moneda(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - this.player.y) * tile.height), prizeType);
+                this.player.scene.objects.add(this.coin);
                 this.coin.animations.play('coin');
             }
             else if (prizeType == 'heart') //Crea un corazón
-                player.scene.objects.add(new Corazon(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - player.y) * tile.height), this.heartSprite, 0, 3));
+                this.player.scene.objects.add(new Corazon(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - this.player.y) * tile.height), prizeType, 0, 3));
             else //Crea un super corazón
-                player.scene.objects.add(new Corazon(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - player.y) * tile.height), this.superHeartSprite, 0, 6));
+                this.player.scene.objects.add(new Corazon(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - this.player.y) * tile.height), superHeaprizeTypertSprite, 0, 6));
 
             this.hitSound.play();
         }

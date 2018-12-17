@@ -211,7 +211,7 @@ var PlayScene = {
             this.game.physics.arcade.collide(item, this.floor);
             this.game.physics.arcade.collide(item, this.collisions, function (enemy) { enemy.ChangeDir(); });
             this.game.physics.arcade.collide(item, this.deathZone, function (enemy) { enemy.Die(); });
-            if (item.type != 'chomp' || item.type != 't-rex') {
+            if (item.type != 'chomp' ) {
               this.game.physics.arcade.collide(item, this.blocks);
               this.game.physics.arcade.collide(item, this.coinBlocks);
               this.game.physics.arcade.collide(item, this.heartBlocks);

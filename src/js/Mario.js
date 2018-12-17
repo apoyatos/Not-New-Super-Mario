@@ -385,7 +385,7 @@ Mario.prototype.ThrowCappy = function () {
                 if (this.enemy.type != 'goomba')
                     this.enemy.reset(this.x + this.enemy.width * -this.facing, this.enemy.y);
                 else //Si es un goomba varia la reaparición según la altura de la torre de goombas
-                    this.enemy.reset(this.x + this.enemy.width * -this.facing, this.enemy.y - this.enemy.count * 25);
+                    this.enemy.reset(this.x + this.enemy.width * -this.facing, this.y);
             }
         }
     }
@@ -486,8 +486,11 @@ Mario.prototype.handleAnimations = function () {
 //Recalcula la caja de colisiones de Mario
 Mario.prototype.recalculateBody = function () {
     this.handleAnimations();
-    this.body.height = this.height;
-    this.body.width = this.width;
+    if (this.enemy.type != 't-rex') {
+        this.body.height = this.height;
+        this.body.width = this.width;
+    }
+
 }
 
 module.exports = Mario;

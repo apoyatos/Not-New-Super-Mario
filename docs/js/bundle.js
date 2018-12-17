@@ -281,6 +281,7 @@ Cappy.prototype.Capture = function (enemy, scene) {
             enemy.kill();
             this.Reset();
             this.player.reset(enemy.body.position.x, enemy.body.position.y);
+            this.player.goombaCount=enemy.count;
             this.player.recalculateBody();
             //Reanuda la escena
             scene.pause = false;
@@ -308,6 +309,8 @@ module.exports = Cappy;
 'use strict';
 
 var Enemy = require('./Enemigo.js');
+var Moneda = require('./Moneda.js');
+var Corazon = require('./Corazon.js');
 
 function Chomp(game, x, y, sprite, frame, speed, chain, distance, cooldown, player) {
     Enemy.call(this, game, x, y, sprite, frame, 0, 0);
@@ -397,7 +400,7 @@ Chomp.prototype.Move = function () {
     }
 }
 //Cambia la dirección
-Chomp.prototype.ChangeDir = function () { }
+Chomp.prototype.ChangeDir = function () { this.dir = -this.dir }
 //Ataque del chomp
 Chomp.prototype.Attack = function (player) {
     if (this.game.time.totalElapsedSeconds() > this.cooldownTimer) {
@@ -468,6 +471,7 @@ Chomp.prototype.Collision = function (player, enemy) {
 }
 //Colisiones del chomp capturado con bloques normales
 Chomp.prototype.BlockCollision = function (tile, player) {
+    console.log('hola')
     if (this.charged) {
         player.scene.map.removeTile(tile.x, tile.y, player.scene.blocks);
         this.breakSound.play();
@@ -485,14 +489,14 @@ Chomp.prototype.EspecialBlockCollision = function (tile, prizeType) {
 
             if (prizeType == 'coin') //Crea una moneda
             {
-                this.coin = new Moneda(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - player.y) * tile.height), this.coinSprite);
-                player.scene.objects.add(this.coin);
+                this.coin = new Moneda(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - this.player.y) * tile.height), prizeType);
+                this.player.scene.objects.add(this.coin);
                 this.coin.animations.play('coin');
             }
             else if (prizeType == 'heart') //Crea un corazón
-                player.scene.objects.add(new Corazon(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - player.y) * tile.height), this.heartSprite, 0, 3));
+                this.player.scene.objects.add(new Corazon(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - this.player.y) * tile.height), prizeType, 0, 3));
             else //Crea un super corazón
-                player.scene.objects.add(new Corazon(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - player.y) * tile.height), this.superHeartSprite, 0, 6));
+                this.player.scene.objects.add(new Corazon(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - this.player.y) * tile.height), superHeaprizeTypertSprite, 0, 6));
 
             this.hitSound.play();
         }
@@ -551,7 +555,7 @@ Chomp.prototype.handleAnimations = function (player) {
 
 module.exports = Chomp;
 
-},{"./Enemigo.js":8}],6:[function(require,module,exports){
+},{"./Corazon.js":6,"./Enemigo.js":8,"./Moneda.js":12}],6:[function(require,module,exports){
 'use strict';
 
 function Heart(game, x, y, sprite, frame, amount) {
@@ -1246,7 +1250,7 @@ Mario.prototype.ThrowCappy = function () {
                 if (this.enemy.type != 'goomba')
                     this.enemy.reset(this.x + this.enemy.width * -this.facing, this.enemy.y);
                 else //Si es un goomba varia la reaparición según la altura de la torre de goombas
-                    this.enemy.reset(this.x + this.enemy.width * -this.facing, this.enemy.y - this.enemy.count * 25);
+                    this.enemy.reset(this.x + this.enemy.width * -this.facing, this.y);
             }
         }
     }
@@ -1347,8 +1351,11 @@ Mario.prototype.handleAnimations = function () {
 //Recalcula la caja de colisiones de Mario
 Mario.prototype.recalculateBody = function () {
     this.handleAnimations();
-    this.body.height = this.height;
-    this.body.width = this.width;
+    if (this.enemy.type != 't-rex') {
+        this.body.height = this.height;
+        this.body.width = this.width;
+    }
+
 }
 
 module.exports = Mario;
@@ -1472,6 +1479,8 @@ module.exports = Spiny;
 'use strict';
 
 var Enemy = require('./Enemigo.js');
+var Moneda = require('./Moneda.js');
+var Corazon = require('./Corazon.js');
 
 function TRex(game, x, y, sprite, frame, player) {
     Enemy.call(this, game, x, y, sprite, frame, 0, 0);
@@ -1528,21 +1537,23 @@ TRex.prototype.EspecialBlockCollision = function (tile, prizeType) {
 
         if (prizeType == 'coin') //Crea una moneda
         {
-            this.coin = new Moneda(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - player.y) * tile.height), this.coinSprite);
-            player.scene.objects.add(this.coin);
+            this.coin = new Moneda(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - this.player.y) * tile.height), prizeType);
+            this.player.scene.objects.add(this.coin);
             this.coin.animations.play('coin');
         }
         else if (prizeType == 'heart') //Crea un corazón
-            player.scene.objects.add(new Corazon(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - player.y) * tile.height), this.heartSprite, 0, 3));
+            this.player.scene.objects.add(new Corazon(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - this.player.y) * tile.height), prizeType, 0, 3));
         else //Crea un super corazón
-            player.scene.objects.add(new Corazon(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - player.y) * tile.height), this.superHeartSprite, 0, 6));
+            this.player.scene.objects.add(new Corazon(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - this.player.y) * tile.height), prizeType, 0, 6));
 
         this.hitSound.play();
     }
 }
 //Animaciones
 TRex.prototype.handleAnimations = function (player) {
-    player.scale.setTo(0.95, 0.95);
+    player.scale.setTo(0.95,0.95);
+    player.body.width=this.width;
+    player.body.height=this.height;
     if (!player.moving) //Si no se mueve
     {
         if (player.facing == -1)
@@ -1561,7 +1572,7 @@ TRex.prototype.handleAnimations = function (player) {
 
 module.exports = TRex;
 
-},{"./Enemigo.js":8}],16:[function(require,module,exports){
+},{"./Corazon.js":6,"./Enemigo.js":8,"./Moneda.js":12}],16:[function(require,module,exports){
 'use strict';
 
 var PlayScene = require('./play_scene.js');
@@ -1901,7 +1912,7 @@ var PlayScene = {
             this.game.physics.arcade.collide(item, this.floor);
             this.game.physics.arcade.collide(item, this.collisions, function (enemy) { enemy.ChangeDir(); });
             this.game.physics.arcade.collide(item, this.deathZone, function (enemy) { enemy.Die(); });
-            if (item.type != 'chomp' || item.type != 't-rex') {
+            if (item.type != 'chomp' ) {
               this.game.physics.arcade.collide(item, this.blocks);
               this.game.physics.arcade.collide(item, this.coinBlocks);
               this.game.physics.arcade.collide(item, this.heartBlocks);

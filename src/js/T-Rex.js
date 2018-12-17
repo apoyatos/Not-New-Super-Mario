@@ -1,6 +1,8 @@
 'use strict';
 
 var Enemy = require('./Enemigo.js');
+var Moneda = require('./Moneda.js');
+var Corazon = require('./Corazon.js');
 
 function TRex(game, x, y, sprite, frame, player) {
     Enemy.call(this, game, x, y, sprite, frame, 0, 0);
@@ -57,21 +59,23 @@ TRex.prototype.EspecialBlockCollision = function (tile, prizeType) {
 
         if (prizeType == 'coin') //Crea una moneda
         {
-            this.coin = new Moneda(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - player.y) * tile.height), this.coinSprite);
-            player.scene.objects.add(this.coin);
+            this.coin = new Moneda(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - this.player.y) * tile.height), prizeType);
+            this.player.scene.objects.add(this.coin);
             this.coin.animations.play('coin');
         }
         else if (prizeType == 'heart') //Crea un corazón
-            player.scene.objects.add(new Corazon(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - player.y) * tile.height), this.heartSprite, 0, 3));
+            this.player.scene.objects.add(new Corazon(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - this.player.y) * tile.height), prizeType, 0, 3));
         else //Crea un super corazón
-            player.scene.objects.add(new Corazon(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - player.y) * tile.height), this.superHeartSprite, 0, 6));
+            this.player.scene.objects.add(new Corazon(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - this.player.y) * tile.height), prizeType, 0, 6));
 
         this.hitSound.play();
     }
 }
 //Animaciones
 TRex.prototype.handleAnimations = function (player) {
-    player.scale.setTo(0.95, 0.95);
+    player.scale.setTo(0.95,0.95);
+    player.body.width=this.width;
+    player.body.height=this.height;
     if (!player.moving) //Si no se mueve
     {
         if (player.facing == -1)
