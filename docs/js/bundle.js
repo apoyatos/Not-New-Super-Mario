@@ -66,7 +66,6 @@ Block.prototype.HitEspecialBlock = function (player, tile, prizeType) {
                 {
                     this.coin = new Moneda(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - player.y) * tile.height), this.coinSprite);
                     player.scene.objects.add(this.coin);
-                    this.coin.animations.play('coin');
                 }
                 else if (prizeType == 'heart') //Crea un corazón
                     player.scene.objects.add(new Corazon(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - player.y) * tile.height), this.heartSprite, 0, 3));
@@ -281,7 +280,7 @@ Cappy.prototype.Capture = function (enemy, scene) {
             enemy.kill();
             this.Reset();
             this.player.reset(enemy.body.position.x, enemy.body.position.y);
-            this.player.goombaCount=enemy.count;
+            this.player.goombaCount = enemy.count;
             this.player.recalculateBody();
             //Reanuda la escena
             scene.pause = false;
@@ -400,7 +399,9 @@ Chomp.prototype.Move = function () {
     }
 }
 //Cambia la dirección
-Chomp.prototype.ChangeDir = function () { this.dir = -this.dir }
+Chomp.prototype.ChangeDir = function () {
+    this.dir = -this.dir
+}
 //Ataque del chomp
 Chomp.prototype.Attack = function (player) {
     if (this.game.time.totalElapsedSeconds() > this.cooldownTimer) {
@@ -471,7 +472,6 @@ Chomp.prototype.Collision = function (player, enemy) {
 }
 //Colisiones del chomp capturado con bloques normales
 Chomp.prototype.BlockCollision = function (tile, player) {
-    console.log('hola')
     if (this.charged) {
         player.scene.map.removeTile(tile.x, tile.y, player.scene.blocks);
         this.breakSound.play();
@@ -491,7 +491,6 @@ Chomp.prototype.EspecialBlockCollision = function (tile, prizeType) {
             {
                 this.coin = new Moneda(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - this.player.y) * tile.height), prizeType);
                 this.player.scene.objects.add(this.coin);
-                this.coin.animations.play('coin');
             }
             else if (prizeType == 'heart') //Crea un corazón
                 this.player.scene.objects.add(new Corazon(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - this.player.y) * tile.height), prizeType, 0, 3));
@@ -1241,17 +1240,12 @@ Mario.prototype.ThrowCappy = function () {
             //Guarda el número de goombas en la torre
             if (this.enemy.type == 'goomba')
                 this.enemy.count = this.goombaCount;
-            this.goombaCount = 1;
             this.scale.setTo(2, 2);
             this.recalculateBody();
             this.enemy.captured = false
             //El enemigo reaparece pero si es un T-Rex se muere
-            if (this.enemy.type != 't-rex') {
-                if (this.enemy.type != 'goomba')
-                    this.enemy.reset(this.x + this.enemy.width * -this.facing, this.enemy.y);
-                else //Si es un goomba varia la reaparición según la altura de la torre de goombas
-                    this.enemy.reset(this.x + this.enemy.width * -this.facing, this.y);
-            }
+            if (this.enemy.type != 't-rex')
+                this.enemy.reset(this.x + this.enemy.width * -this.facing, this.y);
         }
     }
 }
@@ -1539,7 +1533,6 @@ TRex.prototype.EspecialBlockCollision = function (tile, prizeType) {
         {
             this.coin = new Moneda(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - this.player.y) * tile.height), prizeType);
             this.player.scene.objects.add(this.coin);
-            this.coin.animations.play('coin');
         }
         else if (prizeType == 'heart') //Crea un corazón
             this.player.scene.objects.add(new Corazon(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - this.player.y) * tile.height), prizeType, 0, 3));
@@ -1551,9 +1544,9 @@ TRex.prototype.EspecialBlockCollision = function (tile, prizeType) {
 }
 //Animaciones
 TRex.prototype.handleAnimations = function (player) {
-    player.scale.setTo(0.95,0.95);
-    player.body.width=this.width;
-    player.body.height=this.height;
+    player.scale.setTo(0.95, 0.95);
+    player.body.width = this.width;
+    player.body.height = this.height;
     if (!player.moving) //Si no se mueve
     {
         if (player.facing == -1)
@@ -1796,9 +1789,9 @@ var PlayScene = {
     this.plants.add(new Planta(this.game, 4736, 2688, 'plant', 5, 100, 5));
     this.plants.add(new Planta(this.game, 5184, 1120, 'plant', 5, 100, 5));
     //Chomps
-    this.chomps.add(new Chomp(this.game, 2912, 2848, 'chomp', 0, 50, 100, 300, 1, this.player));
-    this.chomps.add(new Chomp(this.game, 3968, 2382, 'chomp', 0, 50, 100, 300, 1, this.player));
-    this.chomps.add(new Chomp(this.game, 4960, 1312, 'chomp', 0, 50, 80, 300, 1, this.player));
+    this.chomps.add(new Chomp(this.game, 2912, 2848, 'chomp', 0, 50, 120, 300, 1, this.player));
+    this.chomps.add(new Chomp(this.game, 3968, 2382, 'chomp', 0, 50, 120, 300, 1, this.player));
+    this.chomps.add(new Chomp(this.game, 4960, 1312, 'chomp', 0, 50, 100, 300, 1, this.player));
     this.chomps.add(this.boss.chomp);
     //Array enemies
     this.enemies.push(this.goombas);
@@ -1912,7 +1905,7 @@ var PlayScene = {
             this.game.physics.arcade.collide(item, this.floor);
             this.game.physics.arcade.collide(item, this.collisions, function (enemy) { enemy.ChangeDir(); });
             this.game.physics.arcade.collide(item, this.deathZone, function (enemy) { enemy.Die(); });
-            if (item.type != 'chomp' ) {
+            if (item.type != 'chomp') {
               this.game.physics.arcade.collide(item, this.blocks);
               this.game.physics.arcade.collide(item, this.coinBlocks);
               this.game.physics.arcade.collide(item, this.heartBlocks);
@@ -2039,8 +2032,8 @@ var PlayScene = {
       this.shots.forEach(
         function (item) {
           //Devuelve su movimiento
-          if (item.body.velocity.x == 0 && this.planta != undefined) {
-            item.body.velocity.x = this.planta.shootingSpeed * item.posX;
+          if (item.body.velocity.x == 0) {
+            item.body.velocity.x = item.shotSpeed * item.posX;
             item.animations.play(item.sprite);
           }
           if (this.player.EnemyCollision(item)) {

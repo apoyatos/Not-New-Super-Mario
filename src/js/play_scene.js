@@ -95,9 +95,9 @@ var PlayScene = {
     this.plants.add(new Planta(this.game, 4736, 2688, 'plant', 5, 100, 5));
     this.plants.add(new Planta(this.game, 5184, 1120, 'plant', 5, 100, 5));
     //Chomps
-    this.chomps.add(new Chomp(this.game, 2912, 2848, 'chomp', 0, 50, 100, 300, 1, this.player));
-    this.chomps.add(new Chomp(this.game, 3968, 2382, 'chomp', 0, 50, 100, 300, 1, this.player));
-    this.chomps.add(new Chomp(this.game, 4960, 1312, 'chomp', 0, 50, 80, 300, 1, this.player));
+    this.chomps.add(new Chomp(this.game, 2912, 2848, 'chomp', 0, 50, 120, 300, 1, this.player));
+    this.chomps.add(new Chomp(this.game, 3968, 2382, 'chomp', 0, 50, 120, 300, 1, this.player));
+    this.chomps.add(new Chomp(this.game, 4960, 1312, 'chomp', 0, 50, 100, 300, 1, this.player));
     this.chomps.add(this.boss.chomp);
     //Array enemies
     this.enemies.push(this.goombas);
@@ -211,7 +211,7 @@ var PlayScene = {
             this.game.physics.arcade.collide(item, this.floor);
             this.game.physics.arcade.collide(item, this.collisions, function (enemy) { enemy.ChangeDir(); });
             this.game.physics.arcade.collide(item, this.deathZone, function (enemy) { enemy.Die(); });
-            if (item.type != 'chomp' ) {
+            if (item.type != 'chomp') {
               this.game.physics.arcade.collide(item, this.blocks);
               this.game.physics.arcade.collide(item, this.coinBlocks);
               this.game.physics.arcade.collide(item, this.heartBlocks);
@@ -338,8 +338,8 @@ var PlayScene = {
       this.shots.forEach(
         function (item) {
           //Devuelve su movimiento
-          if (item.body.velocity.x == 0 && this.planta != undefined) {
-            item.body.velocity.x = this.planta.shootingSpeed * item.posX;
+          if (item.body.velocity.x == 0) {
+            item.body.velocity.x = item.shotSpeed * item.posX;
             item.animations.play(item.sprite);
           }
           if (this.player.EnemyCollision(item)) {

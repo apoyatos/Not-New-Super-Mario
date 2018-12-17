@@ -61,7 +61,6 @@ TRex.prototype.EspecialBlockCollision = function (tile, prizeType) {
         {
             this.coin = new Moneda(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - this.player.y) * tile.height), prizeType);
             this.player.scene.objects.add(this.coin);
-            this.coin.animations.play('coin');
         }
         else if (prizeType == 'heart') //Crea un corazón
             this.player.scene.objects.add(new Corazon(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - this.player.y) * tile.height), prizeType, 0, 3));
@@ -73,9 +72,9 @@ TRex.prototype.EspecialBlockCollision = function (tile, prizeType) {
 }
 //Animaciones
 TRex.prototype.handleAnimations = function (player) {
-    player.scale.setTo(0.95,0.95);
-    player.body.width=this.width;
-    player.body.height=this.height;
+    player.scale.setTo(0.95, 0.95);
+    player.body.width = this.width;
+    player.body.height = this.height;
     if (!player.moving) //Si no se mueve
     {
         if (player.facing == -1)

@@ -118,7 +118,7 @@ Cappy.prototype.Capture = function (enemy, scene) {
             enemy.kill();
             this.Reset();
             this.player.reset(enemy.body.position.x, enemy.body.position.y);
-            this.player.goombaCount=enemy.count;
+            this.player.goombaCount = enemy.count;
             this.player.recalculateBody();
             //Reanuda la escena
             scene.pause = false;

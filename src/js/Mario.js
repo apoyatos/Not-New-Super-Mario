@@ -376,17 +376,12 @@ Mario.prototype.ThrowCappy = function () {
             //Guarda el número de goombas en la torre
             if (this.enemy.type == 'goomba')
                 this.enemy.count = this.goombaCount;
-            this.goombaCount = 1;
             this.scale.setTo(2, 2);
             this.recalculateBody();
             this.enemy.captured = false
             //El enemigo reaparece pero si es un T-Rex se muere
-            if (this.enemy.type != 't-rex') {
-                if (this.enemy.type != 'goomba')
-                    this.enemy.reset(this.x + this.enemy.width * -this.facing, this.enemy.y);
-                else //Si es un goomba varia la reaparición según la altura de la torre de goombas
-                    this.enemy.reset(this.x + this.enemy.width * -this.facing, this.y);
-            }
+            if (this.enemy.type != 't-rex')
+                this.enemy.reset(this.x + this.enemy.width * -this.facing, this.y);
         }
     }
 }

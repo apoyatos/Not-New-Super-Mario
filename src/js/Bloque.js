@@ -42,7 +42,6 @@ Block.prototype.HitEspecialBlock = function (player, tile, prizeType) {
                 {
                     this.coin = new Moneda(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - player.y) * tile.height), this.coinSprite);
                     player.scene.objects.add(this.coin);
-                    this.coin.animations.play('coin');
                 }
                 else if (prizeType == 'heart') //Crea un corazón
                     player.scene.objects.add(new Corazon(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - player.y) * tile.height), this.heartSprite, 0, 3));
