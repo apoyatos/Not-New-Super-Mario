@@ -44,8 +44,8 @@ var PreloaderScene = {
     this.game.load.spritesheet('fireball', 'images/Disparo-Fuego.png', 9, 9);
     //Mapa
     this.game.load.tilemap('tilemap', 'tilemaps/Nivel1.json', null, Phaser.Tilemap.TILED_JSON);
-    this.game.load.image('tiles1', 'tilemaps/Tiles1.png');
-    this.game.load.image('tiles2', 'tilemaps/Tiles2.png');
+    this.game.load.image('tiles1', 'tilemaps/Tileset1.png');
+    this.game.load.image('tiles2', 'tilemaps/Tileset2.png');
     //Sonidos:
 
     //Menu
