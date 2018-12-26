@@ -157,7 +157,8 @@ var PlayScene = {
     this.buttonExit.fixedToCamera = true;
 
     function Exit() {
-      //En desarrollo
+      this.game.sound.stopAll();
+      this.game.state.start('menu')
     }
   },
   update: function () {

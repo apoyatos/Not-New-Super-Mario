@@ -27,6 +27,7 @@ var PreloaderScene = {
     this.game.load.image('pause', 'images/MenuPausa.png');
     this.game.load.spritesheet('continue', 'images/Continue.png', 306, 56);
     this.game.load.spritesheet('exit', 'images/Exit.png', 306, 56);
+    this.game.load.spritesheet('vol', 'images/Vol.png', 53, 56);
     //Objetos del mapa
     this.game.load.image('block', 'images/Bloque.png');
     this.game.load.spritesheet('superBlock', 'images/SuperBloque.png', 34, 32);
@@ -86,17 +87,16 @@ var Menu = {
     this.logo.scale.setTo(3, 3);
     this.logo.anchor.setTo(-1.2, -0.2);
     //Botón Start
-    this.buttonPlay = this.game.add.button(0, 0, 'start', PlaySound, this, 0, 2, 1);
+    this.buttonPlay = this.game.add.button(0, 0, 'start', Play, this, 0, 2, 1);
     this.buttonPlay.scale.setTo(2, 2);
     this.buttonPlay.anchor.setTo(-0.6, -4);
     this.startSound = this.game.add.audio('start');
 
-    function PlaySound() {
-      this.startSound.play();
-      this.startSound.onStop.add(Play, this);
-    }
     function Play() {
-      this.game.state.start('play');
+      this.startSound.play();
+      this.startSound.onStop.add(function () {
+        this.game.state.start('play');
+      }, this);
     }
     //Botón Options
     this.buttonOptions = this.game.add.button(0, 0, 'options', Options, this, 0, 2, 1);
@@ -104,7 +104,10 @@ var Menu = {
     this.buttonOptions.anchor.setTo(-0.6, -5.2);
 
     function Options() {
-      //En desarrollo
+      this.startSound.play();
+      this.startSound.onStop.add(function () {
+        this.game.state.start('options');
+      }, this);
     }
   }
 };
@@ -112,6 +115,36 @@ var Menu = {
 var Options = {
   create: function () {
     //En desarrollo
+    this.game.stage.backgroundColor = 0x3488aa;
+    //Logo del juego
+    this.logo = this.game.add.sprite(0, 0, 'logo');
+    this.logo.scale.setTo(3, 3);
+    this.logo.anchor.setTo(-1.2, -0.2);
+
+    this.text = this.game.add.text(600, 500, 'VOLUME ' + Math.round(this.game.sound.volume*10), { fill: 'white', font: '40px courier' });
+    this.upVolume = this.game.add.button(0, 0, 'vol', VolUp, this, 0, 2, 1);
+    this.upVolume.scale.setTo(2, 2);
+    this.upVolume.anchor.setTo(-11.2, -4);
+    this.downVolume = this.game.add.button(0, 0, 'vol', VolDown, this, 0, 2, 1);
+    this.downVolume.scale.setTo(2, 2);
+    this.downVolume.anchor.setTo(-0.6, -4);
+    this.buttonReturn = this.game.add.button(0, 0, 'exit', Return, this, 0, 2, 1);
+    this.buttonReturn.scale.setTo(2, 2);
+    this.buttonReturn.anchor.setTo(-0.6, -5.2);
+
+    function Return() {
+      this.game.sound.stopAll();
+      this.game.state.start('menu')
+    }
+
+    function VolUp() {
+      this.game.sound.volume = this.game.sound.volume+0.1;
+      this.text.text = 'VOLUME ' + Math.round(this.game.sound.volume*10);
+    }
+    function VolDown() {
+      this.game.sound.volume = this.game.sound.volume-0.1;
+      this.text.text = 'VOLUME ' + Math.round(this.game.sound.volume*10);
+    }
   }
 };
 
