@@ -95,9 +95,9 @@ var PlayScene = {
     this.plants.add(new Planta(this.game, 4736, 2688, 'plant', 5, 100, 5));
     this.plants.add(new Planta(this.game, 5184, 1120, 'plant', 5, 100, 5));
     //Chomps
-    this.chomps.add(new Chomp(this.game, 2912, 2848, 'chomp', 0, 50, 120, 300, 1, this.player));
-    this.chomps.add(new Chomp(this.game, 3968, 2382, 'chomp', 0, 50, 120, 300, 1, this.player));
-    this.chomps.add(new Chomp(this.game, 4960, 1312, 'chomp', 0, 50, 100, 300, 1, this.player));
+    this.chomps.add(new Chomp(this.game, 2912, 2848, 'chomp', 0, 50, 120, 300, 1, this.player, 150));
+    this.chomps.add(new Chomp(this.game, 3968, 2382, 'chomp', 0, 50, 120, 300, 1, this.player, 150));
+    this.chomps.add(new Chomp(this.game, 4960, 1312, 'chomp', 0, 50, 100, 300, 1, this.player, 150));
     this.chomps.add(this.boss.chomp);
     //Array enemies
     this.enemies.push(this.goombas);
@@ -396,6 +396,9 @@ var PlayScene = {
           item.body.velocity.x = 0;
           item.animations.stop();
         }, this);
+
+        this.boss.body.velocity.x=0;
+        this.boss.animations.stop();
     }
   }
 }

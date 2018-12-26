@@ -4,7 +4,7 @@ var Enemy = require('./Enemigo.js');
 var Moneda = require('./Moneda.js');
 var Corazon = require('./Corazon.js');
 
-function Chomp(game, x, y, sprite, frame, speed, chain, distance, cooldown, player) {
+function Chomp(game, x, y, sprite, frame, speed, chain, distance, cooldown, player, offset) {
     Enemy.call(this, game, x, y, sprite, frame, 0, 0);
     //Mario
     this.player = player;
@@ -16,7 +16,7 @@ function Chomp(game, x, y, sprite, frame, speed, chain, distance, cooldown, play
     this.distance = distance;
     this.originalSpeed = speed;
     this.originX = x;
-    this.offset = 150;
+    this.offset = offset;
     //Acciones
     this.attack = false;
     this.charging = false;

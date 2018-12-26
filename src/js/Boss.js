@@ -7,7 +7,7 @@ function Boss(game, x, y, sprite, frame, chompSprite, speed, life, player) {
     //Mario
     this.player = player;
     //Chomp
-    this.chomp = new Chomp(this.game, this.x, this.y, chompSprite, 0, 50, 100, 300, 1, this.player);
+    this.chomp = new Chomp(this.game, this.x, this.y, chompSprite, 0, 50, 200, 300,0, this.player, 0);
     this.capture = false;
     //Movimiento
     this.speed = speed;
@@ -24,19 +24,25 @@ function Boss(game, x, y, sprite, frame, chompSprite, speed, life, player) {
     this.scale.setTo(3, 3);
     //Caja de colisión
     this.originalHeight = this.body.height * this.scale.x;
+    this.animations.add('hurt', [1, 0], 5, true);
 }
 Boss.prototype = Object.create(Phaser.Sprite.prototype);
 Boss.constructor = Boss;
 
 //Movimiento del Boss
 Boss.prototype.Move = function () {
-    if (!this.chomp.captured) //Si el chomp no está capturado modifica su punto de anclaje
-    {
-        this.chomp.originX = this.x;
-        this.body.velocity.x = Math.sign(this.player.x - this.x) * this.speed;
+    if (this.player.y < this.bottom) {
+
+        if (this.chomp.captured && (this.player.x > this.x + this.speed + this.chomp.chain / 2 || this.player.x < this.x - this.speed - this.chomp.chain / 2))
+            this.body.velocity.x = 0;
+        else {
+            this.chomp.originX = this.x;
+            this.body.velocity.x = Math.sign(this.player.x - this.x) * this.speed;
+        }
+
     }
     else
-        this.body.velocity.x = Math.sign(this.player.x - this.x) * this.speed;;
+        this.body.velocity.x = 0;
 
 }
 //Cammbia la dirección
@@ -47,17 +53,16 @@ Boss.prototype.ChangeDir = function () {
 Boss.prototype.Hurt = function () {
     if (this.chomp.charged && this.game.physics.arcade.overlap(this.chomp, this)) //Si se choca con el chomp cargado
     {
+        console.log(this.life)
         if (this.life > 1) //Su vida es 1 o más
         {
             if (!this.hurt) //Se hace daño
             {
+
+                this.animations.play('hurt');
                 this.life--;
                 this.hurtTimer = this.hurtTime + this.game.time.totalElapsedSeconds()
                 this.hurt = true;
-            }
-            else {
-                if (this.hurtTimer < this.game.time.totalElapsedSeconds())
-                    this.hurt = false;
             }
         }
         else //Se muere y desaparece junto al chomp
@@ -68,6 +73,8 @@ Boss.prototype.Hurt = function () {
             }
         }
     }
+    if (this.alive && this.hurtTimer < this.game.time.totalElapsedSeconds())
+        this.hurt = false;
 }
 
 
