@@ -94,7 +94,7 @@ function Boss(game, x, y, sprite, frame, chompSprite, speed, life, player) {
     //Mario
     this.player = player;
     //Chomp
-    this.chomp = new Chomp(this.game, this.x, this.y, chompSprite, 0, 50, 100, 300, 1, this.player);
+    this.chomp = new Chomp(this.game, this.x, this.y, chompSprite, 0, 50, 200, 300,0, this.player, 0);
     this.capture = false;
     //Movimiento
     this.speed = speed;
@@ -111,19 +111,25 @@ function Boss(game, x, y, sprite, frame, chompSprite, speed, life, player) {
     this.scale.setTo(3, 3);
     //Caja de colisión
     this.originalHeight = this.body.height * this.scale.x;
+    this.animations.add('hurt', [1, 0], 5, true);
 }
 Boss.prototype = Object.create(Phaser.Sprite.prototype);
 Boss.constructor = Boss;
 
 //Movimiento del Boss
 Boss.prototype.Move = function () {
-    if (!this.chomp.captured) //Si el chomp no está capturado modifica su punto de anclaje
-    {
-        this.chomp.originX = this.x;
-        this.body.velocity.x = Math.sign(this.player.x - this.x) * this.speed;
+    if (this.player.y < this.bottom) {
+
+        if (this.chomp.captured && (this.player.x > this.x + this.speed + this.chomp.chain / 2 || this.player.x < this.x - this.speed - this.chomp.chain / 2))
+            this.body.velocity.x = 0;
+        else {
+            this.chomp.originX = this.x;
+            this.body.velocity.x = Math.sign(this.player.x - this.x) * this.speed;
+        }
+
     }
     else
-        this.body.velocity.x = Math.sign(this.player.x - this.x) * this.speed;;
+        this.body.velocity.x = 0;
 
 }
 //Cammbia la dirección
@@ -134,17 +140,16 @@ Boss.prototype.ChangeDir = function () {
 Boss.prototype.Hurt = function () {
     if (this.chomp.charged && this.game.physics.arcade.overlap(this.chomp, this)) //Si se choca con el chomp cargado
     {
+        console.log(this.life)
         if (this.life > 1) //Su vida es 1 o más
         {
             if (!this.hurt) //Se hace daño
             {
+
+                this.animations.play('hurt');
                 this.life--;
                 this.hurtTimer = this.hurtTime + this.game.time.totalElapsedSeconds()
                 this.hurt = true;
-            }
-            else {
-                if (this.hurtTimer < this.game.time.totalElapsedSeconds())
-                    this.hurt = false;
             }
         }
         else //Se muere y desaparece junto al chomp
@@ -155,6 +160,8 @@ Boss.prototype.Hurt = function () {
             }
         }
     }
+    if (this.alive && this.hurtTimer < this.game.time.totalElapsedSeconds())
+        this.hurt = false;
 }
 
 
@@ -311,7 +318,7 @@ var Enemy = require('./Enemigo.js');
 var Moneda = require('./Moneda.js');
 var Corazon = require('./Corazon.js');
 
-function Chomp(game, x, y, sprite, frame, speed, chain, distance, cooldown, player) {
+function Chomp(game, x, y, sprite, frame, speed, chain, distance, cooldown, player, offset) {
     Enemy.call(this, game, x, y, sprite, frame, 0, 0);
     //Mario
     this.player = player;
@@ -323,7 +330,7 @@ function Chomp(game, x, y, sprite, frame, speed, chain, distance, cooldown, play
     this.distance = distance;
     this.originalSpeed = speed;
     this.originX = x;
-    this.offset = 150;
+    this.offset = offset;
     //Acciones
     this.attack = false;
     this.charging = false;
@@ -1595,6 +1602,7 @@ var PreloaderScene = {
     this.game.load.image('pause', 'images/MenuPausa.png');
     this.game.load.spritesheet('continue', 'images/Continue.png', 306, 56);
     this.game.load.spritesheet('exit', 'images/Exit.png', 306, 56);
+    this.game.load.spritesheet('vol', 'images/Vol.png', 53, 56);
     //Objetos del mapa
     this.game.load.image('block', 'images/Bloque.png');
     this.game.load.spritesheet('superBlock', 'images/SuperBloque.png', 34, 32);
@@ -1654,17 +1662,16 @@ var Menu = {
     this.logo.scale.setTo(3, 3);
     this.logo.anchor.setTo(-1.2, -0.2);
     //Botón Start
-    this.buttonPlay = this.game.add.button(0, 0, 'start', PlaySound, this, 0, 2, 1);
+    this.buttonPlay = this.game.add.button(0, 0, 'start', Play, this, 0, 2, 1);
     this.buttonPlay.scale.setTo(2, 2);
     this.buttonPlay.anchor.setTo(-0.6, -4);
     this.startSound = this.game.add.audio('start');
 
-    function PlaySound() {
-      this.startSound.play();
-      this.startSound.onStop.add(Play, this);
-    }
     function Play() {
-      this.game.state.start('play');
+      this.startSound.play();
+      this.startSound.onStop.add(function () {
+        this.game.state.start('play');
+      }, this);
     }
     //Botón Options
     this.buttonOptions = this.game.add.button(0, 0, 'options', Options, this, 0, 2, 1);
@@ -1672,7 +1679,10 @@ var Menu = {
     this.buttonOptions.anchor.setTo(-0.6, -5.2);
 
     function Options() {
-      //En desarrollo
+      this.startSound.play();
+      this.startSound.onStop.add(function () {
+        this.game.state.start('options');
+      }, this);
     }
   }
 };
@@ -1680,6 +1690,36 @@ var Menu = {
 var Options = {
   create: function () {
     //En desarrollo
+    this.game.stage.backgroundColor = 0x3488aa;
+    //Logo del juego
+    this.logo = this.game.add.sprite(0, 0, 'logo');
+    this.logo.scale.setTo(3, 3);
+    this.logo.anchor.setTo(-1.2, -0.2);
+
+    this.text = this.game.add.text(600, 500, 'VOLUME ' + Math.round(this.game.sound.volume*10), { fill: 'white', font: '40px courier' });
+    this.upVolume = this.game.add.button(0, 0, 'vol', VolUp, this, 0, 2, 1);
+    this.upVolume.scale.setTo(2, 2);
+    this.upVolume.anchor.setTo(-11.2, -4);
+    this.downVolume = this.game.add.button(0, 0, 'vol', VolDown, this, 0, 2, 1);
+    this.downVolume.scale.setTo(2, 2);
+    this.downVolume.anchor.setTo(-0.6, -4);
+    this.buttonReturn = this.game.add.button(0, 0, 'exit', Return, this, 0, 2, 1);
+    this.buttonReturn.scale.setTo(2, 2);
+    this.buttonReturn.anchor.setTo(-0.6, -5.2);
+
+    function Return() {
+      this.game.sound.stopAll();
+      this.game.state.start('menu')
+    }
+
+    function VolUp() {
+      this.game.sound.volume = this.game.sound.volume+0.1;
+      this.text.text = 'VOLUME ' + Math.round(this.game.sound.volume*10);
+    }
+    function VolDown() {
+      this.game.sound.volume = this.game.sound.volume-0.1;
+      this.text.text = 'VOLUME ' + Math.round(this.game.sound.volume*10);
+    }
   }
 };
 
@@ -1793,9 +1833,9 @@ var PlayScene = {
     this.plants.add(new Planta(this.game, 4736, 2688, 'plant', 5, 100, 5));
     this.plants.add(new Planta(this.game, 5184, 1120, 'plant', 5, 100, 5));
     //Chomps
-    this.chomps.add(new Chomp(this.game, 2912, 2848, 'chomp', 0, 50, 120, 300, 1, this.player));
-    this.chomps.add(new Chomp(this.game, 3968, 2382, 'chomp', 0, 50, 120, 300, 1, this.player));
-    this.chomps.add(new Chomp(this.game, 4960, 1312, 'chomp', 0, 50, 100, 300, 1, this.player));
+    this.chomps.add(new Chomp(this.game, 2912, 2848, 'chomp', 0, 50, 120, 300, 1, this.player, 150));
+    this.chomps.add(new Chomp(this.game, 3968, 2382, 'chomp', 0, 50, 120, 300, 1, this.player, 150));
+    this.chomps.add(new Chomp(this.game, 4960, 1312, 'chomp', 0, 50, 100, 300, 1, this.player, 150));
     this.chomps.add(this.boss.chomp);
     //Array enemies
     this.enemies.push(this.goombas);
@@ -1855,7 +1895,8 @@ var PlayScene = {
     this.buttonExit.fixedToCamera = true;
 
     function Exit() {
-      //En desarrollo
+      this.game.sound.stopAll();
+      this.game.state.start('menu')
     }
   },
   update: function () {
@@ -2094,6 +2135,9 @@ var PlayScene = {
           item.body.velocity.x = 0;
           item.animations.stop();
         }, this);
+
+        this.boss.body.velocity.x=0;
+        this.boss.animations.stop();
     }
   }
 }
