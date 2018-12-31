@@ -379,7 +379,7 @@ Mario.prototype.ThrowCappy = function () {
             this.scale.setTo(2, 2);
             this.recalculateBody();
             this.enemy.captured = false
-            //El enemigo reaparece pero si es un T-Rex se muere
+            //El enemigo reaparece pero si es un T-Rex se muere, vigilar los chomps
             if (this.enemy.type != 't-rex')
                 this.enemy.reset(this.x + this.enemy.width * -this.facing, this.y);
         }

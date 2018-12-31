@@ -53,7 +53,6 @@ Boss.prototype.ChangeDir = function () {
 Boss.prototype.Hurt = function () {
     if (this.chomp.charged && this.game.physics.arcade.overlap(this.chomp, this)) //Si se choca con el chomp cargado
     {
-        console.log(this.life)
         if (this.life > 1) //Su vida es 1 o más
         {
             if (!this.hurt) //Se hace daño
@@ -68,8 +67,8 @@ Boss.prototype.Hurt = function () {
         else //Se muere y desaparece junto al chomp
         {
             if (!this.hurt) {
-                this.chomp.destroy();
-                this.destroy();
+                this.chomp.kill();
+                this.kill();
             }
         }
     }

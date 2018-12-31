@@ -20,6 +20,7 @@ Moon.prototype.Collision = function (player, scene) {
     else
         player.life = 3;
     //Destruye la luna
+    scene.ui[player.moons].frame=0;
     player.moons++;
     this.kill();
     //Pausa el juego y la música

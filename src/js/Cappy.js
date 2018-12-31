@@ -87,21 +87,19 @@ Cappy.prototype.Collision = function () {
 }
 //Reinicia el estado de Cappy
 Cappy.prototype.Reset = function () {
-    this.player.cappyCooldownTimer = this.game.time.totalElapsedSeconds() + this.cappyCooldownTime;
-    this.player.thrown = false;
-    this.cappyStopped = false;
-    this.cappyReturning = false;
-    //Mata a Cappy y para los sonidos
-    this.player.cappy.kill();
-    if (this.throwSound.isPlaying)
-        this.throwSound.stop();
+        this.player.cappyCooldownTimer = this.game.time.totalElapsedSeconds() + this.cappyCooldownTime;
+        this.player.thrown = false;
+        this.cappyStopped = false;
+        this.cappyReturning = false;
+        //Mata a Cappy y para los sonidos
+        this.player.cappy.kill();
+        if (this.throwSound.isPlaying)
+            this.throwSound.stop();
 }
 //Captura al enemigo con Cappy
-Cappy.prototype.Capture = function (enemy, scene) {
+Cappy.prototype.Capture = function (enemy) {
     if (this.game.physics.arcade.overlap(this.player.cappy, enemy)) //Al chocar con un enemigo capturable
     {
-        //Pausa la escena
-        scene.pause = true;
         enemy.captured = true;
         this.cappyCapture = true;
         this.player.capture = true;
@@ -111,18 +109,14 @@ Cappy.prototype.Capture = function (enemy, scene) {
             this.throwSound.stop();
         //Reproduce el sonido de captura
         this.captureSound.play();
-        this.captureSound.onStop.add(ResetMario, this);
         //Tras reproducir el sonido
-        function ResetMario() {
-            //Mata a Cappy y posee al enemigo
-            enemy.kill();
-            this.Reset();
-            this.player.reset(enemy.body.position.x, enemy.body.position.y);
-            this.player.goombaCount = enemy.count;
-            this.player.recalculateBody();
-            //Reanuda la escena
-            scene.pause = false;
-        }
+        //Mata a Cappy y posee al enemigo
+        enemy.kill();
+        this.Reset();
+        this.player.reset(enemy.body.position.x, enemy.body.position.y);
+        this.player.goombaCount = enemy.count;
+        this.player.recalculateBody();
+
         return true;
     }
     else
