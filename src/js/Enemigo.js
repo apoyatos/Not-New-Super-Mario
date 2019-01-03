@@ -34,5 +34,20 @@ Enemy.prototype.EnemyShoot = function (target, sprite, enemy) {
     }
   }
 }
+Enemy.prototype.Reset = function (x, y) { this.reset(x, y) }
+Enemy.prototype.Recalculate = function (player) {
+  player.body.height = player.height;
+  player.body.width = player.width;
+}
+Enemy.prototype.Collision = function (player) {
+  player.Hurt();
+  return true;
+}
+//Metodos polimorficos
+Enemy.prototype.Move = function () { }
+Enemy.prototype.Attack = function (player) { }
+Enemy.prototype.Hurt = function () { }
+Enemy.prototype.Shoot = function (player) { }
+
 
 module.exports = Enemy;

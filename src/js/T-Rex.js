@@ -21,7 +21,8 @@ TRex.prototype = Object.create(Enemy.prototype);
 TRex.constructor = TRex;
 
 //Cambia la dirección
-TRex.prototype.ChangeDir = function () { }
+TRex.prototype.Reset = function () { }
+TRex.prototype.Recalculate=function(player){}
 //Movimiento del T-Rex capturado
 TRex.prototype.MarioMove = function (player) {
     if (!player.running)
@@ -38,11 +39,8 @@ TRex.prototype.MarioJump = function (player) {
     player.body.velocity.y = -player.jumpVelocity / 2;
 }
 //Colisiones del T-Rex capturado con enemigos
-TRex.prototype.Collision = function (player, enemy) {
-    if (player.game.physics.arcade.overlap(enemy, player)) //Si choca con un enemigo
-    {
+TRex.prototype.MarioCollision = function (enemy) {
         enemy.kill();
-    }
 }
 //Colisiones del T-Rex capturado con bloques normales
 TRex.prototype.BlockCollision = function (tile, player) {

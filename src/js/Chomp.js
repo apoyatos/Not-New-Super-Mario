@@ -106,6 +106,9 @@ Chomp.prototype.Attack = function (player) {
         }
     }
 }
+Chomp.prototype.MarioCollision = function (enemy) {
+    enemy.kill();
+}
 //Movimiento del chomp capturado
 Chomp.prototype.MarioMove = function (player) {
     if ((player.x + player.velocity / 30 < (this.originX + this.chain)) && player.facing == 1) //Derecha

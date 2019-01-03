@@ -5,7 +5,8 @@ var Cappy = require('./Cappy.js');
 function Mario(game, x, y, sprite, frame, scene) {
     Phaser.Sprite.call(this, game, x, y, sprite, frame);
     //Cappy
-    this.cappy = null;
+    this.cappy = new Cappy(this.game, this.x, this.y, 'cappy', this, 1);
+    this.cappy.kill();
     this.thrown = false;
     this.cappyPlant = false;
     this.cappyCooldownTimer = 0;
@@ -282,35 +283,31 @@ Mario.prototype.ObjectCollision = function (object) {
         object.Collision(this, this.scene);
     }
 }
+Mario.prototype.Kick=function(){
+    this.kickTimer = this.game.time.totalElapsedSeconds() + this.kickTime;
+    this.kicking = true;
+    //Mata a la planta y reproduce el sonido
+    this.kickSound.play();
+    //Reinica a Cappy
+    this.cappyPlant = false;
+    this.cappy.Reset();
+}
 //Colisión de Mario con enemigos
 Mario.prototype.EnemyCollision = function (enemy) {
-    if (!this.capture) //Si es Mario
-    {
-        if (this.game.physics.arcade.overlap(enemy, this) && !this.hurt) {
-            if (enemy.type == 'plant' && this.cappyPlant) //Si se choca con la planta que se ha comido a Cappy
-            {
-                this.kickTimer = this.game.time.totalElapsedSeconds() + this.kickTime;
-                this.kicking = true;
-                //Mata a la planta y reproduce el sonido
-                enemy.kill();
-                this.kickSound.play();
-                //Reinica a Cappy
-                this.cappyPlant = false;
-                this.cappy.Reset();
-            }
-            else //Si se choca con un enemigo
-            {
-                this.Hurt();
-                return true;
-            }
+
+    if (this.game.physics.arcade.overlap(enemy, this) && !this.hurt) {
+        if (!this.capture) //Si es Mario
+        {
+            return enemy.Collision(this)
         }
-        if (this.game.time.totalElapsedSeconds() > this.hurtTimer) {
-            this.hurt = false;
-            return false;
-        }
+        else //Enemigos capturados
+            return this.enemy.MarioCollision(this, enemy);
     }
-    else //Enemigos capturados
-        return this.enemy.Collision(this, enemy);
+    if (this.game.time.totalElapsedSeconds() > this.hurtTimer) {
+        this.hurt = false;
+        return false;
+    }
+
 }
 //Daño de Mario
 Mario.prototype.Hurt = function () {
@@ -332,31 +329,23 @@ Mario.prototype.Die = function () {
     this.life = 3;
     this.goombaCount = 1;
     this.capture = false;
-    this.recalculateBody();
+    if (this.enemy != null)
+        this.recalculateBody();
     //Reinicia a Cappy
     if (this.cappy != null)
         this.cappy.Reset();
     //Revive a todos los enemigos
     this.scene.enemies.forEach(
         function (item) {
-            item.forEach(
-                function (item) {
-                    if (!item.alive) {
-                        item.revive();
-                    }
-                }, this);
+            if (!item.alive) {
+                item.revive();
+            }
         }, this);
 }
 //Lanzamiento de Cappy
 Mario.prototype.ThrowCappy = function () {
     if (this.game.time.totalElapsedSeconds() > this.cappyCooldownTimer && !this.crouching && !this.tackling && !this.bombJump) {
-        if (this.cappy == null) //Al principio crea a Cappy y lo lanza
-        {
-            this.cappy = new Cappy(this.game, this.body.x, this.body.y, 'cappy', this, this.facing);
-            this.cappy.Throw();
-            this.throwTimer = this.game.time.totalElapsedSeconds() + this.throwTime;
-        }
-        else if (this.cappy != null && !this.cappy.alive && !this.capture && !this.cappyPlant) //Destruye a Cappy y crea otro
+        if (!this.cappy.alive && !this.capture && !this.cappyPlant) //Destruye a Cappy y crea otro
         {
             this.cappy.destroy();
             this.cappy = new Cappy(this.game, this.body.x, this.body.y, 'cappy', this, this.facing);
@@ -373,15 +362,11 @@ Mario.prototype.ThrowCappy = function () {
             this.cappy.Reset()
             this.capture = false;
             this.cappy.cappyCapture = false;
-            //Guarda el número de goombas en la torre
-            if (this.enemy.type == 'goomba')
-                this.enemy.count = this.goombaCount;
             this.scale.setTo(2, 2);
             this.recalculateBody();
             this.enemy.captured = false
-            //El enemigo reaparece pero si es un T-Rex se muere, vigilar los chomps
-            if (this.enemy.type != 't-rex')
-                this.enemy.reset(this.x + this.enemy.width * -this.facing, this.y);
+            //El enemigo reaparece
+            this.enemy.Reset(this.x + this.enemy.width * -this.facing, this.y, this.goombaCount);
         }
     }
 }
@@ -481,11 +466,7 @@ Mario.prototype.handleAnimations = function () {
 //Recalcula la caja de colisiones de Mario
 Mario.prototype.recalculateBody = function () {
     this.handleAnimations();
-    if (this.enemy.type != 't-rex') {
-        this.body.height = this.height;
-        this.body.width = this.width;
-    }
-
+    this.enemy.Recalculate(this);
 }
 
 module.exports = Mario;

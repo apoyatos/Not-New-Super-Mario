@@ -1,9 +1,10 @@
 'use strict';
 
-var Chomp = require('./Chomp.js')
+var Chomp = require('./Chomp.js');
+var Enemy = require('./Enemigo.js');
 
 function Boss(game, x, y, sprite, frame, chompSprite, speed, life, player) {
-    Phaser.Sprite.call(this, game, x, y, sprite, frame);
+    Enemy.call(this, game, x, y, sprite, frame);
     //Mario
     this.player = player;
     //Chomp
@@ -26,7 +27,7 @@ function Boss(game, x, y, sprite, frame, chompSprite, speed, life, player) {
     this.originalHeight = this.body.height * this.scale.x;
     this.animations.add('hurt', [1, 0], 5, true);
 }
-Boss.prototype = Object.create(Phaser.Sprite.prototype);
+Boss.prototype = Object.create(Enemy.prototype);
 Boss.constructor = Boss;
 
 //Movimiento del Boss

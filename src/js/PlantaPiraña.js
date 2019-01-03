@@ -29,6 +29,15 @@ Fireplant.prototype.Shoot = function (target) {
     else
         this.frame = 5;
 }
+Fireplant.prototype.Collision = function (player) {
+    if(player.cappyPlant)
+    {
+        player.Kick();
+        this.kill();
+    }
+    else
+        Enemy.prototype.Collision();
+}
 //Ángulo de disparo para animaciones
 Fireplant.prototype.Angle = function (target) {
     this.angleShoot = Math.abs((this.game.physics.arcade.angleBetween(this, target) * 180) / Math.PI);

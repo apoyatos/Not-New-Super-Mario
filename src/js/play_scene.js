@@ -55,15 +55,8 @@ var PlayScene = {
     this.superheartBlocks = this.map.createLayer('BloquesSuperCorazones');
     this.map.setCollisionByExclusion([], true, 'BloquesSuperCorazones');
     //Grupos
-    this.goombas = this.game.add.group();
-    this.spinys = this.game.add.group();
-    this.plants = this.game.add.group();
-    this.chomps = this.game.add.group();
-    this.shots = this.game.add.group();
-    this.tRex = this.game.add.group();
-    //Arrays
-    this.enemies = [];
-    this.capturables = [];
+    this.enemies = this.game.add.group();
+    this.shots=this.game.add.group();
     //Mario
     this.numMoons = 10;
     this.minMoons = 5;
@@ -71,46 +64,36 @@ var PlayScene = {
     this.game.camera.follow(this.player);
     //Boss
     this.boss = new Boss(this.game, 5470, 446, 'plant', 0, 'chomp', 30, 3, this.player);
-    //T-Rex
-    this.tRex.add(new TRex(this.game, 1408, 2080, 't-rex', 0, this.player));
     //Enemigos:
-
+    this.enemies.add(this.boss);
+    //T-Rex
+    this.enemies.add(new TRex(this.game, 1408, 2080, 't-rex', 0, this.player));
     //Goombas
-    this.goombas.add(new Goomba(this.game, 960, 2816, 'goomba', 0, 100, this.player));
-    this.goombas.add(new Goomba(this.game, 1890, 2688, 'goomba', 0, -100, this.player));
-    this.goombas.add(new Goomba(this.game, 2018, 2688, 'goomba', 0, -100, this.player));
-    this.goombas.add(new Goomba(this.game, 2146, 2688, 'goomba', 0, 100, this.player));
-    this.goombas.add(new Goomba(this.game, 2274, 2688, 'goomba', 0, 100, this.player));
-    this.goombas.add(new Goomba(this.game, 4864, 2880, 'goomba', 0, -100, this.player));
-    this.goombas.add(new Goomba(this.game, 5088, 2880, 'goomba', 0, 100, this.player));
-    this.goombas.add(new Goomba(this.game, 4706, 2112, 'goomba', 0, -100, this.player));
-    this.goombas.add(new Goomba(this.game, 4992, 2112, 'goomba', 0, 100, this.player));
+    this.enemies.add(new Goomba(this.game, 960, 2816, 'goomba', 0, 100, this.player));
+    this.enemies.add(new Goomba(this.game, 1890, 2688, 'goomba', 0, -100, this.player));
+    this.enemies.add(new Goomba(this.game, 2018, 2688, 'goomba', 0, -100, this.player));
+    this.enemies.add(new Goomba(this.game, 2146, 2688, 'goomba', 0, 100, this.player));
+    this.enemies.add(new Goomba(this.game, 2274, 2688, 'goomba', 0, 100, this.player));
+    this.enemies.add(new Goomba(this.game, 4864, 2880, 'goomba', 0, -100, this.player));
+    this.enemies.add(new Goomba(this.game, 5088, 2880, 'goomba', 0, 100, this.player));
+    this.enemies.add(new Goomba(this.game, 4706, 2112, 'goomba', 0, -100, this.player));
+    this.enemies.add(new Goomba(this.game, 4992, 2112, 'goomba', 0, 100, this.player));
     //Spinys
-    this.spinys.add(new Spiny(this.game, 4576, 2432, 'spiny', 0, -100));
-    this.spinys.add(new Spiny(this.game, 4704, 2432, 'spiny', 0, -100));
-    this.spinys.add(new Spiny(this.game, 4832, 2432, 'spiny', 0, -100));
-    this.spinys.add(new Spiny(this.game, 4960, 2432, 'spiny', 0, -100));
-    this.spinys.add(new Spiny(this.game, 5088, 2432, 'spiny', 0, -100));
+    this.enemies.add(new Spiny(this.game, 4576, 2432, 'spiny', 0, -100));
+    this.enemies.add(new Spiny(this.game, 4704, 2432, 'spiny', 0, -100));
+    this.enemies.add(new Spiny(this.game, 4832, 2432, 'spiny', 0, -100));
+    this.enemies.add(new Spiny(this.game, 4960, 2432, 'spiny', 0, -100));
+    this.enemies.add(new Spiny(this.game, 5088, 2432, 'spiny', 0, -100));
     //Plantas
-    this.plants.add(new Planta(this.game, 2434, 1568, 'plant', 5, 100, 5));
-    this.plants.add(new Planta(this.game, 3936, 1216, 'plant', 5, 100, 5));
-    this.plants.add(new Planta(this.game, 4736, 2688, 'plant', 5, 100, 5));
-    this.plants.add(new Planta(this.game, 5184, 1120, 'plant', 5, 100, 5));
+    this.enemies.add(new Planta(this.game, 2434, 1568, 'plant', 5, 100, 5));
+    this.enemies.add(new Planta(this.game, 3936, 1216, 'plant', 5, 100, 5));
+    this.enemies.add(new Planta(this.game, 4736, 2688, 'plant', 5, 100, 5));
+    this.enemies.add(new Planta(this.game, 5184, 1120, 'plant', 5, 100, 5));
     //Chomps
-    this.chomps.add(new Chomp(this.game, 2912, 2848, 'chomp', 0, 50, 120, 300, 1, this.player, 150));
-    this.chomps.add(new Chomp(this.game, 3968, 2382, 'chomp', 0, 50, 120, 300, 1, this.player, 150));
-    this.chomps.add(new Chomp(this.game, 4960, 1312, 'chomp', 0, 50, 100, 300, 1, this.player, 150));
-    this.chomps.add(this.boss.chomp);
-    //Array enemies
-    this.enemies.push(this.goombas);
-    this.enemies.push(this.chomps);
-    this.enemies.push(this.plants);
-    this.enemies.push(this.spinys);
-    this.enemies.push(this.tRex);
-    //Array capturables
-    this.capturables.push(this.goombas);
-    this.capturables.push(this.chomps);
-    this.capturables.push(this.tRex);
+    this.enemies.add(new Chomp(this.game, 2912, 2848, 'chomp', 0, 50, 120, 300, 1, this.player, 150));
+    this.enemies.add(new Chomp(this.game, 3968, 2382, 'chomp', 0, 50, 120, 300, 1, this.player, 150));
+    this.enemies.add(new Chomp(this.game, 4960, 1312, 'chomp', 0, 50, 100, 300, 1, this.player, 150));
+    this.enemies.add(this.boss.chomp);
     //Bloques
     this.blocksHandler = new Bloque(this.game, 'coin', 'heart', 'superHeart');
     //Vidas
@@ -139,7 +122,6 @@ var PlayScene = {
         this.ui[i].frame = 2;
       this.ui[i].anchor.setTo(0, -0.5);
       this.ui[i].fixedToCamera = true;
-      console.log(this.ui[i])
     }
     //Pausa
     this.pause = false;
@@ -228,32 +210,14 @@ var PlayScene = {
       //Colisiones de enemigos con el mapa y los bloques
       this.enemies.forEach(
         function (item) {
-          item.forEach(
-            function (item) {
-              this.game.physics.arcade.collide(item, this.floor);
-              this.game.physics.arcade.collide(item, this.collisions, function (enemy) { enemy.ChangeDir(); });
-              this.game.physics.arcade.collide(item, this.deathZone, function (enemy) { enemy.Die(); });
-              if (item.type != 'chomp') {
-                this.game.physics.arcade.collide(item, this.blocks);
-                this.game.physics.arcade.collide(item, this.coinBlocks);
-                this.game.physics.arcade.collide(item, this.heartBlocks);
-                this.game.physics.arcade.collide(item, this.superheartBlocks);
-              }
-              else {
-                this.game.physics.arcade.collide(item, this.blocks, function (chomp, tile) { chomp.BlockCollision(tile, chomp.player); });
-                this.game.physics.arcade.collide(item, this.coinBlocks, function (chomp, tile) { chomp.EspecialBlockCollision(tile, 'coin'); });
-                this.game.physics.arcade.collide(item, this.heartBlocks, function (chomp, tile) { chomp.EspecialBlockCollision(tile, 'heart'); });
-                this.game.physics.arcade.collide(item, this.superheartBlocks, function (chomp, tile) { chomp.EspecialBlockCollision(tile, 'superHeart'); });
-              }
-            }, this);
+          this.game.physics.arcade.collide(item, this.floor);
+          this.game.physics.arcade.collide(item, this.collisions, function (enemy) { enemy.ChangeDir(); });
+          this.game.physics.arcade.collide(item, this.deathZone, function (enemy) { enemy.Die(); });
+          this.game.physics.arcade.collide(item, this.blocks, function (enemy, tile) { enemy.BlockCollision(tile, enemy.player); });
+          this.game.physics.arcade.collide(item, this.coinBlocks, function (enemy, tile) { enemy.EspecialBlockCollision(tile, 'coin'); });
+          this.game.physics.arcade.collide(item, this.heartBlocks, function (enemy, tile) { enemy.EspecialBlockCollision(tile, 'heart'); });
+          this.game.physics.arcade.collide(item, this.superheartBlocks, function (enemy, tile) { enemy.EspecialBlockCollision(tile, 'superHeart'); });
         }, this);
-      //Colisiones de Boss con el mapa y los bloques
-      this.game.physics.arcade.collide(this.boss, this.floor);
-      this.game.physics.arcade.collide(this.boss, this.collisions, function (enemy) { enemy.ChangeDir(); });
-      this.game.physics.arcade.collide(this.boss, this.blocks);
-      this.game.physics.arcade.collide(this.boss, this.coinBlocks);
-      this.game.physics.arcade.collide(this.boss, this.heartBlocks);
-      this.game.physics.arcade.collide(this.boss, this.superheartBlocks);
       //Bucle del juego
       if (!this.pause && !this.pauseButton) //Condiciones de pausa. Juego activo
       {
@@ -296,42 +260,19 @@ var PlayScene = {
           this.player.cappy.Collision();
         }
         //Goombas
-        this.goombas.forEach(
-          function (item) {
-            if (item.alive) {
-              item.Move();
-              item.Killed();
-            }
-          });
-        //Spinys
-        this.spinys.forEach(
-          function (item) {
-            if (item.alive) {
-              item.Move();
-            }
-          });
-        //Plantas
-        this.plants.forEach(
-          function (item) {
-            if (item.alive && item.inCamera) {
-              var shot = item.Shoot(this.player);
-              if (shot != undefined)
-                this.shots.add(shot);
-            }
-          }, this);
-        //Chomps
-        this.chomps.forEach(
+        this.enemies.forEach(
           function (item) {
             if (item.alive) {
               item.Move();
               item.Attack(this.player);
+              item.Hurt();
+              if (item.inCamera) {
+                var shot = item.Shoot(this.player);
+                if (shot != undefined)
+                  this.shots.add(shot);
+              }
             }
-          }, this);
-        //Boss
-        if (this.boss.alive) {
-          this.boss.Move();
-          this.boss.Hurt();
-        }
+          },this);
         //Colisiones de Mario con objetos
         this.objects.forEach(
           function (item) {
@@ -340,21 +281,15 @@ var PlayScene = {
         //Colisiones de Mario con enemigos
         this.enemies.forEach(
           function (item) {
-            item.forEach(
-              function (item) {
                 this.player.EnemyCollision(item);
                 if (this.player.cappy != null)
                   this.player.cappy.Stunn(item);
-              }, this);
           }, this);
         //Colisiones de Cappy con enemigos
-        this.capturables.forEach(
+        this.enemies.forEach(
           function (item) {
-            item.forEach(
-              function (item) {
-                if (this.player.cappy != null)
-                  this.player.cappy.Capture(item, this);
-              }, this);
+            if (this.player.cappy != null)
+              this.player.cappy.Capture(item, this);
           }, this);
         //Colisiones de Mario con disparos
         this.shots.forEach(
@@ -384,23 +319,7 @@ var PlayScene = {
           this.player.cappy.animations.stop();
         }
         //Goombas
-        this.goombas.forEach(
-          function (item) {
-            if (item.alive) {
-              item.body.velocity.x = 0;
-              item.animations.stop();
-            }
-          }, this);
-        //Spinys
-        this.spinys.forEach(
-          function (item) {
-            if (item.alive) {
-              item.body.velocity.x = 0;
-              item.animations.stop();
-            }
-          });
-        //Chomps
-        this.chomps.forEach(
+        this.enemies.forEach(
           function (item) {
             if (item.alive) {
               item.body.velocity.x = 0;
@@ -419,8 +338,6 @@ var PlayScene = {
             item.animations.stop();
           }, this);
 
-        this.boss.body.velocity.x = 0;
-        this.boss.animations.stop();
       }
     }
   }
