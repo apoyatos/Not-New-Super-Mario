@@ -679,7 +679,7 @@
         {
          "columns":16,
          "firstgid":1,
-         "image":"Tiles2.png",
+         "image":"Tileset2.png",
          "imageheight":992,
          "imagewidth":516,
          "margin":0,
@@ -692,7 +692,7 @@
         {
          "columns":29,
          "firstgid":497,
-         "image":"Tiles1.png",
+         "image":"Tileset1.png",
          "imageheight":862,
          "imagewidth":928,
          "margin":0,
