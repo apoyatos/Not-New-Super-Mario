@@ -167,7 +167,7 @@ Chomp.prototype.Collision = function (player, enemy) {
     }
 }
 //Colisiones del chomp capturado con bloques normales
-Chomp.prototype.BlockCollision = function (tile, player) {
+Chomp.prototype.BlockCollision = function (player, tile) {
     if (this.charged) {
         player.scene.map.removeTile(tile.x, tile.y, player.scene.blocks);
         this.breakSound.play();

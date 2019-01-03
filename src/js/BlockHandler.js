@@ -3,7 +3,8 @@
 var Moneda = require('./Moneda.js');
 var Corazon = require('./Corazon.js');
 
-function Block(game, coinSprite, heartSprite, superHeartSprite) {
+//Entidad abstracta (no necesita sprite) que maneja las collisiones de los bloques
+function BlockHandler(game, coinSprite, heartSprite, superHeartSprite) {
     //Juego y sprites
     this.game = game;
     this.coinSprite = coinSprite;
@@ -15,7 +16,7 @@ function Block(game, coinSprite, heartSprite, superHeartSprite) {
 }
 
 //Bloques normales
-Block.prototype.HitBlock = function (player, tile) {
+BlockHandler.prototype.HitBlock = function (player, tile) {
     if (!player.capture) //Si es Mario
     {
         if (player.body.blocked.up || (player.prevY < player.y && player.crouching)) //Al chocar con el bloque lo destruye
@@ -25,10 +26,10 @@ Block.prototype.HitBlock = function (player, tile) {
         }
     }
     else //Enemigos poseidos
-        player.enemy.BlockCollision(tile, player);
+        player.enemy.BlockCollision(player,tile);
 }
 //Bloques especiales
-Block.prototype.HitEspecialBlock = function (player, tile, prizeType) {
+BlockHandler.prototype.HitEspecialBlock = function (player, tile, prizeType) {
     if (!player.capture) //Si es Mario
     {
         if (tile.index == 498) //Bloque sin activar
@@ -58,4 +59,4 @@ Block.prototype.HitEspecialBlock = function (player, tile, prizeType) {
         player.enemy.EspecialBlockCollision(tile, prizeType);
 }
 
-module.exports = Block;
+module.exports = BlockHandler;

@@ -43,7 +43,7 @@ TRex.prototype.MarioCollision = function (enemy) {
         enemy.kill();
 }
 //Colisiones del T-Rex capturado con bloques normales
-TRex.prototype.BlockCollision = function (tile, player) {
+TRex.prototype.BlockCollision = function (player, tile) {
     player.scene.map.removeTile(tile.x, tile.y, player.scene.blocks);
     this.breakSound.play();
 }

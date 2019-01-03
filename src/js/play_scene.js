@@ -11,7 +11,7 @@ var TRex = require('./T-Rex.js');
 var Bandera = require('./Bandera.js');
 var Moneda = require('./Moneda.js');
 var Luna = require('./Luna.js');
-var Bloque = require('./Bloque.js');
+var Bloque = require('./BlockHandler.js');
 
 var PlayScene = {
   create: function () {
