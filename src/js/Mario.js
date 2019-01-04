@@ -220,7 +220,7 @@ Mario.prototype.Jump = function () {
         this.body.velocity.y = -this.jumpVelocity;
         this.jumpSound.play();
     }
-    else if ((this.capture && this.body.onFloor() || this.body.touching.down)) //Enemigos capturados
+    else if ((this.capture && this.body.onFloor())) //Enemigos capturados
     {
         this.enemy.MarioJump(this);
     }
@@ -298,14 +298,13 @@ Mario.prototype.EnemyCollision = function (enemy) {
     if (this.game.physics.arcade.overlap(enemy, this) && !this.hurt) {
         if (!this.capture) //Si es Mario
         {
-            return enemy.Collision(this)
+            enemy.Collision(this)
         }
         else //Enemigos capturados
-            return this.enemy.MarioCollision(this, enemy);
+            this.enemy.MarioCollision(this, enemy);
     }
     if (this.game.time.totalElapsedSeconds() > this.hurtTimer) {
         this.hurt = false;
-        return false;
     }
 
 }

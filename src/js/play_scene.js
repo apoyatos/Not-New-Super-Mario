@@ -12,8 +12,8 @@ var Bandera = require('./Bandera.js');
 var Moneda = require('./Moneda.js');
 var Luna = require('./Luna.js');
 var Bloque = require('./BlockHandler.js');
-var HeartS= require('./HeartSpawner.js');
-var CoinS= require('./CoinSpawner.js');
+var HeartS = require('./HeartSpawner.js');
+var CoinS = require('./CoinSpawner.js');
 
 var PlayScene = {
   create: function () {
@@ -98,9 +98,9 @@ var PlayScene = {
     this.enemies.add(this.boss.chomp);
     //Bloques
     this.blocksHandler = new Bloque(this.game);
-    this.coinSpawner= new CoinS(this.game,'coin');
-    this.heartSpawner= new HeartS(this.game,'heart',3);
-    this.superHeartSpawner= new HeartS(this.game,'superHeart',6);
+    this.coinSpawner = new CoinS(this.game, 'coin');
+    this.heartSpawner = new HeartS(this.game, 'heart', 3);
+    this.superHeartSpawner = new HeartS(this.game, 'superHeart', 6);
     //Vidas
     this.vidas = this.game.add.sprite(this.game.width, 0, 'life', 0);
     this.vidas.anchor.setTo(1.5, -0.2);
@@ -202,8 +202,8 @@ var PlayScene = {
       //Colisiones de Mario con los bloques
       this.game.physics.arcade.collide(this.player, this.blocks, function (player, tile) { player.scene.blocksHandler.HitBlock(player, tile); });
       this.game.physics.arcade.collide(this.player, this.coinBlocks, function (player, tile) { player.scene.blocksHandler.HitEspecialBlock(player, tile, player.scene.coinSpawner); });
-      this.game.physics.arcade.collide(this.player, this.heartBlocks, function (player, tile) { player.scene.blocksHandler.HitEspecialBlock(player, tile,  player.scene.heartSpawner); });
-      this.game.physics.arcade.collide(this.player, this.superheartBlocks, function (player, tile) { player.scene.blocksHandler.HitEspecialBlock(player, tile,  player.scene.superHeartSpawner); });
+      this.game.physics.arcade.collide(this.player, this.heartBlocks, function (player, tile) { player.scene.blocksHandler.HitEspecialBlock(player, tile, player.scene.heartSpawner); });
+      this.game.physics.arcade.collide(this.player, this.superheartBlocks, function (player, tile) { player.scene.blocksHandler.HitEspecialBlock(player, tile, player.scene.superHeartSpawner); });
       //Colisiones de Cappy con el mapa
       this.game.physics.arcade.collide(this.player.cappy, this.floor);
       this.game.physics.arcade.collide(this.player.cappy, this.collisions);
@@ -294,13 +294,12 @@ var PlayScene = {
         this.shots.forEach(
           function (item) {
             //Devuelve su movimiento
-            if (item.body.velocity.x == 0) {
-              item.body.velocity.x = item.shotSpeed * item.posX;
-              item.animations.play(item.sprite);
+            if (item.body.velocity.x == 0 && item.body.velocity.y == 0) {
+              item.body.velocity.x = item.VelX;
+              item.body.velocity.y = item.VelY;
+              item.animations.play(item.animName);
             }
-            if (this.player.EnemyCollision(item)) {
-              item.destroy();
-            }
+            this.player.EnemyCollision(item);
             if (item.alive)
               item.RemoveShot();
           }, this);
@@ -322,6 +321,7 @@ var PlayScene = {
           function (item) {
             if (item.alive) {
               item.body.velocity.x = 0;
+              item.body.velocity.y = 0;
               item.animations.stop();
             }
           }, this);
@@ -329,11 +329,12 @@ var PlayScene = {
         this.shots.forEach(
           function (item) {
             //Guarda su dirección
-            if (item.body.velocity < 0)
-              item.posX = 1;
-            else
-              item.posX = -1;
+            if (item.body.velocity.x != 0 || item.body.velocity.y != 0) {
+              item.VelX = item.body.velocity.x;
+              item.VelY = item.body.velocity.y;
+            }
             item.body.velocity.x = 0;
+            item.body.velocity.y = 0;
             item.animations.stop();
           }, this);
 

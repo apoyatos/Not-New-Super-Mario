@@ -22,16 +22,11 @@ Enemy.constructor = Enemy;
 Enemy.prototype.EnemyShoot = function (target, sprite, enemy) {
   if (enemy.game.time.totalElapsedSeconds() > this.shootTimer) {
     //Crea el disparo
-    if (sprite == 'fireball') {
-      var shot = new Disparo(enemy.game, enemy.x, enemy.y, sprite, 0, 'fireball', [0, 1, 2, 3], 5);
-      //Lo dispara
-      shot.Shoot(target, enemy.shootSpeed);
-      this.shootTimer = enemy.game.time.totalElapsedSeconds() + this.shootTime;
-      return shot;
-    }
-    else {
-      //Disparo del tanque (DLC)
-    }
+    var shot = new Disparo(enemy.game, enemy.x, enemy.y, sprite, 0, 'fireball', [0, 1, 2, 3], 5);
+    //Lo dispara
+    shot.Shoot(target, enemy.shootSpeed);
+    this.shootTimer = enemy.game.time.totalElapsedSeconds() + this.shootTime;
+    return shot;
   }
 }
 Enemy.prototype.Reset = function (x, y) { this.reset(x, y) }
@@ -41,9 +36,8 @@ Enemy.prototype.Recalculate = function (player) {
 }
 Enemy.prototype.Collision = function (player) {
   player.Hurt();
-  return true;
 }
-Enemy.prototype.GoombaCollision=function(player){
+Enemy.prototype.GoombaCollision = function (player) {
   this.Collision();
 }
 //Metodos polimorficos

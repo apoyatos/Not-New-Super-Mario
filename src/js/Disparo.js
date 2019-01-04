@@ -3,8 +3,9 @@
 function Shot(game, x, y, sprite, frame, animName, animFrames, animSpeed) {
   Phaser.Sprite.call(this, game, x, y, sprite, frame);
   //Disparo
-  this.posX;
   this.shotSpeed;
+  this.velX=0;
+  this.velY=0;
   //Propiedades
   this.game.world.addChild(this);
   this.game.physics.arcade.enable(this);
@@ -27,17 +28,19 @@ Shot.prototype.Shoot = function (target, speed) {
   this.game.physics.arcade.moveToObject(this, target, speed);
   //Animación y sonido del disparo
   this.animations.play(this.animName);
-  if (this.sprite == 'fireball')
-    this.fireballSound.play();
-  else {
-    //Disparo del tanque (DLC)
-  }
+  this.fireballSound.play();
+
 }
 //Destrucción del disparo
 Shot.prototype.RemoveShot = function () {
   //Destruye el disparo si sale de la pantalla
   if (this.x < this.game.camera.x || this.x > this.game.camera.x + this.game.camera.width || this.y < this.game.camera.y || this.y > this.game.camera.y + this.game.camera.height)
     this.destroy();
+}
+
+Shot.prototype.Collision = function (player) {
+  this.destroy();
+  player.Hurt();
 }
 
 module.exports = Shot;
