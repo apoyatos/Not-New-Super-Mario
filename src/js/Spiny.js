@@ -26,7 +26,8 @@ Spiny.prototype.Move = function () {
 }
 //Cambia la dirección
 Spiny.prototype.ChangeDir = function () {
-    this.speed = -this.speed;
+    if (this.body.onWall())
+        this.speed = -this.speed;
 }
 //Muerte del spiny
 Spiny.prototype.Die = function () {

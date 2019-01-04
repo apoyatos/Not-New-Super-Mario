@@ -43,6 +43,9 @@ Enemy.prototype.Collision = function (player) {
   player.Hurt();
   return true;
 }
+Enemy.prototype.GoombaCollision=function(player){
+  this.Collision();
+}
 //Metodos polimorficos
 Enemy.prototype.Move = function () { }
 Enemy.prototype.Attack = function (player) { }

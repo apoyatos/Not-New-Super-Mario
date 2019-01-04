@@ -20,7 +20,6 @@ function TRex(game, x, y, sprite, frame, player) {
 TRex.prototype = Object.create(Enemy.prototype);
 TRex.constructor = TRex;
 
-//Cambia la dirección
 TRex.prototype.Reset = function () { }
 TRex.prototype.Recalculate=function(player){}
 //Movimiento del T-Rex capturado
@@ -48,23 +47,13 @@ TRex.prototype.BlockCollision = function (player, tile) {
     this.breakSound.play();
 }
 //Colisiones del T-Rex capturado con bloques especiales
-TRex.prototype.EspecialBlockCollision = function (tile, prizeType) {
+TRex.prototype.EspecialBlockCollision = function (tile, spawner) {
     if (tile.index == 498) //Bloque sin activar
     {
         //Al chocar con el bloque crea el premio
         tile.index = 619;
         tile.layer.dirty = true;
-
-        if (prizeType == 'coin') //Crea una moneda
-        {
-            this.coin = new Moneda(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - this.player.y) * tile.height), prizeType);
-            this.player.scene.objects.add(this.coin);
-        }
-        else if (prizeType == 'heart') //Crea un corazón
-            this.player.scene.objects.add(new Corazon(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - this.player.y) * tile.height), prizeType, 0, 3));
-        else //Crea un super corazón
-            this.player.scene.objects.add(new Corazon(this.game, tile.worldX, tile.worldY + (Math.sign(tile.worldY - this.player.y) * tile.height), prizeType, 0, 6));
-
+        this.player.scene.objects.add(spawner.Spawn(tile.worldX, tile.worldY + (Math.sign(tile.worldY - player.y) * tile.height)));
         this.hitSound.play();
     }
 }

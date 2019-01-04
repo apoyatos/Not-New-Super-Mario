@@ -39,7 +39,8 @@ Goomba.prototype.Move = function () {
 }
 //Cambia la dirección
 Goomba.prototype.ChangeDir = function () {
-    this.speed = -this.speed;
+    if (this.body.onWall())
+        this.speed = -this.speed;
 }
 //Mario pisa al goomba
 Goomba.prototype.Killed = function () {
@@ -48,7 +49,7 @@ Goomba.prototype.Killed = function () {
     else {
         this.count--;
         this.recalculateBody();
-        this.y=this.y+this.height/(this.count+1);
+        this.y = this.y + this.height / (this.count + 1);
     }
     this.killSound.play();
     this.player.body.velocity.y = -this.player.jumpVelocity / 2;
@@ -87,17 +88,18 @@ Goomba.prototype.Collision = function (player) {
     else
         Enemy.prototype.Collision(player);
 }
-
-//Colisiones del goomba capturado con enemigos
-Goomba.prototype.MarioCollision = function (player, enemy) {
-    if (player.bottom < enemy.y + 10&& player.goombaCount<4) //Se sube en el goomba
+//Colision de un goomba con mario goomba
+Goomba.prototype.GoombaCollision = function (player) {
+    if (player.bottom < this.y + 10 && player.goombaCount < 4) //Se sube en el goomba
     {
         player.goombaCount++;
         enemy.kill();
         player.recalculateBody();
     }
-    else
-        Enemy.prototype.Collision(player);
+}
+//Colisiones del goomba capturado con enemigos
+Goomba.prototype.MarioCollision = function (player, enemy) {
+    enemy.GoombaCollision()
 }
 
 //Colisiones del goomba capturado con bloqes
