@@ -93,13 +93,13 @@ Goomba.prototype.GoombaCollision = function (player) {
     if (player.bottom < this.y + 10 && player.goombaCount < 4) //Se sube en el goomba
     {
         player.goombaCount++;
-        enemy.kill();
+        this.kill();
         player.recalculateBody();
     }
 }
 //Colisiones del goomba capturado con enemigos
 Goomba.prototype.MarioCollision = function (player, enemy) {
-    enemy.GoombaCollision()
+    enemy.GoombaCollision(player)
 }
 
 //Colisiones del goomba capturado con bloqes

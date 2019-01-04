@@ -225,7 +225,7 @@ var PlayScene = {
           this.game.physics.arcade.collide(item, this.floor);
           this.game.physics.arcade.collide(item, this.collisions, function (enemy) { enemy.ChangeDir(); });
           this.game.physics.arcade.collide(item, this.deathZone, function (enemy) { enemy.Die(); });
-          this.game.physics.arcade.collide(item, this.blocks, function (enemy, tile) { enemy.BlockCollision(tile, enemy.player); });
+          this.game.physics.arcade.collide(item, this.blocks, function (enemy, tile) { enemy.BlockCollision(enemy.player, tile); });
           this.game.physics.arcade.collide(item, this.coinBlocks, function (enemy, tile) { enemy.EspecialBlockCollision(tile, enemy.player.scene.coinSpawner); });
           this.game.physics.arcade.collide(item, this.heartBlocks, function (enemy, tile) { enemy.EspecialBlockCollision(tile, enemy.player.scene.heartSpawner); });
           this.game.physics.arcade.collide(item, this.superheartBlocks, function (enemy, tile) { enemy.EspecialBlockCollision(tile, enemy.player.scene.superHeartSpawner); });
