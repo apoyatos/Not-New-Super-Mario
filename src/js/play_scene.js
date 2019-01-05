@@ -63,7 +63,7 @@ var PlayScene = {
     this.enemies = this.game.add.group();
     this.shots = this.game.add.group();
     //Mario
-    this.player = new Mario(this.game, 32, 2720, 'mario', 5, this);
+    this.player = new Mario(this.game, 1350, 2000, 'mario', 5, this);
     this.game.camera.follow(this.player);
     this.maxMoons = 10;
     this.minMoons = 5;
@@ -246,6 +246,7 @@ var PlayScene = {
             item.Move();
             item.Attack(this.player);
             item.Hurt();
+            item.Capture(this.player.cappy);
             if (item.inCamera) {
               var shot = item.Shoot(this.player);
               if (shot != undefined)
@@ -257,7 +258,6 @@ var PlayScene = {
           if (this.player.cappy != null) {
             this.player.cappy.Stunn(item);
             //Colisiones con cappy
-            this.player.cappy.Capture(item, this);
           }
         }, this);
       //Bucle del juego

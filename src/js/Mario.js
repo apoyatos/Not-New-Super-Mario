@@ -299,7 +299,7 @@ Mario.prototype.EnemyCollision = function (enemy) {
         if (!this.capture) //Si es Mario
             enemy.Collision(this);
         else //Enemigos capturados
-            this.enemy.MarioCollision(this, enemy);
+            this.enemy.MarioCollision(enemy);
     }
     if (this.game.time.totalElapsedSeconds() > this.hurtTimer) {
         this.hurt = false;

@@ -89,6 +89,11 @@ Goomba.prototype.Collision = function (player) {
     else
         Enemy.prototype.Collision(player);
 }
+//Captura del Goomba
+Goomba.prototype.Capture = function (cappy) {
+    if (cappy != null)
+        cappy.Capture(this);
+}
 //Colisión del goomba con Mario goomba
 Goomba.prototype.GoombaCollision = function (player) {
     if (player.bottom < this.y + 10 && player.goombaCount < 4) //Se sube en el goomba
@@ -99,8 +104,8 @@ Goomba.prototype.GoombaCollision = function (player) {
     }
 }
 //Colisión de Mario goomba con enemigos
-Goomba.prototype.MarioCollision = function (player, enemy) {
-    enemy.GoombaCollision(player)
+Goomba.prototype.MarioCollision = function (enemy) {
+    enemy.GoombaCollision(this.player)
 }
 //Colisión de Mario goomba con bloqes
 Goomba.prototype.BlockCollision = function (player, tile) { }

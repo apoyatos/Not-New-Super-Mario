@@ -12,12 +12,28 @@ function TRex(game, x, y, sprite, frame, player) {
     this.hitSound = this.game.add.audio('hit');
     //Caja de colisión
     this.originalHeight = this.body.height * this.scale.x;
-    //Tipo
-    this.type = sprite;
+    //Atributos
+    this.captured = false;
+    this.timer = 0;
+    this.useTime = 20;
 }
 TRex.prototype = Object.create(Enemy.prototype);
 TRex.constructor = TRex;
-
+//Timer del T-Rex
+TRex.prototype.Timer = function () {
+    if (this.captured && this.timer < this.game.time.totalElapsedSeconds()) {
+        this.player.ThrowCappy();
+        this.captured = false;
+    }
+}
+//Captura del T-Rex
+TRex.prototype.Capture = function (cappy) {
+    if (cappy != null) {
+        cappy.Capture(this);
+        this.captured = true;
+        this.timer = this.game.time.totalElapsedSeconds() + this.useTime;
+    }
+}
 //Movimiento de Mario T-Rex
 TRex.prototype.MarioMove = function (player) {
     if (!player.running)
@@ -74,6 +90,7 @@ TRex.prototype.handleAnimations = function (player) {
         else
             player.animations.play('walkDinoRight');
     }
+    this.Timer();
 }
 
 module.exports = TRex;

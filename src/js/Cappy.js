@@ -98,7 +98,7 @@ Cappy.prototype.Reset = function () {
 }
 //Captura al enemigo con Cappy
 Cappy.prototype.Capture = function (enemy) {
-    if (this.game.physics.arcade.overlap(this.player.cappy, enemy)) //Al chocar con un enemigo capturable
+    if (this.game.physics.arcade.overlap(this, enemy)) //Al chocar con un enemigo capturable
     {
         enemy.captured = true;
         this.cappyCapture = true;
