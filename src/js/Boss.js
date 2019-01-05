@@ -54,9 +54,10 @@ Boss.prototype.Move = function () {
     if (this.player.y < this.bottom) //Empieza a moverse cuando llega Mario
     {
         this.startBattle = true;
-        //Si Mario ha capturado al chomp no se mueve
+        //Si Mario ha capturado al chomp y esta a mas de la mitad de la cadena de distancia no se mueve
         if (this.chomp.captured && (this.player.x > this.x + this.speed + this.chomp.chain / 2 || this.player.x < this.x - this.speed - this.chomp.chain / 2))
             this.body.velocity.x = 0;
+        //Si no persigue a mario
         else {
             this.chomp.originX = this.x;
             this.body.velocity.x = Math.sign(this.player.x - this.x) * this.speed;

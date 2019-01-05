@@ -17,6 +17,7 @@ function TRex(game, x, y, sprite, frame, player) {
     this.killSound = this.game.add.audio('kill');
     //Caja de colisión
     this.originalHeight = this.body.height * this.scale.x;
+    this.colBox=0.5;
 }
 TRex.prototype = Object.create(Enemy.prototype);
 TRex.constructor = TRex;
@@ -76,21 +77,29 @@ TRex.prototype.EspecialBlockCollision = function (tile, spawner) {
 //Animaciones de Mario T-Rex
 TRex.prototype.handleAnimations = function (player) {
     player.scale.setTo(0.95, 0.95);
-    player.body.width = this.width;
+    player.body.width = this.width*this.colBox;
     player.body.height = this.height;
     if (!player.moving) //Si no se mueve
     {
-        if (player.facing == -1)
+        if (player.facing == -1){
             player.animations.play('idleDinoLeft');
-        else
+            player.body.offset.x=0
+        }
+        else{
             player.animations.play('idleDinoRight');
+            player.body.offset.x=this.width*(1-this.colBox)
+        }
     }
     else //Si se mueve
     {
-        if (player.facing == -1)
+        if (player.facing == -1){
             player.animations.play('walkDinoLeft');
-        else
+            player.body.offset.x=0;
+        }
+        else{
             player.animations.play('walkDinoRight');
+            player.body.offset.x=this.width*(1-this.colBox)
+        }
     }
     this.Timer();
 }

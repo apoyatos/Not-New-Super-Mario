@@ -99,8 +99,9 @@ Chomp.prototype.ChangeDir = function () {
 //Ataque del chomp
 Chomp.prototype.Attack = function (player) {
     if (this.game.time.totalElapsedSeconds() > this.cooldownTimer) {
-        //Si no está cargando o atacando y se encuentra a cierta distancia de Mario comienza a cargar el ataque
-        if (!this.chargeAttack && !this.attack && !this.charged && this.dir == Math.sign(player.x - this.x) && Math.abs(player.x - this.x) < this.distance) {
+        //Si no está cargando o atacando y Mario se encuentra a en su rango comienza a cargar el ataque
+        if (!this.chargeAttack && !this.attack && !this.charged && this.dir == Math.sign(player.x - this.x) 
+        && (player.y < this.bottom) && (player.y > this.y - 2 * this.height) && Math.abs(player.x - this.x) < this.distance) {
             this.speed = 4 * this.originalSpeed;
             this.dir = -this.dir
             this.chargeAttack = true;
@@ -114,14 +115,14 @@ Chomp.prototype.ChompAnim = function () {
         if (!this.chargeAttack) //Si no está cargando el ataque
             this.animations.play('walkLeft');
         else //Si está cargando el ataque
-            this.animations.play('chargeLeft');
+            this.animations.play('chargeRight');
     }
     else if (this.dir > 0) //Derecha
     {
         if (!this.chargeAttack) //Si no está cargando el ataque
             this.animations.play('walkRight');
         else //Si está cargando el ataque
-            this.animations.play('chargeRight');
+            this.animations.play('chargeLeft');
     }
 }
 //Captura del chomp

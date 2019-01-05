@@ -476,6 +476,7 @@ Mario.prototype.handleAnimations = function () {
 }
 //Recalcula la caja de colisiones de Mario
 Mario.prototype.recalculateBody = function () {
+    this.body.offset.x=0;
     this.handleAnimations();
     this.enemy.Recalculate(this);
 }
