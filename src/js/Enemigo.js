@@ -38,7 +38,7 @@ Enemy.prototype.Collision = function (player) {
   player.Hurt();
 }
 Enemy.prototype.GoombaCollision = function (player) {
-  this.Collision();
+  this.Collision(player);
 }
 //Recalcula la caja de colisión
 Enemy.prototype.Recalculate = function (player) {

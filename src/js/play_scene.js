@@ -63,7 +63,7 @@ var PlayScene = {
     this.enemies = this.game.add.group();
     this.shots = this.game.add.group();
     //Mario
-    this.player = new Mario(this.game, 1350, 2000, 'mario', 5, this);
+    this.player = new Mario(this.game, 27, 2720, 'mario', 5, this);
     this.game.camera.follow(this.player);
     this.maxMoons = 10;
     this.minMoons = 5;
@@ -178,6 +178,7 @@ var PlayScene = {
     //Comprueba si se ha ganado
     if (!this.boss.alive && this.player.moons >= this.minMoons) {
       this.game.sound.stopAll();
+      this.game.state.start('win');
     }
     else {
       //Menu pausa

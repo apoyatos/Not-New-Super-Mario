@@ -37,7 +37,7 @@ Fireplant.prototype.Collision = function (player) {
         this.kill();
     }
     else
-        Enemy.prototype.Collision();
+        Enemy.prototype.Collision(player);
 }
 //Ángulo de disparo para animaciones
 Fireplant.prototype.Angle = function (target) {

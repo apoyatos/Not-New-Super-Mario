@@ -158,6 +158,9 @@ Chomp.prototype.MarioNotMoving = function (player) {
         }
     }
 }
+Chomp.prototype.MarioCollision=function(player){
+    Enemy.prototype.Collision(player);
+}
 //Salto de Mario chomp
 Chomp.prototype.MarioJump = function (player) { }
 //Colisión de Mario chomp con bloques normales

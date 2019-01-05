@@ -7,6 +7,7 @@ var BootScene = {
     this.game.load.spritesheet('odyssey', 'images/Odyssey.png', 140, 192);
   },
   create: function () {
+    this.game.forceSingleUpdate=true;
     this.game.state.start('preloader');
   }
 };
@@ -84,6 +85,7 @@ var PreloaderScene = {
 
 var Menu = {
   create: function () {
+    this.game.sound.stopAll();
     //Sonidos
     this.clicked = false;
     this.startSound = this.game.add.audio('start');
