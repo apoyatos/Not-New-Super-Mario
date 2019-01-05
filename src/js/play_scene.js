@@ -23,9 +23,14 @@ var PlayScene = {
     this.clicked = false;
     this.pressSound = this.game.add.audio('press');
     //Sonido nivel 1
-    this.level1Sound = this.game.add.audio('level1');
-    this.level1Sound.play();
-    this.level1Sound.loop = true;
+    this.levelSound = this.game.add.audio('level');
+    this.battleSound = this.game.add.audio('battle');
+    this.winSound = this.game.add.audio('win');
+    this.winSound.volume = 1;
+    this.levelSound.play();
+    this.levelSound.loop = true;
+    //Final del nivel 1
+    this.win = false;
     //Teclas para input
     this.teclas = this.game.input.keyboard.createCursorKeys();
     this.saltar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -68,7 +73,7 @@ var PlayScene = {
     this.maxMoons = 10;
     this.minMoons = 5;
     //Boss
-    this.boss = new Boss(this.game, 5470, 446, 'plant', 0, 'chomp', 30, 3, this.player);
+    this.boss = new Boss(this.game, 5470, 446, 'boss', 0, 'chompBoss', 30, 3, this.player, this);
     this.enemies.add(this.boss);
     //Enemigos:
     //T-Rex
@@ -151,7 +156,7 @@ var PlayScene = {
         this.pressSound.onStop.add(function () {
           this.pauseButton = false;
           this.pauseMenuOpen = false;
-          this.level1Sound.resume();
+          this.levelSound.resume();
         }, this);
       }
       this.clicked = false;
@@ -168,6 +173,7 @@ var PlayScene = {
         this.clicked = true;
         this.pressSound.play();
         this.pressSound.onStop.add(function () {
+          this.levelSound.stop();
           this.game.state.start('menu');
         }, this);
       }
@@ -176,10 +182,8 @@ var PlayScene = {
   },
   update: function () {
     //Comprueba si se ha ganado
-    if (!this.boss.alive && this.player.moons >= this.minMoons) {
-      this.game.sound.stopAll();
+    if (this.win)
       this.game.state.start('win');
-    }
     else {
       //Menu pausa
       this.pausar.onDown.add(PauseMenu, this);
@@ -194,7 +198,7 @@ var PlayScene = {
         this.pauseBackground.visible = true;
         this.buttonContinue.visible = true;
         this.buttonExit.visible = true;
-        this.level1Sound.pause();
+        this.levelSound.pause();
       }
       else //Desaparece y continua la música
       {
@@ -353,4 +357,5 @@ var PlayScene = {
     }
   }
 }
+
 module.exports = PlayScene;

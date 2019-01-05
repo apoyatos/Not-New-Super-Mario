@@ -46,10 +46,10 @@ Enemy.prototype.Recalculate = function (player) {
   player.body.width = player.width;
 }
 //Metodos polimorficos
-Enemy.prototype.Capture=function(cappy){}
 Enemy.prototype.Move = function () { }
 Enemy.prototype.Attack = function (player) { }
 Enemy.prototype.Hurt = function () { }
 Enemy.prototype.Shoot = function (player) { }
+Enemy.prototype.Capture = function (cappy) { }
 
 module.exports = Enemy;

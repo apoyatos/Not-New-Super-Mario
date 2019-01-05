@@ -7,23 +7,26 @@ function TRex(game, x, y, sprite, frame, player) {
     this.scale.setTo(0.95, 0.95);
     //Mario
     this.player = player;
-    //Sonidos
-    this.breakSound = this.game.add.audio('break');
-    this.hitSound = this.game.add.audio('hit');
-    //Caja de colisión
-    this.originalHeight = this.body.height * this.scale.x;
     //Atributos
     this.captured = false;
     this.timer = 0;
-    this.useTime = 20;
+    this.duration = 30;
+    //Sonidos
+    this.breakSound = this.game.add.audio('break');
+    this.hitSound = this.game.add.audio('hit');
+    this.killSound = this.game.add.audio('kill');
+    //Caja de colisión
+    this.originalHeight = this.body.height * this.scale.x;
 }
 TRex.prototype = Object.create(Enemy.prototype);
 TRex.constructor = TRex;
+
 //Timer del T-Rex
 TRex.prototype.Timer = function () {
     if (this.captured && this.timer < this.game.time.totalElapsedSeconds()) {
         this.player.ThrowCappy();
         this.captured = false;
+        this.killSound.play();
     }
 }
 //Captura del T-Rex
@@ -31,7 +34,7 @@ TRex.prototype.Capture = function (cappy) {
     if (cappy != null) {
         cappy.Capture(this);
         this.captured = true;
-        this.timer = this.game.time.totalElapsedSeconds() + this.useTime;
+        this.timer = this.game.time.totalElapsedSeconds() + this.duration;
     }
 }
 //Movimiento de Mario T-Rex
@@ -52,6 +55,7 @@ TRex.prototype.MarioJump = function (player) {
 //Colisión de Mario T-Rex con enemigos
 TRex.prototype.MarioCollision = function (enemy) {
     enemy.kill();
+    this.killSound.play();
 }
 //Colisión de Mario T-Rex con bloques normales
 TRex.prototype.BlockCollision = function (player, tile) {
@@ -69,8 +73,6 @@ TRex.prototype.EspecialBlockCollision = function (tile, spawner) {
         this.hitSound.play();
     }
 }
-TRex.prototype.Reset = function () { }
-TRex.prototype.Recalculate = function (player) { }
 //Animaciones de Mario T-Rex
 TRex.prototype.handleAnimations = function (player) {
     player.scale.setTo(0.95, 0.95);
@@ -92,5 +94,8 @@ TRex.prototype.handleAnimations = function (player) {
     }
     this.Timer();
 }
+//Métodos de T-Rex
+TRex.prototype.Reset = function () { }
+TRex.prototype.Recalculate = function (player) { }
 
 module.exports = TRex;

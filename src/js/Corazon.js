@@ -8,6 +8,8 @@ function Heart(game, x, y, sprite, frame, amount) {
     this.game.world.addChild(this);
     this.game.physics.arcade.enable(this);
     this.body.gravity.y = 600;
+    //Sonido
+    this.heartSound = this.game.add.audio('heart');
 }
 Heart.prototype = Object.create(Phaser.Sprite.prototype);
 Heart.constructor = Heart;
@@ -15,7 +17,7 @@ Heart.constructor = Heart;
 //Mario recoge el corazón
 Heart.prototype.Collision = function (player) {
     //Cura a Mario y destruye el corazón
-    if (this.amount > 3)
+    if (this.amount = 6)
         player.life = 6;
     else {
         if (player.life > 3)
@@ -24,7 +26,7 @@ Heart.prototype.Collision = function (player) {
             player.life = 3;
     }
     this.kill();
-    //Sonido del corazón
+    this.heartSound.play();
 }
 
 module.exports = Heart;

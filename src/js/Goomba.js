@@ -9,7 +9,7 @@ function Goomba(game, x, y, sprite, frame, speed, player) {
     this.count = 1;
     //Movimiento
     this.speed = speed;
-    //Sonidos
+    //Sonido
     this.killSound = this.game.add.audio('kill');
     //Animación
     this.animations.add('walk1', ['walkLeft1', 'walkRight1'], 5, true);
@@ -42,6 +42,22 @@ Goomba.prototype.ChangeDir = function () {
     if (this.body.onWall())
         this.speed = -this.speed;
 }
+//Colisión del goomba
+Goomba.prototype.Collision = function (player) {
+    if (player.bottom < this.y + 10)
+        this.Killed();
+    else
+        Enemy.prototype.Collision(player);
+}
+//Colisión del goomba con Mario goomba
+Goomba.prototype.GoombaCollision = function (player) {
+    if (player.bottom < this.y + 10 && player.goombaCount < 4) //Se sube en el goomba
+    {
+        player.goombaCount++;
+        this.kill();
+        player.recalculateBody();
+    }
+}
 //Mario pisa al goomba
 Goomba.prototype.Killed = function () {
     if (this.count == 1) //Muere si está solo
@@ -67,41 +83,25 @@ Goomba.prototype.Reset = function (x, y, count) {
     this.reset(x, y);
     this.count = count;
 }
-//Movimiento del goomba capturado
+//Captura del goomba
+Goomba.prototype.Capture = function (cappy) {
+    if (cappy != null)
+        cappy.Capture(this);
+}
+//Movimiento de Mario goomba
 Goomba.prototype.MarioMove = function (player) {
     if (!player.running)
         player.body.velocity.x = player.facing * player.velocity / 1.7;
     else
         player.body.velocity.x = player.facing * player.velocity / 1.5;
 }
-//Goomba capturado quieto
+//Mario goomba quieto
 Goomba.prototype.MarioNotMoving = function (player) {
     player.body.velocity.x = 0;
 }
-//Salto del goomba capturado
+//Salto de Mario goomba
 Goomba.prototype.MarioJump = function (player) {
     player.body.velocity.y = -player.jumpVelocity / 1.7;
-}
-//Colisión del goomba
-Goomba.prototype.Collision = function (player) {
-    if (player.bottom < this.y + 10)
-        this.Killed();
-    else
-        Enemy.prototype.Collision(player);
-}
-//Captura del Goomba
-Goomba.prototype.Capture = function (cappy) {
-    if (cappy != null)
-        cappy.Capture(this);
-}
-//Colisión del goomba con Mario goomba
-Goomba.prototype.GoombaCollision = function (player) {
-    if (player.bottom < this.y + 10 && player.goombaCount < 4) //Se sube en el goomba
-    {
-        player.goombaCount++;
-        this.kill();
-        player.recalculateBody();
-    }
 }
 //Colisión de Mario goomba con enemigos
 Goomba.prototype.MarioCollision = function (enemy) {

@@ -28,9 +28,13 @@ function Chomp(game, x, y, sprite, frame, speed, chain, distance, cooldown, play
     //Sonidos
     this.breakSound = this.game.add.audio('break');
     this.hitSound = this.game.add.audio('hit');
+    this.attackSound = this.game.add.audio('chomp');
+    this.attackSound.volume = 0.5;
     //Animaciones
     this.animations.add('walkLeft', [2, 1, 3], 5, true);
     this.animations.add('walkRight', [5, 6, 4], 5, true);
+    this.animations.add('chargeLeft', [0], 5, false);
+    this.animations.add('chargeRight', [7], 5, false);
     //Caja de colisión
     this.originalHeight = this.body.height * this.scale.x;
     //Tipo
@@ -43,15 +47,15 @@ Chomp.constructor = Chomp
 Chomp.prototype.Move = function () {
     if (!this.captured) //Si es el chomp
     {
-        //Cuando esta atacando lanzado por mario
+        //Cuando está atacando lanzado por Mario
         if (this.charged) {
-            //Si llega al tope derecho cuando esta atacando
+            //Si llega al límite derecho cuando está atacando
             if ((this.x + (this.speed * this.dir) / 20 > (this.originX + this.chain + this.offset))) {
                 this.charged = false;
                 this.x = this.originX + this.chain - this.speed / 20;
                 this.cooldownTimer = this.game.time.totalElapsedSeconds() + 2 * this.cooldownTime;
             }
-            //Si llega al tope izquierdo
+            //Si llega al límite izquierdo cuando está atacando
             else if ((this.x - (this.speed * this.dir) / 20 < (this.originX - this.chain - this.offset))) {
                 this.charged = false;
                 this.x = this.originX - this.chain + this.speed / 20;
@@ -59,18 +63,19 @@ Chomp.prototype.Move = function () {
             }
             this.body.velocity.x = this.speed * this.dir;
         }
-        //Si no esta atacando
+        //Si no está atacando
         else {
             if (this.game.time.totalElapsedSeconds() > this.cooldownTimer) {
-                //Si ha llegado a un tope
+                //Si ha llegado a un límite
                 if ((this.x + (this.speed * this.dir) / 20 > (this.originX + this.chain)) || (this.x + (this.speed * this.dir) / 20 < (this.originX - this.chain))) {
-                    //Si ha llegado al tope marcha atras(cargando el ataque) se lanza mas rapido hacia mario
+                    //Si ha llegado al límite atacando se lanza más rápido hacia Mario
                     if (this.chargeAttack) {
                         this.speed = 8 * this.originalSpeed;
                         this.chargeAttack = false;
                         this.attack = true;
+                        this.attackSound.play();
                     }
-                    //Si ha llegado al tope cuando atacaba (entra en cooldawn y regresa a la velocidad originañ)
+                    //Si ha llegado al límite después de atacar espera y regresa a la velocidad original
                     else if (this.attack) {
                         this.cooldownTimer = this.game.time.totalElapsedSeconds() + this.cooldownTime;
                         this.speed = this.originalSpeed;
@@ -80,15 +85,11 @@ Chomp.prototype.Move = function () {
                 }
                 this.body.velocity.x = this.speed * this.dir;
             }
-            //Si esta en cooldown no se mueve
+            //Si está en espera no se mueve
             else
                 this.body.velocity.x = 0;
         }
-        //Animaciones
-        if ((this.dir < 0 && !this.chargeAttack) || (this.dir > 0 && this.chargeAttack))
-            this.animations.play('walkLeft');
-        else if ((this.dir > 0 && !this.chargeAttack) || (this.dir < 0 && this.chargeAttack))
-            this.animations.play('walkRight');
+        this.ChompAnim();
     }
 }
 //Cambia la dirección del chomp
@@ -98,7 +99,7 @@ Chomp.prototype.ChangeDir = function () {
 //Ataque del chomp
 Chomp.prototype.Attack = function (player) {
     if (this.game.time.totalElapsedSeconds() > this.cooldownTimer) {
-        //Si no esta cargando o atacando y se encuentra a cierta distancia de Mario comienza a cargar el ataque (marcha atras)
+        //Si no está cargando o atacando y se encuentra a cierta distancia de Mario comienza a cargar el ataque
         if (!this.chargeAttack && !this.attack && !this.charged && this.dir == Math.sign(player.x - this.x) && Math.abs(player.x - this.x) < this.distance) {
             this.speed = 4 * this.originalSpeed;
             this.dir = -this.dir
@@ -106,21 +107,38 @@ Chomp.prototype.Attack = function (player) {
         }
     }
 }
-//Captura del Chomp
+//Animaciones del chomp
+Chomp.prototype.ChompAnim = function () {
+    if (this.dir < 0) //Izquierda
+    {
+        if (!this.chargeAttack) //Si no está cargando el ataque
+            this.animations.play('walkLeft');
+        else //Si está cargando el ataque
+            this.animations.play('chargeLeft');
+    }
+    else if (this.dir > 0) //Derecha
+    {
+        if (!this.chargeAttack) //Si no está cargando el ataque
+            this.animations.play('walkRight');
+        else //Si está cargando el ataque
+            this.animations.play('chargeRight');
+    }
+}
+//Captura del chomp
 Chomp.prototype.Capture = function (cappy) {
     if (cappy != null)
         cappy.Capture(this);
 }
 //Movimiento de Mario chomp
 Chomp.prototype.MarioMove = function (player) {
-    //Si no llega al tope derecho se mueve normal
+    //Si no llega al límite derecho se mueve a velocidad normal
     if ((player.x + player.velocity / 30 < (this.originX + this.chain)) && player.facing == 1) //Derecha
     {
         player.body.velocity.x = player.velocity / 2;
         this.charged = false;
         this.charging = false;
     }
-    //Si no llega al tope izquierdo se mueve normal
+    //Si no llega al límite izquierdo se mueve a velocidad normal
     else if ((player.x - player.velocity / 30 > (this.originX - this.chain)) && player.facing == -1) //Izquierda
     {
         player.body.velocity.x = -player.velocity / 2;
@@ -128,9 +146,9 @@ Chomp.prototype.MarioMove = function (player) {
         this.charging = false;
     }
     else {
-        //cuando llega a uno de los topes comienza a cargarse(se pone rojo)
+        //cuando llega a uno de los límites comienza a cargar el ataque
         player.body.velocity.x = 0;
-        //si no esta cargado o lanzado empieza a cargarse
+        //Si no está cargado o lanzandose empieza a cargar el ataque
         if (!this.charging && !this.charged) {
             this.chargeTimer = this.game.time.totalElapsedSeconds() + this.chargeTime;
             this.charging = true;
@@ -140,15 +158,16 @@ Chomp.prototype.MarioMove = function (player) {
             this.charged = true;
     }
 }
-//Mario chomp quieto
+//Mario chomp lanzando al chomp o quieto
 Chomp.prototype.MarioNotMoving = function (player) {
     if (this.captured) {
-        //si esta cargado se lanza al chomp 
+        //Si está cargado lanza al chomp y sale de él
         if (this.charged) {
             this.dir = -player.facing
             this.chargeAttack = false
             player.ThrowCappy();
             this.speed = 8 * this.originalSpeed;
+            this.attackSound.play();
         }
         else //Quieto
         {
@@ -158,11 +177,12 @@ Chomp.prototype.MarioNotMoving = function (player) {
         }
     }
 }
-Chomp.prototype.MarioCollision=function(player){
-    Enemy.prototype.Collision(player);
-}
 //Salto de Mario chomp
 Chomp.prototype.MarioJump = function (player) { }
+//Colisión de Mario chomp con enemigos
+Chomp.prototype.MarioCollision = function (player) {
+    Enemy.prototype.Collision(player);
+}
 //Colisión de Mario chomp con bloques normales
 Chomp.prototype.BlockCollision = function (player, tile) {
     if (this.charged) {
@@ -183,7 +203,7 @@ Chomp.prototype.EspecialBlockCollision = function (tile, spawner) {
         }
     }
 }
-//Animaciones de Mario Chomp
+//Animaciones de Mario chomp
 Chomp.prototype.handleAnimations = function (player) {
     if (player.hurt) //Si se hace daño
     {

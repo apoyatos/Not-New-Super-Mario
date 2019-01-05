@@ -58,6 +58,7 @@ function Mario(game, x, y, sprite, frame, scene) {
     this.bombSound = this.game.add.audio('hit');
     this.kickSound = this.game.add.audio('kick');
     this.hurtSound = this.game.add.audio('hurt');
+    this.deathSound = this.game.add.audio('death');
     //Caja de colión
     this.originalHeight = this.body.height * this.scale.x;
     //Animaciones normales
@@ -316,12 +317,27 @@ Mario.prototype.Hurt = function () {
         this.hurtTimer = this.game.time.totalElapsedSeconds() + this.hurtTime;
     }
     else //Su vida es 0
+    {
+        //Pausa el juego y la música
+        this.scene.pause = true;
+        this.scene.levelSound.pause();
         this.Die();
+        //Sonido de muerte
+        this.deathSound.play();
+        this.deathSound.onStop.add(Continue, this);
+        //Reanuda el juego
+        function Continue() {
+            this.scene.pause = false;
+            this.scene.levelSound.resume();
+            this.visible = true;
+        }
+    }
 }
 //Muerte de Mario
 Mario.prototype.Die = function () {
     //Reinicia su posición, su vida, etc
     this.reset(this.spawnX, this.spawnY);
+    this.visible = false;
     this.life = 3;
     this.goombaCount = 1;
     this.capture = false;

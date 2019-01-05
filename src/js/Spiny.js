@@ -6,6 +6,8 @@ function Spiny(game, x, y, sprite, frame, speed) {
     Enemy.call(this, game, x, y, sprite, frame, 0, 0);
     //Movimiento
     this.speed = speed;
+    //Sonido
+    this.killSound = this.game.add.audio('kill');
     //Animaciones
     this.animations.add('walkLeft', [0, 1], 5, true);
     this.animations.add('walkRight', [2, 3], 5, true);
@@ -32,6 +34,7 @@ Spiny.prototype.ChangeDir = function () {
 //Muerte del spiny
 Spiny.prototype.Die = function () {
     this.kill();
+    this.killSound.play();
 }
 
 module.exports = Spiny;

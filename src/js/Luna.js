@@ -25,14 +25,14 @@ Moon.prototype.Collision = function (player, scene) {
     this.kill();
     //Pausa el juego y la música
     scene.pause = true;
-    scene.level1Sound.pause();
+    scene.levelSound.pause();
     //Sonido de la luna
     this.moonSound.play();
     this.moonSound.onStop.add(Continue, this);
     //Reanuda el juego
     function Continue() {
         scene.pause = false;
-        scene.level1Sound.resume();
+        scene.levelSound.resume();
     }
 }
 

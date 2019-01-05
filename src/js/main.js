@@ -7,15 +7,16 @@ var BootScene = {
     this.game.load.spritesheet('odyssey', 'images/Odyssey.png', 140, 192);
   },
   create: function () {
-    this.game.forceSingleUpdate=true;
+    this.game.forceSingleUpdate = true;
     this.game.state.start('preloader');
   }
 };
 
 var PreloaderScene = {
   preload: function () {
-    //Color del fondo
+    //Color del fondo y volumen
     this.game.stage.backgroundColor = 0x4488aa;
+    this.game.sound.volume = 0.5;
     //Imagen de carga
     this.odyssey = this.game.add.sprite(this.game.width / 2, this.game.height / 2, 'odyssey');
     this.odyssey.anchor.setTo(0.5, 0.5);
@@ -49,6 +50,8 @@ var PreloaderScene = {
     this.game.load.spritesheet('spiny', 'images/Spiny.png', 19, 16);
     this.game.load.spritesheet('plant', 'images/PlantaPiraña.png', 18, 34);
     this.game.load.spritesheet('chomp', 'images/Chomp.png', 38, 29);
+    this.game.load.spritesheet('chompBoss', 'images/ChompBoss.png', 38, 29);
+    this.game.load.spritesheet('boss', 'images/MadameBroode.png', 115, 145);
     this.game.load.image('t-rex', 'images/T-Rex.png');
     this.game.load.spritesheet('fireball', 'images/Disparo-Fuego.png', 9, 9);
     //Mapa
@@ -63,20 +66,29 @@ var PreloaderScene = {
     //Mario
     this.game.load.audio('jump', 'audio/Jump.wav');
     this.game.load.audio('swim', 'audio/Swim.wav');
-    this.game.load.audio('kick', 'audio/Kick.wav');
-    this.game.load.audio('kill', 'audio/Kill.wav');
     this.game.load.audio('hurt', 'audio/Hurt.wav');
     this.game.load.audio('hit', 'audio/Hit.wav');
     this.game.load.audio('break', 'audio/Break.wav');
+    this.game.load.audio('death', 'audio/Death.wav');
     //Cappy
     this.game.load.audio('throw', 'audio/Throw.wav');
     this.game.load.audio('capture', 'audio/Capture.wav');
+    //Enemigos
+    this.game.load.audio('kick', 'audio/Kick.wav');
+    this.game.load.audio('kill', 'audio/Kill.wav');
+    this.game.load.audio('chomp', 'audio/Chomp.wav');
+    this.game.load.audio('boss', 'audio/MadameBroode.wav');
+    this.game.load.audio('bossDeath', 'audio/MadameBroodeDeath.wav');
     //Objetos
     this.game.load.audio('coin', 'audio/Coin.wav');
+    this.game.load.audio('heart', 'audio/Heart.wav');
     this.game.load.audio('moon', 'audio/Moon.wav');
     this.game.load.audio('fireball', 'audio/Fireball.wav');
+    this.game.load.audio('checkpoint', 'audio/Checkpoint.wav');
     //Nivel
-    this.game.load.audio('level1', 'audio/Level1.wav');
+    this.game.load.audio('level', 'audio/LevelTheme.wav');
+    this.game.load.audio('battle', 'audio/BattleTheme.wav');
+    this.game.load.audio('win', 'audio/Win.wav');
   },
   create: function () {
     this.game.state.start('menu');
@@ -85,7 +97,6 @@ var PreloaderScene = {
 
 var Menu = {
   create: function () {
-    this.game.sound.stopAll();
     //Sonidos
     this.clicked = false;
     this.startSound = this.game.add.audio('start');
@@ -155,7 +166,6 @@ var Options = {
     function Exit() {
       if (!this.clicked) {
         this.clicked = true;
-        this.game.sound.stopAll();
         this.pressSound.play();
         this.pressSound.onStop.add(function () {
           this.game.state.start('menu');
@@ -198,7 +208,6 @@ var Win = {
     function Exit() {
       if (!this.clicked) {
         this.clicked = true;
-        this.game.sound.stopAll();
         this.pressSound.play();
         this.pressSound.onStop.add(function () {
           this.game.state.start('menu');
