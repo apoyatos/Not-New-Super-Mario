@@ -1,8 +1,6 @@
 'use strict';
 
 var Enemy = require('./Enemigo.js');
-var Moneda = require('./Moneda.js');
-var Corazon = require('./Corazon.js');
 
 function TRex(game, x, y, sprite, frame, player) {
     Enemy.call(this, game, x, y, sprite, frame, 0, 0);
@@ -20,33 +18,31 @@ function TRex(game, x, y, sprite, frame, player) {
 TRex.prototype = Object.create(Enemy.prototype);
 TRex.constructor = TRex;
 
-TRex.prototype.Reset = function () { }
-TRex.prototype.Recalculate=function(player){}
-//Movimiento del T-Rex capturado
+//Movimiento de Mario T-Rex
 TRex.prototype.MarioMove = function (player) {
     if (!player.running)
         player.body.velocity.x = player.facing * player.velocity / 1.7;
     else
         player.body.velocity.x = player.facing * player.velocity / 1.5;
 }
-//T-Rex capturado quieto
+//Mario T-Rex quieto
 TRex.prototype.MarioNotMoving = function (player) {
     player.body.velocity.x = 0;
 }
-//Salto del T-Rex capturado
+//Salto de Mario T-Rex
 TRex.prototype.MarioJump = function (player) {
     player.body.velocity.y = -player.jumpVelocity / 2;
 }
-//Colisiones del T-Rex capturado con enemigos
+//Colisión de Mario T-Rex con enemigos
 TRex.prototype.MarioCollision = function (enemy) {
-        enemy.kill();
+    enemy.kill();
 }
-//Colisiones del T-Rex capturado con bloques normales
+//Colisión de Mario T-Rex con bloques normales
 TRex.prototype.BlockCollision = function (player, tile) {
     player.scene.map.removeTile(tile.x, tile.y, player.scene.blocks);
     this.breakSound.play();
 }
-//Colisiones del T-Rex capturado con bloques especiales
+//Colisión de Mario T-Rex con bloques especiales
 TRex.prototype.EspecialBlockCollision = function (tile, spawner) {
     if (tile.index == 498) //Bloque sin activar
     {
@@ -57,7 +53,9 @@ TRex.prototype.EspecialBlockCollision = function (tile, spawner) {
         this.hitSound.play();
     }
 }
-//Animaciones
+TRex.prototype.Reset = function () { }
+TRex.prototype.Recalculate = function (player) { }
+//Animaciones de Mario T-Rex
 TRex.prototype.handleAnimations = function (player) {
     player.scale.setTo(0.95, 0.95);
     player.body.width = this.width;

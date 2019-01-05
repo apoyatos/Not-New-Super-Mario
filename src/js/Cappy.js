@@ -73,7 +73,7 @@ Cappy.prototype.Check = function () {
         }
     }
 }
-//Colisiones de Cappy con Mario
+//Colisión de Cappy con Mario
 Cappy.prototype.Collision = function () {
     if (this.game.physics.arcade.overlap(this.player.cappy, this.player) && this.cappyReturning) //Se reinicia al volver a Mario
         this.Reset();
@@ -87,14 +87,14 @@ Cappy.prototype.Collision = function () {
 }
 //Reinicia el estado de Cappy
 Cappy.prototype.Reset = function () {
-        this.player.cappyCooldownTimer = this.game.time.totalElapsedSeconds() + this.cappyCooldownTime;
-        this.player.thrown = false;
-        this.cappyStopped = false;
-        this.cappyReturning = false;
-        //Mata a Cappy y para los sonidos
-        this.player.cappy.kill();
-        if (this.throwSound.isPlaying)
-            this.throwSound.stop();
+    this.player.cappyCooldownTimer = this.game.time.totalElapsedSeconds() + this.cappyCooldownTime;
+    this.player.thrown = false;
+    this.cappyStopped = false;
+    this.cappyReturning = false;
+    //Mata a Cappy y para los sonidos
+    this.player.cappy.kill();
+    if (this.throwSound.isPlaying)
+        this.throwSound.stop();
 }
 //Captura al enemigo con Cappy
 Cappy.prototype.Capture = function (enemy) {
@@ -104,19 +104,16 @@ Cappy.prototype.Capture = function (enemy) {
         this.cappyCapture = true;
         this.player.capture = true;
         this.player.enemy = enemy;
-        //Para los sonidos
+        //Sonidos
         if (this.throwSound.isPlaying)
             this.throwSound.stop();
-        //Reproduce el sonido de captura
         this.captureSound.play();
-        //Tras reproducir el sonido
         //Mata a Cappy y posee al enemigo
         enemy.kill();
         this.Reset();
         this.player.reset(enemy.body.position.x, enemy.body.position.y);
         this.player.goombaCount = enemy.count;
         this.player.recalculateBody();
-
         return true;
     }
     else
@@ -126,7 +123,7 @@ Cappy.prototype.Capture = function (enemy) {
 Cappy.prototype.Stunn = function (enemy) {
     if (this.game.physics.arcade.overlap(this.player.cappy, enemy) && enemy.type == 'plant') //Si choca con la planta
     {
-        //Mata a Cappy y para los sonidos
+        //Mata a Cappy y para el sonido
         this.player.cappyPlant = true;
         this.player.cappy.kill();
         if (this.throwSound.isPlaying)

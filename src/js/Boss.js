@@ -8,7 +8,7 @@ function Boss(game, x, y, sprite, frame, chompSprite, speed, life, player) {
     //Mario
     this.player = player;
     //Chomp
-    this.chomp = new Chomp(this.game, this.x, this.y, chompSprite, 0, 50, 200, 300,0, this.player, 0);
+    this.chomp = new Chomp(this.game, this.x, this.y, chompSprite, 0, 50, 200, 300, 0, this.player, 0);
     this.capture = false;
     //Movimiento
     this.speed = speed;
@@ -23,9 +23,10 @@ function Boss(game, x, y, sprite, frame, chompSprite, speed, life, player) {
     this.body.collideWorldBounds = true;
     this.body.gravity.y = 600;
     this.scale.setTo(3, 3);
+    //Animaciones
+    this.animations.add('hurt', [1, 0], 5, true);
     //Caja de colisión
     this.originalHeight = this.body.height * this.scale.x;
-    this.animations.add('hurt', [1, 0], 5, true);
 }
 Boss.prototype = Object.create(Enemy.prototype);
 Boss.constructor = Boss;
@@ -40,25 +41,22 @@ Boss.prototype.Move = function () {
             this.chomp.originX = this.x;
             this.body.velocity.x = Math.sign(this.player.x - this.x) * this.speed;
         }
-
     }
     else
         this.body.velocity.x = 0;
-
 }
-//Cammbia la dirección
+//Cammbia la dirección del Boss
 Boss.prototype.ChangeDir = function () {
     this.speed = -this.speed;
 }
 //Vidas y daño recibido
 Boss.prototype.Hurt = function () {
-    if (this.chomp.charged && this.game.physics.arcade.overlap(this.chomp, this)) //Si se choca con el chomp cargado
+    if (this.chomp.charged && this.game.physics.arcade.overlap(this.chomp, this)) //Si se choca con Mario chomp
     {
         if (this.life > 1) //Su vida es 1 o más
         {
             if (!this.hurt) //Se hace daño
             {
-
                 this.animations.play('hurt');
                 this.life--;
                 this.hurtTimer = this.hurtTime + this.game.time.totalElapsedSeconds()
@@ -76,6 +74,5 @@ Boss.prototype.Hurt = function () {
     if (this.alive && this.hurtTimer < this.game.time.totalElapsedSeconds())
         this.hurt = false;
 }
-
 
 module.exports = Boss;

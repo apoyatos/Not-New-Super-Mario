@@ -37,16 +37,17 @@ Goomba.prototype.Move = function () {
         this.animations.play('walk4');
     this.recalculateBody();
 }
-//Cambia la dirección
+//Cambia la dirección del goomba
 Goomba.prototype.ChangeDir = function () {
     if (this.body.onWall())
         this.speed = -this.speed;
 }
 //Mario pisa al goomba
 Goomba.prototype.Killed = function () {
-    if (this.count == 1)
+    if (this.count == 1) //Muere si está solo
         this.Die();
-    else {
+    else //Pierde un miembro de la torre si son varios
+    {
         this.count--;
         this.recalculateBody();
         this.y = this.y + this.height / (this.count + 1);
@@ -61,6 +62,7 @@ Goomba.prototype.Die = function () {
     this.kill();
     this.count = 1;
 }
+//Reset del goomba
 Goomba.prototype.Reset = function (x, y, count) {
     this.reset(x, y);
     this.count = count;
@@ -80,15 +82,14 @@ Goomba.prototype.MarioNotMoving = function (player) {
 Goomba.prototype.MarioJump = function (player) {
     player.body.velocity.y = -player.jumpVelocity / 1.7;
 }
+//Colisión del goomba
 Goomba.prototype.Collision = function (player) {
-    if (player.bottom < this.y + 10) //Se sube en el goomba
-    {
+    if (player.bottom < this.y + 10)
         this.Killed();
-    }
     else
         Enemy.prototype.Collision(player);
 }
-//Colision de un goomba con mario goomba
+//Colisión del goomba con Mario goomba
 Goomba.prototype.GoombaCollision = function (player) {
     if (player.bottom < this.y + 10 && player.goombaCount < 4) //Se sube en el goomba
     {
@@ -97,15 +98,14 @@ Goomba.prototype.GoombaCollision = function (player) {
         player.recalculateBody();
     }
 }
-//Colisiones del goomba capturado con enemigos
+//Colisión de Mario goomba con enemigos
 Goomba.prototype.MarioCollision = function (player, enemy) {
     enemy.GoombaCollision(player)
 }
-
-//Colisiones del goomba capturado con bloqes
+//Colisión de Mario goomba con bloqes
 Goomba.prototype.BlockCollision = function (player, tile) { }
 Goomba.prototype.EspecialBlockCollision = function (tile, prizeType) { }
-//Animaciones
+//Animaciones de Mario goomba
 Goomba.prototype.handleAnimations = function (player) {
     if (player.hurt) //Si se hace daño
     {

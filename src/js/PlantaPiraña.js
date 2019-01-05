@@ -29,8 +29,9 @@ Fireplant.prototype.Shoot = function (target) {
     else
         this.frame = 5;
 }
+//Colisión de la planta
 Fireplant.prototype.Collision = function (player) {
-    if(player.cappyPlant)
+    if (player.cappyPlant) //Si se ha comido a Cappy
     {
         player.Kick();
         this.kill();

@@ -18,7 +18,7 @@ function Enemy(game, x, y, sprite, frame, shootSpeed, shootTime) {
 Enemy.prototype = Object.create(Phaser.Sprite.prototype);
 Enemy.constructor = Enemy;
 
-//Disparo
+//Disparo de enemigo
 Enemy.prototype.EnemyShoot = function (target, sprite, enemy) {
   if (enemy.game.time.totalElapsedSeconds() > this.shootTimer) {
     //Crea el disparo
@@ -29,22 +29,26 @@ Enemy.prototype.EnemyShoot = function (target, sprite, enemy) {
     return shot;
   }
 }
-Enemy.prototype.Reset = function (x, y) { this.reset(x, y) }
-Enemy.prototype.Recalculate = function (player) {
-  player.body.height = player.height;
-  player.body.width = player.width;
+//Reset de enemigo
+Enemy.prototype.Reset = function (x, y) {
+  this.reset(x, y);
 }
+//Daña a Mario con enemigo capturado
 Enemy.prototype.Collision = function (player) {
   player.Hurt();
 }
 Enemy.prototype.GoombaCollision = function (player) {
   this.Collision();
 }
+//Recalcula la caja de colisión
+Enemy.prototype.Recalculate = function (player) {
+  player.body.height = player.height;
+  player.body.width = player.width;
+}
 //Metodos polimorficos
 Enemy.prototype.Move = function () { }
 Enemy.prototype.Attack = function (player) { }
 Enemy.prototype.Hurt = function () { }
 Enemy.prototype.Shoot = function (player) { }
-
 
 module.exports = Enemy;

@@ -4,8 +4,8 @@ function Shot(game, x, y, sprite, frame, animName, animFrames, animSpeed) {
   Phaser.Sprite.call(this, game, x, y, sprite, frame);
   //Disparo
   this.shotSpeed;
-  this.velX=0;
-  this.velY=0;
+  this.velX = 0;
+  this.velY = 0;
   //Propiedades
   this.game.world.addChild(this);
   this.game.physics.arcade.enable(this);
@@ -37,7 +37,7 @@ Shot.prototype.RemoveShot = function () {
   if (this.x < this.game.camera.x || this.x > this.game.camera.x + this.game.camera.width || this.y < this.game.camera.y || this.y > this.game.camera.y + this.game.camera.height)
     this.destroy();
 }
-
+//Destrucción del disparo si choca con Mario
 Shot.prototype.Collision = function (player) {
   this.destroy();
   player.Hurt();

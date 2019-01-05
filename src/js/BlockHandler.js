@@ -2,7 +2,6 @@
 
 //Entidad abstracta (no necesita sprite) que maneja las collisiones de los bloques
 function BlockHandler(game) {
-    //Juego y sprites
     this.game = game;
     //Sonidos
     this.breakSound = this.game.add.audio('break');
@@ -20,7 +19,7 @@ BlockHandler.prototype.HitBlock = function (player, tile) {
         }
     }
     else //Enemigos poseidos
-        player.enemy.BlockCollision(player,tile);
+        player.enemy.BlockCollision(player, tile);
 }
 //Bloques especiales
 BlockHandler.prototype.HitEspecialBlock = function (player, tile, spawner) {
@@ -32,7 +31,6 @@ BlockHandler.prototype.HitEspecialBlock = function (player, tile, spawner) {
             {
                 tile.index = 619;
                 tile.layer.dirty = true;
-
                 player.scene.objects.add(spawner.Spawn(tile.worldX, tile.worldY + (Math.sign(tile.worldY - player.y) * tile.height)));
                 this.hitSound.play();
             }

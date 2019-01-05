@@ -11,7 +11,7 @@ function Mario(game, x, y, sprite, frame, scene) {
     this.cappyPlant = false;
     this.cappyCooldownTimer = 0;
     //Vida y daño
-    this.life = 6;
+    this.life = 3;
     this.hurt = false;
     this.hurtTime = 1;
     this.hurtTimer = 0;
@@ -160,8 +160,8 @@ function Mario(game, x, y, sprite, frame, scene) {
     //Animaciones del T-Rex
     this.animations.add('walkDinoLeft', Phaser.Animation.generateFrameNames('DinoLeft', 1, 10), 5, true);
     this.animations.add('walkDinoRight', Phaser.Animation.generateFrameNames('DinoRight', 1, 10), 5, true);
-    this.animations.add('idleDinoLeft', ['DinoLeft9'], 5, false);
-    this.animations.add('idleDinoRight', ['DinoRight9'], 5, false);
+    this.animations.add('idleDinoLeft', ['DinoLeft1'], 5, false);
+    this.animations.add('idleDinoRight', ['DinoRight1'], 5, false);
 }
 Mario.prototype = Object.create(Phaser.Sprite.prototype);
 Mario.constructor = Mario;
@@ -188,7 +188,7 @@ Mario.prototype.Move = function (dir) {
             else if (this.crouching && !this.running) //Si está agachado
                 this.body.velocity.x = this.facing * (this.velocity / 3);
             else if (this.crouching && this.running) //Si está agachado corriendo
-                this.body.velocity.x = this.facing * this.velocity * 1.7;
+                this.body.velocity.x = this.facing * this.velocity * 2;
         }
     }
     else //Enemigos capturados
@@ -228,7 +228,7 @@ Mario.prototype.Jump = function () {
 //Impulso de Mario tras el salto
 Mario.prototype.Tackle = function () {
     this.prevY = this.y;
-    if (!this.capture && !this.body.onFloor() && this.tackles > 0) //Si es Mario. Si está en el aire se puede impulsar
+    if (!this.capture && !this.body.onFloor() && this.tackles > 0) //Si es Mario. Si está en el aire se puede impulsar una vez
     {
         if (!this.body.onFloor() && this.tackles > 0) {
             this.body.velocity.y = -this.jumpVelocity / 1.8;
@@ -242,7 +242,7 @@ Mario.prototype.Tackle = function () {
 }
 //Salto bomba de Mario
 Mario.prototype.JumpBomb = function () {
-    if (!this.capture && !this.body.onFloor() && !this.swimming) //Si es Mario. Solo puede hacer el salto bomba si no esta nadando y está en el aire
+    if (!this.capture && !this.body.onFloor() && !this.swimming) //Si es Mario. Solo puede hacer el salto bomba si no está nadando y está en el aire
     {
         this.prevY = this.y;
         this.body.velocity.y = 600;
@@ -254,7 +254,7 @@ Mario.prototype.JumpBomb = function () {
 }
 //Mario agachado
 Mario.prototype.Crouch = function () {
-    if (!this.capture && this.body.onFloor() && !this.swimming) //Si es Mario. Solo puede agacharse si no esta nadando y está en el suelo
+    if (!this.capture && this.body.onFloor() && !this.swimming) //Si es Mario. Solo puede agacharse si no está nadando y está en el suelo
         this.crouching = true;
 }
 //Mario de pie
@@ -277,13 +277,8 @@ Mario.prototype.Swim = function () {
         //Movimiento del pez (DLC)
     }
 }
-//Colisión de Mario con objetos
-Mario.prototype.ObjectCollision = function (object) {
-    if (this.game.physics.arcade.overlap(object, this)) {
-        object.Collision(this, this.scene);
-    }
-}
-Mario.prototype.Kick=function(){
+//Patada de Mario
+Mario.prototype.Kick = function () {
     this.kickTimer = this.game.time.totalElapsedSeconds() + this.kickTime;
     this.kicking = true;
     //Mata a la planta y reproduce el sonido
@@ -292,21 +287,23 @@ Mario.prototype.Kick=function(){
     this.cappyPlant = false;
     this.cappy.Reset();
 }
+//Colisión de Mario con objetos
+Mario.prototype.ObjectCollision = function (object) {
+    if (this.game.physics.arcade.overlap(object, this)) {
+        object.Collision(this, this.scene);
+    }
+}
 //Colisión de Mario con enemigos
 Mario.prototype.EnemyCollision = function (enemy) {
-
     if (this.game.physics.arcade.overlap(enemy, this) && !this.hurt) {
         if (!this.capture) //Si es Mario
-        {
-            enemy.Collision(this)
-        }
+            enemy.Collision(this);
         else //Enemigos capturados
             this.enemy.MarioCollision(this, enemy);
     }
     if (this.game.time.totalElapsedSeconds() > this.hurtTimer) {
         this.hurt = false;
     }
-
 }
 //Daño de Mario
 Mario.prototype.Hurt = function () {
@@ -336,9 +333,8 @@ Mario.prototype.Die = function () {
     //Revive a todos los enemigos
     this.scene.enemies.forEach(
         function (item) {
-            if (!item.alive) {
+            if (!item.alive)
                 item.revive();
-            }
         }, this);
 }
 //Lanzamiento de Cappy

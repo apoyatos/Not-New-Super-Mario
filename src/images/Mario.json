@@ -1474,9 +1474,9 @@
             "filename": "ChompLeft2",
             "frame": {
                 "x": 59,
-                "y": 311,
+                "y": 307,
                 "w": 29,
-                "h": 30
+                "h": 34
             },
             "rotated": false,
             "trimmed": false,
@@ -1495,9 +1495,9 @@
             "filename": "ChompRight2",
             "frame": {
                 "x": 254,
-                "y": 311,
+                "y": 307,
                 "w": 29,
-                "h": 30
+                "h": 34
             },
             "rotated": false,
             "trimmed": false,
@@ -1516,9 +1516,9 @@
             "filename": "ChompChargeLeft",
             "frame": {
                 "x": 20,
-                "y": 313,
+                "y": 309,
                 "w": 29,
-                "h": 30
+                "h": 34
             },
             "rotated": false,
             "trimmed": false,
@@ -1537,9 +1537,9 @@
             "filename": "ChompLeft1",
             "frame": {
                 "x": 98,
-                "y": 313,
+                "y": 309,
                 "w": 29,
-                "h": 30
+                "h": 34
             },
             "rotated": false,
             "trimmed": false,
@@ -1558,9 +1558,9 @@
             "filename": "ChompRight1",
             "frame": {
                 "x": 215,
-                "y": 313,
+                "y": 309,
                 "w": 29,
-                "h": 30
+                "h": 34
             },
             "rotated": false,
             "trimmed": false,
@@ -1579,9 +1579,9 @@
             "filename": "ChompChargeRight",
             "frame": {
                 "x": 293,
-                "y": 313,
+                "y": 309,
                 "w": 29,
-                "h": 30
+                "h": 34
             },
             "rotated": false,
             "trimmed": false,
@@ -1597,54 +1597,12 @@
             }
         },
         {
-            "filename": "DinoLeft1",
-            "frame": {
-                "x": 429,
-                "y": 360,
-                "w": 400,
-                "h": 139
-            },
-            "rotated": false,
-            "trimmed": false,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 400,
-                "h": 139
-            },
-            "sourceSize": {
-                "w": 400,
-                "h": 139
-            }
-        },
-        {
-            "filename": "DinoRight1",
-            "frame": {
-                "x": 890,
-                "y": 360,
-                "w": 400,
-                "h": 139
-            },
-            "rotated": false,
-            "trimmed": false,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 400,
-                "h": 139
-            },
-            "sourceSize": {
-                "w": 400,
-                "h": 139
-            }
-        },
-        {
-            "filename": "DinoLeft2",
+            "filename": "DinoLeft10",
             "frame": {
                 "x": 0,
                 "y": 364,
                 "w": 400,
-                "h": 147
+                "h": 143
             },
             "rotated": false,
             "trimmed": false,
@@ -1660,12 +1618,12 @@
             }
         },
         {
-            "filename": "DinoRight2",
+            "filename": "DinoRight10",
             "frame": {
-                "x": 1319,
+                "x": 1320,
                 "y": 364,
                 "w": 400,
-                "h": 147
+                "h": 143
             },
             "rotated": false,
             "trimmed": false,
@@ -1681,10 +1639,10 @@
             }
         },
         {
-            "filename": "DinoLeft3",
+            "filename": "DinoLeft9",
             "frame": {
                 "x": 429,
-                "y": 528,
+                "y": 368,
                 "w": 400,
                 "h": 143
             },
@@ -1694,146 +1652,20 @@
                 "x": 0,
                 "y": 0,
                 "w": 400,
-                "h": 143
+                "h": 139
             },
             "sourceSize": {
                 "w": 400,
-                "h": 143
+                "h": 139
             }
         },
         {
-            "filename": "DinoRight3",
+            "filename": "DinoRight9",
             "frame": {
-                "x": 890,
-                "y": 528,
-                "w": 400,
-                "h": 143
-            },
-            "rotated": false,
-            "trimmed": false,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
+                "x": 891,
+                "y": 368,
                 "w": 400,
                 "h": 143
-            },
-            "sourceSize": {
-                "w": 400,
-                "h": 143
-            }
-        },
-        {
-            "filename": "DinoLeft4",
-            "frame": {
-                "x": 0,
-                "y": 536,
-                "w": 400,
-                "h": 135
-            },
-            "rotated": false,
-            "trimmed": false,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 400,
-                "h": 135
-            },
-            "sourceSize": {
-                "w": 400,
-                "h": 135
-            }
-        },
-        {
-            "filename": "DinoRight4",
-            "frame": {
-                "x": 1319,
-                "y": 536,
-                "w": 400,
-                "h": 135
-            },
-            "rotated": false,
-            "trimmed": false,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 400,
-                "h": 135
-            },
-            "sourceSize": {
-                "w": 400,
-                "h": 135
-            }
-        },
-        {
-            "filename": "DinoLeft6",
-            "frame": {
-                "x": 0,
-                "y": 680,
-                "w": 400,
-                "h": 139
-            },
-            "rotated": false,
-            "trimmed": false,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 400,
-                "h": 139
-            },
-            "sourceSize": {
-                "w": 400,
-                "h": 139
-            }
-        },
-        {
-            "filename": "DinoRight6",
-            "frame": {
-                "x": 1319,
-                "y": 680,
-                "w": 400,
-                "h": 139
-            },
-            "rotated": false,
-            "trimmed": false,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 400,
-                "h": 139
-            },
-            "sourceSize": {
-                "w": 400,
-                "h": 139
-            }
-        },
-        {
-            "filename": "DinoLeft5",
-            "frame": {
-                "x": 429,
-                "y": 692,
-                "w": 400,
-                "h": 139
-            },
-            "rotated": false,
-            "trimmed": false,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 400,
-                "h": 139
-            },
-            "sourceSize": {
-                "w": 400,
-                "h": 139
-            }
-        },
-        {
-            "filename": "DinoRight5",
-            "frame": {
-                "x": 890,
-                "y": 692,
-                "w": 400,
-                "h": 139
             },
             "rotated": false,
             "trimmed": false,
@@ -1852,9 +1684,9 @@
             "filename": "DinoLeft7",
             "frame": {
                 "x": 429,
-                "y": 844,
+                "y": 528,
                 "w": 400,
-                "h": 147
+                "h": 143
             },
             "rotated": false,
             "trimmed": false,
@@ -1862,20 +1694,20 @@
                 "x": 0,
                 "y": 0,
                 "w": 400,
-                "h": 147
+                "h": 143
             },
             "sourceSize": {
                 "w": 400,
-                "h": 147
+                "h": 143
             }
         },
         {
             "filename": "DinoRight7",
             "frame": {
-                "x": 890,
-                "y": 844,
+                "x": 891,
+                "y": 528,
                 "w": 400,
-                "h": 147
+                "h": 143
             },
             "rotated": false,
             "trimmed": false,
@@ -1883,19 +1715,19 @@
                 "x": 0,
                 "y": 0,
                 "w": 400,
-                "h": 147
+                "h": 143
             },
             "sourceSize": {
                 "w": 400,
-                "h": 147
+                "h": 143
             }
         },
         {
             "filename": "DinoLeft8",
             "frame": {
                 "x": 0,
-                "y": 848,
-                "w": 401,
+                "y": 528,
+                "w": 400,
                 "h": 143
             },
             "rotated": false,
@@ -1903,20 +1735,20 @@
             "spriteSourceSize": {
                 "x": 0,
                 "y": 0,
-                "w": 401,
-                "h": 143
+                "w": 400,
+                "h": 135
             },
             "sourceSize": {
-                "w": 401,
-                "h": 143
+                "w": 400,
+                "h": 135
             }
         },
         {
             "filename": "DinoRight8",
             "frame": {
-                "x": 1318,
-                "y": 848,
-                "w": 401,
+                "x": 1320,
+                "y": 528,
+                "w": 400,
                 "h": 143
             },
             "rotated": false,
@@ -1924,21 +1756,21 @@
             "spriteSourceSize": {
                 "x": 0,
                 "y": 0,
-                "w": 401,
-                "h": 143
+                "w": 400,
+                "h": 135
             },
             "sourceSize": {
-                "w": 401,
-                "h": 143
+                "w": 400,
+                "h": 135
             }
         },
         {
-            "filename": "DinoLeft10",
+            "filename": "DinoLeft6",
             "frame": {
                 "x": 0,
-                "y": 1012,
+                "y": 688,
                 "w": 400,
-                "h": 139
+                "h": 143
             },
             "rotated": false,
             "trimmed": false,
@@ -1954,33 +1786,201 @@
             }
         },
         {
-            "filename": "DinoRight10",
-            "frame": {
-                "x": 1319,
-                "y": 1012,
-                "w": 400,
-                "h": 139
-            },
-            "rotated": false,
-            "trimmed": false,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 400,
-                "h": 139
-            },
-            "sourceSize": {
-                "w": 400,
-                "h": 139
-            }
-        },
-        {
-            "filename": "DinoLeft9",
+            "filename": "DinoLeft5",
             "frame": {
                 "x": 429,
-                "y": 1016,
+                "y": 688,
                 "w": 400,
-                "h": 135
+                "h": 143
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 400,
+                "h": 139
+            },
+            "sourceSize": {
+                "w": 400,
+                "h": 139
+            }
+        },
+        {
+            "filename": "DinoRight5",
+            "frame": {
+                "x": 891,
+                "y": 688,
+                "w": 400,
+                "h": 143
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 400,
+                "h": 139
+            },
+            "sourceSize": {
+                "w": 400,
+                "h": 139
+            }
+        },
+        {
+            "filename": "DinoRight6",
+            "frame": {
+                "x": 1320,
+                "y": 688,
+                "w": 400,
+                "h": 143
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 400,
+                "h": 139
+            },
+            "sourceSize": {
+                "w": 400,
+                "h": 139
+            }
+        },
+        {
+            "filename": "DinoLeft3",
+            "frame": {
+                "x": 429,
+                "y": 844,
+                "w": 400,
+                "h": 143
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 400,
+                "h": 147
+            },
+            "sourceSize": {
+                "w": 400,
+                "h": 147
+            }
+        },
+        {
+            "filename": "DinoRight3",
+            "frame": {
+                "x": 891,
+                "y": 844,
+                "w": 400,
+                "h": 143
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 400,
+                "h": 147
+            },
+            "sourceSize": {
+                "w": 400,
+                "h": 147
+            }
+        },
+        {
+            "filename": "DinoLeft4",
+            "frame": {
+                "x": 0,
+                "y": 848,
+                "w": 400,
+                "h": 143
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 400,
+                "h": 143
+            },
+            "sourceSize": {
+                "w": 400,
+                "h": 143
+            }
+        },
+        {
+            "filename": "DinoRight4",
+            "frame": {
+                "x": 1320,
+                "y": 848,
+                "w": 400,
+                "h": 143
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 400,
+                "h": 143
+            },
+            "sourceSize": {
+                "w": 400,
+                "h": 143
+            }
+        },
+        {
+            "filename": "DinoLeft2",
+            "frame": {
+                "x": 0,
+                "y": 1009,
+                "w": 400,
+                "h": 143
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 400,
+                "h": 139
+            },
+            "sourceSize": {
+                "w": 400,
+                "h": 139
+            }
+        },
+        {
+            "filename": "DinoRight2",
+            "frame": {
+                "x": 1320,
+                "y": 1009,
+                "w": 400,
+                "h": 143
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 400,
+                "h": 139
+            },
+            "sourceSize": {
+                "w": 400,
+                "h": 139
+            }
+        },
+        {
+            "filename": "DinoLeft1",
+            "frame": {
+                "x": 429,
+                "y": 1009,
+                "w": 400,
+                "h": 143
             },
             "rotated": false,
             "trimmed": false,
@@ -1996,12 +1996,12 @@
             }
         },
         {
-            "filename": "DinoRight9",
+            "filename": "DinoRight1",
             "frame": {
-                "x": 890,
-                "y": 1016,
+                "x": 891,
+                "y": 1009,
                 "w": 400,
-                "h": 135
+                "h": 143
             },
             "rotated": false,
             "trimmed": false,
