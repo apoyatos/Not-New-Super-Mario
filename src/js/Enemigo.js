@@ -51,5 +51,7 @@ Enemy.prototype.Attack = function (player) { }
 Enemy.prototype.Hurt = function () { }
 Enemy.prototype.Shoot = function (player) { }
 Enemy.prototype.Capture = function (cappy) { }
+Enemy.prototype.BlockCollision=function(){}
+Enemy.prototype.EspecialBlockCollision=function(){}
 
 module.exports = Enemy;

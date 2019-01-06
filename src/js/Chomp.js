@@ -181,8 +181,8 @@ Chomp.prototype.MarioNotMoving = function (player) {
 //Salto de Mario chomp
 Chomp.prototype.MarioJump = function (player) { }
 //Colisión de Mario chomp con enemigos
-Chomp.prototype.MarioCollision = function (player) {
-    Enemy.prototype.Collision(player);
+Chomp.prototype.MarioCollision = function () {
+    Enemy.prototype.Collision(this.player);
 }
 //Colisión de Mario chomp con bloques normales
 Chomp.prototype.BlockCollision = function (player, tile) {
