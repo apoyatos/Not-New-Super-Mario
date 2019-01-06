@@ -39,7 +39,7 @@ BlockHandler.prototype.HitEspecialBlock = function (player, tile, spawner) {
             this.hitSound.play();
     }
     else //Enemigos poseidos
-        player.enemy.EspecialBlockCollision(tile, prizeType);
+        player.enemy.EspecialBlockCollision(tile,spawner);
 }
 
 module.exports = BlockHandler;

@@ -17,7 +17,7 @@ var HeartSpawner = require('./HeartSpawner.js');
 var CoinSpawner = require('./CoinSpawner.js');
 
 var PlayScene = {
-  
+
   create: function () {
     //Físicas
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -145,7 +145,7 @@ var PlayScene = {
     //Botón Continue
     this.buttonContinue = this.game.add.button(0, 0, 'continue', Continue, this, 0, 2, 1);
     this.buttonContinue.scale.setTo(1.5, 1.5);
-    this.buttonContinue.anchor.setTo(-0.4, -3);
+    this.buttonContinue.anchor.setTo(-0.4, -4.2);
     this.buttonContinue.visible = false;
     this.buttonContinue.fixedToCamera = true;
 
@@ -179,23 +179,39 @@ var PlayScene = {
       }
       this.clicked = false;
     }
-    //Botón Options
-    this.buttonOptions = this.game.add.button(0, 0, 'options', Options, this, 0, 2, 1);
-    this.buttonOptions.scale.setTo(1.5, 1.5);
-    this.buttonOptions.anchor.setTo(-0.4, -4.2);
-    this.buttonOptions.visible = false;
-    this.buttonOptions.fixedToCamera = true;
+    //Volumen
+    this.volText = this.game.add.text(0, 0, 'VOLUME ' + Math.round(this.game.sound.volume * 100), { fill: 'white', font: '30px arial' });
+    this.volText.anchor.setTo(-1.85, -7);
+    this.volText.fixedToCamera = true;
+    this.volText.visible = false;
+    //Botón bajar volumen
+    this.downVolume = this.game.add.button(0, 0, 'volume', VolDown, this, 0, 4, 2);
+    this.downVolume.scale.setTo(1.5, 1.5);
+    this.downVolume.anchor.setTo(-0.7, -3);
+    this.downVolume.fixedToCamera = true;
+    this.downVolume.visible = false;
+    //Botón subir volumen
+    this.upVolume = this.game.add.button(0, 0, 'volume', VolUp, this, 1, 5, 3);
+    this.upVolume.scale.setTo(1.5, 1.5);
+    this.upVolume.anchor.setTo(-8, -3);
+    this.upVolume.fixedToCamera = true;
+    this.upVolume.visible = false;
 
-    function Options() {
+    function VolDown() {
       if (!this.clicked) {
         this.clicked = true;
         this.pressSound.play();
-        this.pressSound.onStop.add(function () {
-          this.game.state.start('options', false,false,'play');
-          this.buttonContinue.visible = false;
-          this.buttonExit.visible = false;
-          this.buttonOptions.visible=false;
-        }, this);
+        this.game.sound.volume = this.game.sound.volume - 0.05;
+        this.volText.text = 'VOLUME ' + Math.round(this.game.sound.volume * 100);
+      }
+      this.clicked = false;
+    }
+    function VolUp() {
+      if (!this.clicked) {
+        this.clicked = true;
+        this.pressSound.play();
+        this.game.sound.volume = this.game.sound.volume + 0.05;
+        this.volText.text = 'VOLUME ' + Math.round(this.game.sound.volume * 100);
       }
       this.clicked = false;
     }
@@ -203,7 +219,7 @@ var PlayScene = {
   update: function () {
     //Comprueba si se ha ganado
     if (this.win)
-      this.game.state.start('win',true,false);
+      this.game.state.start('win', true, false);
     else {
       //Menu pausa
       this.pausar.onDown.add(PauseMenu, this);
@@ -218,7 +234,9 @@ var PlayScene = {
         this.pauseBackground.visible = true;
         this.buttonContinue.visible = true;
         this.buttonExit.visible = true;
-        this.buttonOptions.visible=true;
+        this.upVolume.visible = true;
+        this.volText.visible = true;
+        this.downVolume.visible = true;
         this.levelSound.pause();
       }
       else //Desaparece y continua la música
@@ -226,7 +244,9 @@ var PlayScene = {
         this.pauseBackground.visible = false;
         this.buttonContinue.visible = false;
         this.buttonExit.visible = false;
-        this.buttonOptions.visible=false;
+        this.upVolume.visible = false;
+        this.volText.visible = false;
+        this.downVolume.visible = false;
       }
       //Colisiones de Mario con el mapa y los bloques
       if (this.player.alive) {

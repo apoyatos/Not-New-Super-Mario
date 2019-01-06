@@ -118,8 +118,8 @@ Goomba.prototype.MarioCollision = function (enemy) {
     enemy.GoombaCollision(this.player)
 }
 //Colisión de Mario goomba con bloqes
-Goomba.prototype.BlockCollision = function (player, tile) { }
-Goomba.prototype.EspecialBlockCollision = function (tile, prizeType) { }
+Goomba.prototype.BlockCollision = function () { }
+Goomba.prototype.EspecialBlockCollision = function () { }
 //Animaciones de Mario goomba
 Goomba.prototype.handleAnimations = function (player) {
     if (player.hurt) //Si se hace daño
