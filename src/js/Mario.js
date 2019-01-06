@@ -315,13 +315,14 @@ Mario.prototype.Hurt = function () {
         this.hurtSound.play();
         this.hurt = true;
         this.hurtTimer = this.game.time.totalElapsedSeconds() + this.hurtTime;
+        this.scene.vidas.frame--;
     }
     else //Su vida es 0
     {
         //Pausa el juego y la música
+        this.kill();
         this.scene.pause = true;
         this.scene.levelSound.pause();
-        this.Die();
         //Sonido de muerte
         this.deathSound.play();
         this.deathSound.onStop.add(Continue, this);
@@ -329,18 +330,16 @@ Mario.prototype.Hurt = function () {
         function Continue() {
             this.scene.pause = false;
             this.scene.levelSound.resume();
-            this.visible = true;
+            this.revive();
         }
+        this.Die();
     }
 }
 //Muerte de Mario
 Mario.prototype.Die = function () {
     //Reinicia su posición, su vida, etc
     this.reset(this.spawnX, this.spawnY);
-    this.visible = false;
     this.life = 3;
-    this.goombaCount = 1;
-    this.capture = false;
     if (this.enemy != null)
         this.recalculateBody();
     //Reinicia a Cappy

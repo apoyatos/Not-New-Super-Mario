@@ -111,7 +111,7 @@ var PlayScene = {
     this.heartSpawner = new HeartSpawner(this.game, 'heart', 3);
     this.superHeartSpawner = new HeartSpawner(this.game, 'superHeart', 6);
     //Vidas
-    this.vidas = this.game.add.sprite(this.game.width, 0, 'life', 0);
+    this.vidas = this.game.add.sprite(this.game.width, 0, 'life', this.player.life-1);
     this.vidas.anchor.setTo(1.5, -0.2);
     this.vidas.fixedToCamera = true;
     //Monedas
@@ -207,8 +207,6 @@ var PlayScene = {
         this.buttonContinue.visible = false;
         this.buttonExit.visible = false;
       }
-      //Interfaz
-      this.vidas.frame = this.player.life - 1;
       //Colisiones de Mario con el mapa
       if (this.player.alive) {
         this.game.physics.arcade.collide(this.player, this.floor);

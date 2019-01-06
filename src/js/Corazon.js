@@ -25,8 +25,10 @@ Heart.prototype.Collision = function (player) {
         else
             player.life = 3;
     }
+    player.scene.vidas.frame=player.life-1;
     this.kill();
     this.heartSound.play();
+
 }
 
 module.exports = Heart;

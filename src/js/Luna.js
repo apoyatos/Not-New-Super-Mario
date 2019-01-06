@@ -19,6 +19,7 @@ Moon.prototype.Collision = function (player, scene) {
         player.life = 6;
     else
         player.life = 3;
+    player.scene.vidas.frame = player.life - 1;
     //Destruye la luna
     scene.moonsHUD[player.moons].frame = 0;
     player.moons++;
