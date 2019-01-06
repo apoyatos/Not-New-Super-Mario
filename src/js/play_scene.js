@@ -17,6 +17,7 @@ var HeartSpawner = require('./HeartSpawner.js');
 var CoinSpawner = require('./CoinSpawner.js');
 
 var PlayScene = {
+  
   create: function () {
     //Físicas
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -143,8 +144,8 @@ var PlayScene = {
     this.pauseBackground.fixedToCamera = true;
     //Botón Continue
     this.buttonContinue = this.game.add.button(0, 0, 'continue', Continue, this, 0, 2, 1);
-    this.buttonContinue.scale.setTo(2, 2);
-    this.buttonContinue.anchor.setTo(-0.6, -4);
+    this.buttonContinue.scale.setTo(1.5, 1.5);
+    this.buttonContinue.anchor.setTo(-0.4, -3);
     this.buttonContinue.visible = false;
     this.buttonContinue.fixedToCamera = true;
 
@@ -162,8 +163,8 @@ var PlayScene = {
     }
     //Botón Exit
     this.buttonExit = this.game.add.button(0, 0, 'exit', Exit, this, 0, 2, 1);
-    this.buttonExit.scale.setTo(2, 2);
-    this.buttonExit.anchor.setTo(-0.6, -5.2);
+    this.buttonExit.scale.setTo(1.5, 1.5);
+    this.buttonExit.anchor.setTo(-0.4, -5.4);
     this.buttonExit.visible = false;
     this.buttonExit.fixedToCamera = true;
 
@@ -178,11 +179,31 @@ var PlayScene = {
       }
       this.clicked = false;
     }
+    //Botón Options
+    this.buttonOptions = this.game.add.button(0, 0, 'options', Options, this, 0, 2, 1);
+    this.buttonOptions.scale.setTo(1.5, 1.5);
+    this.buttonOptions.anchor.setTo(-0.4, -4.2);
+    this.buttonOptions.visible = false;
+    this.buttonOptions.fixedToCamera = true;
+
+    function Options() {
+      if (!this.clicked) {
+        this.clicked = true;
+        this.pressSound.play();
+        this.pressSound.onStop.add(function () {
+          this.game.state.start('options', false,false,'play');
+          this.buttonContinue.visible = false;
+          this.buttonExit.visible = false;
+          this.buttonOptions.visible=false;
+        }, this);
+      }
+      this.clicked = false;
+    }
   },
   update: function () {
     //Comprueba si se ha ganado
     if (this.win)
-      this.game.state.start('win');
+      this.game.state.start('win',true,false);
     else {
       //Menu pausa
       this.pausar.onDown.add(PauseMenu, this);
@@ -197,6 +218,7 @@ var PlayScene = {
         this.pauseBackground.visible = true;
         this.buttonContinue.visible = true;
         this.buttonExit.visible = true;
+        this.buttonOptions.visible=true;
         this.levelSound.pause();
       }
       else //Desaparece y continua la música
@@ -204,6 +226,7 @@ var PlayScene = {
         this.pauseBackground.visible = false;
         this.buttonContinue.visible = false;
         this.buttonExit.visible = false;
+        this.buttonOptions.visible=false;
       }
       //Colisiones de Mario con el mapa y los bloques
       if (this.player.alive) {

@@ -70,8 +70,6 @@ Boss.prototype.Move = function () {
     else //Quieto
         this.body.velocity.x = 0;
 }
-//Cammbia la dirección del Boss
-Boss.prototype.ChangeDir = function () { }
 //Vidas y daño recibido
 Boss.prototype.Hurt = function () {
     if (this.chomp.charged && this.game.physics.arcade.overlap(this.chomp, this)) //Si se choca con Mario chomp

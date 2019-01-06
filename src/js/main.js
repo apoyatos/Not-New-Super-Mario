@@ -103,12 +103,12 @@ var Menu = {
     this.pressSound = this.game.add.audio('press');
     //Logo del juego
     this.logo = this.game.add.sprite(0, 0, 'logo');
-    this.logo.scale.setTo(3, 3);
-    this.logo.anchor.setTo(-1.1, -0.2);
+    this.logo.scale.setTo(2, 2);
+    this.logo.anchor.setTo(-1, -0.2);
     //Botón Start
     this.buttonPlay = this.game.add.button(0, 0, 'start', Play, this, 0, 2, 1);
-    this.buttonPlay.scale.setTo(2, 2);
-    this.buttonPlay.anchor.setTo(-0.6, -4);
+    this.buttonPlay.scale.setTo(1.5, 1.5);
+    this.buttonPlay.anchor.setTo(-0.4, -4);
 
     function Play() {
       if (!this.clicked) {
@@ -122,15 +122,15 @@ var Menu = {
     }
     //Botón Options
     this.buttonOptions = this.game.add.button(0, 0, 'options', Options, this, 0, 2, 1);
-    this.buttonOptions.scale.setTo(2, 2);
-    this.buttonOptions.anchor.setTo(-0.6, -5.2);
+    this.buttonOptions.scale.setTo(1.5, 1.5);
+    this.buttonOptions.anchor.setTo(-0.4, -5.2);
 
     function Options() {
       if (!this.clicked) {
         this.clicked = true;
         this.pressSound.play();
         this.pressSound.onStop.add(function () {
-          this.game.state.start('options');
+          this.game.state.start('options',true,false,'menu');
         }, this);
       }
       this.clicked = false;
@@ -139,36 +139,39 @@ var Menu = {
 };
 
 var Options = {
+  init: function(scene){
+    this.scene=scene;
+  },
   create: function () {
     //Sonidos
     this.clicked = false;
     this.pressSound = this.game.add.audio('press');
     //Logo del juego
     this.logo = this.game.add.sprite(0, 0, 'logo');
-    this.logo.scale.setTo(3, 3);
-    this.logo.anchor.setTo(-1.1, -0.2);
+    this.logo.scale.setTo(2, 2);
+    this.logo.anchor.setTo(-1, -0.2);
     //Volumen
-    this.text = this.game.add.text(0, 0, 'VOLUME ' + Math.round(this.game.sound.volume * 100), { fill: 'white', font: '40px arial' });
-    this.text.anchor.setTo(-2.2, -9.5);
+    this.text = this.game.add.text(0, 0, 'VOLUME ' + Math.round(this.game.sound.volume * 100), { fill: 'white', font: '30px arial' });
+    this.text.anchor.setTo(-1.85, -9);
     //Botón bajar volumen
     this.downVolume = this.game.add.button(0, 0, 'volume', VolDown, this, 0, 4, 2);
-    this.downVolume.scale.setTo(2, 2);
+    this.downVolume.scale.setTo(1.5, 1.5);
     this.downVolume.anchor.setTo(-0.6, -4);
     //Botón subir volumen
     this.upVolume = this.game.add.button(0, 0, 'volume', VolUp, this, 1, 5, 3);
-    this.upVolume.scale.setTo(2, 2);
-    this.upVolume.anchor.setTo(-10.6, -4);
+    this.upVolume.scale.setTo(1.5, 1.5);
+    this.upVolume.anchor.setTo(-8, -4);
     //Botón Exit
     this.buttonExit = this.game.add.button(0, 0, 'exit', Exit, this, 0, 2, 1);
-    this.buttonExit.scale.setTo(2, 2);
-    this.buttonExit.anchor.setTo(-0.6, -5.2);
+    this.buttonExit.scale.setTo(1.5, 1.5);
+    this.buttonExit.anchor.setTo(-0.4, -5.2);
 
     function Exit() {
       if (!this.clicked) {
         this.clicked = true;
         this.pressSound.play();
         this.pressSound.onStop.add(function () {
-          this.game.state.start('menu');
+          this.game.state.start(this.scene);
         }, this);
       }
       this.clicked = false;
@@ -202,8 +205,8 @@ var Win = {
     this.pressSound = this.game.add.audio('press');
     //Botón Exit
     this.buttonExit = this.game.add.button(0, 0, 'exit', Exit, this, 0, 2, 1);
-    this.buttonExit.scale.setTo(2, 2);
-    this.buttonExit.anchor.setTo(-0.6, -5.2);
+    this.buttonExit.scale.setTo(1.5, 1.5);
+    this.buttonExit.anchor.setTo(-0.4, -5.2);
 
     function Exit() {
       if (!this.clicked) {
@@ -219,7 +222,7 @@ var Win = {
 };
 
 window.onload = function () {
-  var game = new Phaser.Game(1360, 768, Phaser.AUTO, 'game');
+  var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game');
 
   game.state.add('boot', BootScene);
   game.state.add('preloader', PreloaderScene);

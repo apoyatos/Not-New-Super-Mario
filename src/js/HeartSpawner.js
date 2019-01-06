@@ -10,7 +10,7 @@ function HeartSpawner(game, sprite, amount) {
 }
 //Genera un corazón
 HeartSpawner.prototype.Spawn = function (x, y) {
-    return new Corazon(this.game, x, y, this.sprite, this.amount);
+    return new Corazon(this.game, x, y, this.sprite,0, this.amount);
 }
 
 module.exports = HeartSpawner;

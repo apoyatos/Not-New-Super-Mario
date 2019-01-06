@@ -92,8 +92,6 @@ Chomp.prototype.Move = function () {
         this.ChompAnim();
     }
 }
-//Cambia la dirección del chomp
-Chomp.prototype.ChangeDir = function () { }
 //Salto de Mario chomp
 Chomp.prototype.MarioJump = function (player) { }
 //Ataque del chomp

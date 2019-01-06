@@ -65,6 +65,8 @@ Goomba.prototype.GoombaCollision = function (player) {
         this.kill();
         player.recalculateBody();
     }
+    else 
+        Enemy.prototype.GoombaCollision(player);
 }
 //Mario pisa al goomba
 Goomba.prototype.Killed = function () {
