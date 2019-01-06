@@ -45,12 +45,16 @@ Enemy.prototype.Recalculate = function (player) {
   player.body.height = player.height;
   player.body.width = player.width;
 }
+Enemy.prototype.Die=function(){
+  this.kill();
+}
 //Metodos polimorficos
 Enemy.prototype.Move = function () { }
-Enemy.prototype.Attack = function (player) { }
+Enemy.prototype.ChangeDir=function(){}
+Enemy.prototype.Attack = function () { }
 Enemy.prototype.Hurt = function () { }
-Enemy.prototype.Shoot = function (player) { }
-Enemy.prototype.Capture = function (cappy) { }
+Enemy.prototype.Shoot = function () { }
+Enemy.prototype.Capture = function () { }
 Enemy.prototype.BlockCollision=function(){}
 Enemy.prototype.EspecialBlockCollision=function(){}
 
