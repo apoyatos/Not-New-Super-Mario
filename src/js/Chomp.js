@@ -93,15 +93,15 @@ Chomp.prototype.Move = function () {
     }
 }
 //Cambia la dirección del chomp
-Chomp.prototype.ChangeDir = function () {
-    this.dir = -this.dir
-}
+Chomp.prototype.ChangeDir = function () { }
+//Salto de Mario chomp
+Chomp.prototype.MarioJump = function (player) { }
 //Ataque del chomp
 Chomp.prototype.Attack = function (player) {
     if (this.game.time.totalElapsedSeconds() > this.cooldownTimer) {
-        //Si no está cargando o atacando y Mario se encuentra a en su rango comienza a cargar el ataque
-        if (!this.chargeAttack && !this.attack && !this.charged && this.dir == Math.sign(player.x - this.x) 
-        && (player.y < this.bottom) && (player.y > this.y - 2 * this.height) && Math.abs(player.x - this.x) < this.distance) {
+        //Si no está cargando o atacando y Mario se encuentra en su rango comienza a cargar el ataque
+        if (!this.chargeAttack && !this.attack && !this.charged && this.dir == Math.sign(player.x - this.x)
+            && (player.y < this.bottom) && (player.y > this.y - 2 * this.height) && Math.abs(player.x - this.x) < this.distance) {
             this.speed = 4 * this.originalSpeed;
             this.dir = -this.dir
             this.chargeAttack = true;
@@ -133,15 +133,13 @@ Chomp.prototype.Capture = function (cappy) {
 //Movimiento de Mario chomp
 Chomp.prototype.MarioMove = function (player) {
     //Si no llega al límite derecho se mueve a velocidad normal
-    if ((player.x + player.velocity / 30 < (this.originX + this.chain)) && player.facing == 1) //Derecha
-    {
+    if ((player.x + player.velocity / 30 < (this.originX + this.chain)) && player.facing == 1) {
         player.body.velocity.x = player.velocity / 2;
         this.charged = false;
         this.charging = false;
     }
     //Si no llega al límite izquierdo se mueve a velocidad normal
-    else if ((player.x - player.velocity / 30 > (this.originX - this.chain)) && player.facing == -1) //Izquierda
-    {
+    else if ((player.x - player.velocity / 30 > (this.originX - this.chain)) && player.facing == -1) {
         player.body.velocity.x = -player.velocity / 2;
         this.charged = false;
         this.charging = false;
@@ -178,8 +176,6 @@ Chomp.prototype.MarioNotMoving = function (player) {
         }
     }
 }
-//Salto de Mario chomp
-Chomp.prototype.MarioJump = function (player) { }
 //Colisión de Mario chomp con enemigos
 Chomp.prototype.MarioCollision = function () {
     Enemy.prototype.Collision(this.player);

@@ -17,7 +17,7 @@ Heart.constructor = Heart;
 //Mario recoge el corazón
 Heart.prototype.Collision = function (player) {
     //Cura a Mario y destruye el corazón
-    if (this.amount = 6)
+    if (this.amount == 6)
         player.life = 6;
     else {
         if (player.life > 3)
@@ -25,10 +25,9 @@ Heart.prototype.Collision = function (player) {
         else
             player.life = 3;
     }
-    player.scene.vidas.frame=player.life-1;
+    player.scene.vidas.frame = player.life - 1;
     this.kill();
     this.heartSound.play();
-
 }
 
 module.exports = Heart;

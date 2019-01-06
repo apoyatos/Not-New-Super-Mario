@@ -13,7 +13,7 @@ Moon.prototype = Object.create(Phaser.Sprite.prototype);
 Moon.constructor = Moon;
 
 //Mario recoge la luna
-Moon.prototype.Collision = function (player, scene) {
+Moon.prototype.Collision = function (player) {
     //Cura a Mario
     if (player.life > 3)
         player.life = 6;
@@ -21,19 +21,19 @@ Moon.prototype.Collision = function (player, scene) {
         player.life = 3;
     player.scene.vidas.frame = player.life - 1;
     //Destruye la luna
-    scene.moonsHUD[player.moons].frame = 0;
+    player.scene.moonsHUD[player.moons].frame = 0;
     player.moons++;
     this.kill();
     //Pausa el juego y la música
-    scene.pause = true;
-    scene.levelSound.pause();
+    player.scene.pause = true;
+    player.scene.levelSound.pause();
     //Sonido de la luna
     this.moonSound.play();
     this.moonSound.onStop.add(Continue, this);
     //Reanuda el juego
     function Continue() {
-        scene.pause = false;
-        scene.levelSound.resume();
+        player.scene.pause = false;
+        player.scene.levelSound.resume();
     }
 }
 

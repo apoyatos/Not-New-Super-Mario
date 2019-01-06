@@ -4,6 +4,9 @@ var Disparo = require('./Disparo.js');
 
 function Enemy(game, x, y, sprite, frame, shootSpeed, shootTime) {
   Phaser.Sprite.call(this, game, x, y, sprite, frame);
+  //Posición de reaparición
+  this.spawnX = x;
+  this.spawnY = y;
   //Disparo
   this.shootSpeed = shootSpeed;
   this.shootTime = shootTime;
@@ -29,6 +32,10 @@ Enemy.prototype.EnemyShoot = function (target, sprite, enemy) {
     return shot;
   }
 }
+//Muerte del enemigo
+Enemy.prototype.Die = function () {
+  this.kill();
+}
 //Reset de enemigo
 Enemy.prototype.Reset = function (x, y) {
   this.reset(x, y);
@@ -45,17 +52,14 @@ Enemy.prototype.Recalculate = function (player) {
   player.body.height = player.height;
   player.body.width = player.width;
 }
-Enemy.prototype.Die=function(){
-  this.kill();
-}
-//Metodos polimorficos
+//Metodos polimórficos
 Enemy.prototype.Move = function () { }
-Enemy.prototype.ChangeDir=function(){}
+Enemy.prototype.ChangeDir = function () { }
 Enemy.prototype.Attack = function () { }
 Enemy.prototype.Hurt = function () { }
 Enemy.prototype.Shoot = function () { }
 Enemy.prototype.Capture = function () { }
-Enemy.prototype.BlockCollision=function(){}
-Enemy.prototype.EspecialBlockCollision=function(){}
+Enemy.prototype.BlockCollision = function () { }
+Enemy.prototype.EspecialBlockCollision = function () { }
 
 module.exports = Enemy;

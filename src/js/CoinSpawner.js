@@ -2,10 +2,10 @@
 
 var Moneda = require('./Moneda.js');
 
-function CoinSpawner(game, coinSprite) {
+function CoinSpawner(game, sprite) {
     //Propiedades
     this.game = game;
-    this.sprite = coinSprite;
+    this.sprite = sprite;
 }
 //Genera una moneda
 CoinSpawner.prototype.Spawn = function (x, y) {

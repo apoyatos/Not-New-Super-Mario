@@ -40,7 +40,7 @@ function Mario(game, x, y, sprite, frame, scene) {
     this.throwTimer = 0;
     //Posición de reaparición
     this.spawnX = x;
-    this.spawnY = y - 300;
+    this.spawnY = y;
     //Captura
     this.capture = false;
     this.enemy;
@@ -59,7 +59,7 @@ function Mario(game, x, y, sprite, frame, scene) {
     this.kickSound = this.game.add.audio('kick');
     this.hurtSound = this.game.add.audio('hurt');
     this.deathSound = this.game.add.audio('death');
-    //Caja de colión
+    //Caja de colisión
     this.originalHeight = this.body.height * this.scale.x;
     //Animaciones normales
     this.animations.add('runLeft', Phaser.Animation.generateFrameNames('walkLeft', 1, 3), 8, true);
@@ -250,7 +250,6 @@ Mario.prototype.JumpBomb = function () {
         this.body.velocity.x = 0;
         this.tackles = 0;
         this.bombJump = true;
-        //this.bombSound.play();
     }
 }
 //Mario agachado
@@ -272,10 +271,6 @@ Mario.prototype.Swim = function () {
 
         if (this.body.velocity.y >= 0)
             this.body.velocity.y = -200;
-    }
-    else //Enemigos capturados
-    {
-        //Movimiento del pez (DLC)
     }
 }
 //Patada de Mario
@@ -315,41 +310,48 @@ Mario.prototype.Hurt = function () {
         this.hurtSound.play();
         this.hurt = true;
         this.hurtTimer = this.game.time.totalElapsedSeconds() + this.hurtTime;
-        this.scene.vidas.frame--;
+        this.scene.vidas.frame = this.life - 1;
     }
     else //Su vida es 0
-    {
-        //Pausa el juego y la música
-        this.kill();
-        this.scene.pause = true;
-        this.scene.levelSound.pause();
-        //Sonido de muerte
-        this.deathSound.play();
-        this.deathSound.onStop.add(Continue, this);
-        //Reanuda el juego
-        function Continue() {
-            this.scene.pause = false;
-            this.scene.levelSound.resume();
-            this.revive();
-        }
         this.Die();
-    }
 }
 //Muerte de Mario
 Mario.prototype.Die = function () {
+    //Pausa el juego y la música
+    this.kill();
+    this.scene.pause = true;
+    this.scene.levelSound.pause();
+    //Sonido de muerte
+    this.deathSound.play();
+    this.deathSound.onStop.add(Continue, this);
+    //Reanuda el juego
+    function Continue() {
+        this.scene.pause = false;
+        this.scene.levelSound.resume();
+        this.revive();
+    }
     //Reinicia su posición, su vida, etc
     this.reset(this.spawnX, this.spawnY);
     this.life = 3;
-    if (this.enemy != null)
+    this.scene.vidas.frame = this.life - 1;
+    if (this.enemy != null) {
+        this.scale.setTo(2, 2);
         this.recalculateBody();
+        this.enemy.captured = false;
+    }
     //Reinicia a Cappy
-    if (this.cappy != null)
+    if (this.cappy != null) {
         this.cappy.Reset();
+        this.capture = false;
+        this.cappy.cappyCapture = false;
+    }
     //Revive a todos los enemigos
     this.scene.enemies.forEach(
         function (item) {
-            if (!item.alive)
+            if (!item.alive) {
                 item.revive();
+                item.reset(item.spawnX, item.spawnY);
+            }
         }, this);
 }
 //Lanzamiento de Cappy
@@ -374,7 +376,7 @@ Mario.prototype.ThrowCappy = function () {
             this.cappy.cappyCapture = false;
             this.scale.setTo(2, 2);
             this.recalculateBody();
-            this.enemy.captured = false
+            this.enemy.captured = false;
             //El enemigo reaparece
             this.enemy.Reset(this.x + this.enemy.width * -this.facing, this.y, this.goombaCount);
         }
@@ -475,7 +477,7 @@ Mario.prototype.handleAnimations = function () {
 }
 //Recalcula la caja de colisiones de Mario
 Mario.prototype.recalculateBody = function () {
-    this.body.offset.x=0;
+    this.body.offset.x = 0;
     this.handleAnimations();
     this.enemy.Recalculate(this);
 }

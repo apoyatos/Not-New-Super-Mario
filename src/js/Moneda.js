@@ -6,9 +6,9 @@ function Coin(game, x, y, sprite, frame) {
     this.game.world.addChild(this);
     this.game.physics.arcade.enable(this);
     this.scale.setTo(2, 2);
-    //Sonidos
+    //Sonido
     this.coinSound = this.game.add.audio('coin');
-    //Animaciones
+    //Animación
     this.animations.add('coin', [0, 1, 2, 3], 5, true);
     this.animations.play('coin');
 }
@@ -16,7 +16,7 @@ Coin.prototype = Object.create(Phaser.Sprite.prototype);
 Coin.constructor = Coin;
 
 //Mario recoge la moneda
-Coin.prototype.Collision = function (player,scene,count) {
+Coin.prototype.Collision = function (player, scene) {
     //Destruye la moneda
     player.coins++;
     this.kill();

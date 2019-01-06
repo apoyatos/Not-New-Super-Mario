@@ -9,6 +9,9 @@ function Goomba(game, x, y, sprite, frame, speed, player) {
     this.count = 1;
     //Movimiento
     this.speed = speed;
+    this.change = false;
+    this.timer = 0;
+    this.duration = 0.5;
     //Sonido
     this.killSound = this.game.add.audio('kill');
     //Animación
@@ -39,8 +42,13 @@ Goomba.prototype.Move = function () {
 }
 //Cambia la dirección del goomba
 Goomba.prototype.ChangeDir = function () {
-    if (this.body.onWall())
+    if (this.body.onWall() && !this.change) {
         this.speed = -this.speed;
+        this.change = true;
+        this.timer = this.game.time.totalElapsedSeconds() + this.duration;
+    }
+    if (this.timer < this.game.time.totalElapsedSeconds())
+        this.change = false;
 }
 //Colisión del goomba
 Goomba.prototype.Collision = function (player) {
