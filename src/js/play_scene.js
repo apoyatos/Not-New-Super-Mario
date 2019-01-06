@@ -10,6 +10,7 @@ var TRex = require('./T-Rex.js');
 
 var Bandera = require('./Bandera.js');
 var Moneda = require('./Moneda.js');
+var SuperMoneda = require('./SuperMoneda.js');
 var Luna = require('./Luna.js');
 var Blocks = require('./BlockHandler.js');
 var HeartSpawner = require('./HeartSpawner.js');
@@ -47,7 +48,7 @@ var PlayScene = {
     this.objects = this.game.add.group();
     this.map.createFromObjects('Banderas', 481, 'checkpoint', 0, true, false, this.objects, Bandera);
     this.map.createFromObjects('Monedas', 481, 'coin', 0, true, false, this.objects, Moneda);
-    this.map.createFromObjects('SuperMonedas', 481, 'superCoin', 0, true, false, this.objects, Moneda);
+    this.map.createFromObjects('SuperMonedas', 481, 'superCoin', 0, true, false, this.objects, SuperMoneda);
     this.map.createFromObjects('Lunas', 481, 'moon', 0, true, false, this.objects, Luna);
     //Colisiones del mapa
     this.collisions = this.map.createLayer('Colisiones');
@@ -117,15 +118,15 @@ var PlayScene = {
     this.coins = this.game.add.sprite(0, 0, 'coin', 0);
     this.coins.anchor.setTo(-0.5, -0.5);
     this.coins.fixedToCamera = true;
-    this.textCoins = this.game.add.text(0, 0, this.player.coins, { font: "16px Arial", fill: "#ffffff", align: "center" });
-    this.textCoins.anchor.setTo(-3.5, -0.3);
+    this.textCoins = this.game.add.text(this.coins.right+20, 0, this.player.coins, { font: "16px Arial", fill: "#ffffff", align: "center" });
+    this.textCoins.anchor.setTo(0, -0.3);
     this.textCoins.fixedToCamera = true;
     //Super monedas
     this.superCoins = this.game.add.sprite(0, 0, 'superCoin', 0);
     this.superCoins.anchor.setTo(-4, -0.5);
     this.superCoins.fixedToCamera = true;
-    this.textSuperCoins = this.game.add.text(0, 0, this.player.superCoins, { font: "16px Arial", fill: "#ffffff", align: "center" });
-    this.textSuperCoins.anchor.setTo(-9, -0.3);
+    this.textSuperCoins = this.game.add.text(this.superCoins.right+20, 0, this.player.superCoins, { font: "16px Arial", fill: "#ffffff", align: "center" });
+    this.textSuperCoins.anchor.setTo(0, -0.3);
     this.textSuperCoins.fixedToCamera = true;
     //Lunas
     this.moonsHUD = [];
@@ -208,46 +209,50 @@ var PlayScene = {
       }
       //Interfaz
       this.vidas.frame = this.player.life - 1;
-      this.textCoins.setText(this.player.coins);
-      this.textSuperCoins.setText(this.player.superCoins);
       //Colisiones de Mario con el mapa
-      this.game.physics.arcade.collide(this.player, this.floor);
-      this.game.physics.arcade.collide(this.player, this.collisions);
-      this.game.physics.arcade.collide(this.player, this.deathZone, function (player) { player.Die(); });
-      //Colisiones de Mario con los bloques
-      this.game.physics.arcade.collide(this.player, this.blocks, function (player, tile) { player.scene.blocksHandler.HitBlock(player, tile); });
-      this.game.physics.arcade.collide(this.player, this.coinBlocks, function (player, tile) { player.scene.blocksHandler.HitEspecialBlock(player, tile, player.scene.coinSpawner); });
-      this.game.physics.arcade.collide(this.player, this.heartBlocks, function (player, tile) { player.scene.blocksHandler.HitEspecialBlock(player, tile, player.scene.heartSpawner); });
-      this.game.physics.arcade.collide(this.player, this.superheartBlocks, function (player, tile) { player.scene.blocksHandler.HitEspecialBlock(player, tile, player.scene.superHeartSpawner); });
-      //Colisiones de Cappy con el mapa
-      this.game.physics.arcade.collide(this.player.cappy, this.floor);
-      this.game.physics.arcade.collide(this.player.cappy, this.collisions);
+      if (this.player.alive) {
+        this.game.physics.arcade.collide(this.player, this.floor);
+        this.game.physics.arcade.collide(this.player, this.collisions);
+        this.game.physics.arcade.collide(this.player, this.deathZone, function (player) { player.Die(); });
+        //Colisiones de Mario con los bloques
+        this.game.physics.arcade.collide(this.player, this.blocks, function (player, tile) { player.scene.blocksHandler.HitBlock(player, tile); });
+        this.game.physics.arcade.collide(this.player, this.coinBlocks, function (player, tile) { player.scene.blocksHandler.HitEspecialBlock(player, tile, player.scene.coinSpawner); });
+        this.game.physics.arcade.collide(this.player, this.heartBlocks, function (player, tile) { player.scene.blocksHandler.HitEspecialBlock(player, tile, player.scene.heartSpawner); });
+        this.game.physics.arcade.collide(this.player, this.superheartBlocks, function (player, tile) { player.scene.blocksHandler.HitEspecialBlock(player, tile, player.scene.superHeartSpawner); });
+        //Colisiones de Cappy con el mapa
+        if (this.player.cappy != null) {
+          this.game.physics.arcade.collide(this.player.cappy, this.floor);
+          this.game.physics.arcade.collide(this.player.cappy, this.collisions);
+        }
+      }
       //Colisiones de objetos
       this.objects.forEach(
         function (item) {
-          //Colisiones de Mario con objetos
-          this.player.ObjectCollision(item);
-          //Colisiones con el mapa
-          this.game.physics.arcade.collide(item, this.floor);
-          this.game.physics.arcade.collide(item, this.collisions);
-          this.game.physics.arcade.collide(item, this.blocks);
-          this.game.physics.arcade.collide(item, this.coinBlocks);
-          this.game.physics.arcade.collide(item, this.heartBlocks);
-          this.game.physics.arcade.collide(item, this.superheartBlocks);
+          if (item.alive) {
+            //Colisiones de Mario con objetos
+            this.player.ObjectCollision(item);
+            //Colisiones con el mapa
+            this.game.physics.arcade.collide(item, this.floor);
+            this.game.physics.arcade.collide(item, this.collisions);
+            this.game.physics.arcade.collide(item, this.blocks);
+            this.game.physics.arcade.collide(item, this.coinBlocks);
+            this.game.physics.arcade.collide(item, this.heartBlocks);
+            this.game.physics.arcade.collide(item, this.superheartBlocks);
+          }
         }, this);
       //Colisiones de enemigos 
       this.enemies.forEach(
         function (item) {
-          //Collisiones
-          this.game.physics.arcade.collide(item, this.floor);
-          this.game.physics.arcade.collide(item, this.collisions, function (enemy) { enemy.ChangeDir(); });
-          this.game.physics.arcade.collide(item, this.deathZone, function (enemy) { enemy.Die(); });
-          this.game.physics.arcade.collide(item, this.blocks, function (enemy, tile) { enemy.BlockCollision(enemy.player, tile); });
-          this.game.physics.arcade.collide(item, this.coinBlocks, function (enemy, tile) { enemy.EspecialBlockCollision(tile, enemy.player.scene.coinSpawner); });
-          this.game.physics.arcade.collide(item, this.heartBlocks, function (enemy, tile) { enemy.EspecialBlockCollision(tile, enemy.player.scene.heartSpawner); });
-          this.game.physics.arcade.collide(item, this.superheartBlocks, function (enemy, tile) { enemy.EspecialBlockCollision(tile, enemy.player.scene.superHeartSpawner); });
-          //Comportamiento de los enemigos
           if (item.alive) {
+            //Collisiones
+            this.game.physics.arcade.collide(item, this.floor);
+            this.game.physics.arcade.collide(item, this.collisions, function (enemy) { enemy.ChangeDir(); });
+            this.game.physics.arcade.collide(item, this.deathZone, function (enemy) { enemy.Die(); });
+            this.game.physics.arcade.collide(item, this.blocks, function (enemy, tile) { enemy.BlockCollision(enemy.player, tile); });
+            this.game.physics.arcade.collide(item, this.coinBlocks, function (enemy, tile) { enemy.EspecialBlockCollision(tile, enemy.player.scene.coinSpawner); });
+            this.game.physics.arcade.collide(item, this.heartBlocks, function (enemy, tile) { enemy.EspecialBlockCollision(tile, enemy.player.scene.heartSpawner); });
+            this.game.physics.arcade.collide(item, this.superheartBlocks, function (enemy, tile) { enemy.EspecialBlockCollision(tile, enemy.player.scene.superHeartSpawner); });
+            //Comportamiento de los enemigos
             item.Move();
             item.Attack(this.player);
             item.Hurt();
@@ -257,12 +262,13 @@ var PlayScene = {
               if (shot != undefined)
                 this.shots.add(shot);
             }
-          }
-          //Colisiones con mario
-          this.player.EnemyCollision(item);
-          if (this.player.cappy != null) {
-            this.player.cappy.Stunn(item);
-            //Colisiones con cappy
+
+            //Colisiones con mario
+            this.player.EnemyCollision(item);
+            if (this.player.cappy != null) {
+              this.player.cappy.Stunn(item);
+              //Colisiones con cappy
+            }
           }
         }, this);
       //Bucle del juego

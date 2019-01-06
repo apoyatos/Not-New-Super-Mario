@@ -18,11 +18,11 @@ Coin.constructor = Coin;
 //Mario recoge la moneda
 Coin.prototype.Collision = function (player,scene,count) {
     //Destruye la moneda
-    player.coins++;
+    player.superCoins++;
     this.kill();
     //Sonido de la moneda
     this.coinSound.play();
-    scene.textCoins.setText(player.coins);
+    scene.textSuperCoins.setText(player.superCoins);
 }
 
 module.exports = Coin;
