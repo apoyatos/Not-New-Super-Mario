@@ -32,6 +32,18 @@ var PreloaderScene = {
     this.game.load.spritesheet('continue', 'images/Continue.png', 306, 56);
     this.game.load.spritesheet('exit', 'images/Exit.png', 306, 56);
     this.game.load.spritesheet('volume', 'images/Volumen.png', 56, 56);
+    //Tutorial
+    this.game.load.image('agacharse', 'images/tutorial/Agacharse.png');
+    this.game.load.image('andar', 'images/tutorial/Andar.png');
+    this.game.load.image('chompTutorial', 'images/tutorial/Chomp.png');
+    this.game.load.image('chompTutorialCargado', 'images/tutorial/ChompCargado.png');
+    this.game.load.image('goombaTutorial', 'images/tutorial/Goomba.png');
+    this.game.load.image('goombaTutorialTorre', 'images/tutorial/GoombaTorre.png');
+    this.game.load.image('impulso', 'images/tutorial/Impulso.png');
+    this.game.load.image('lanzarCappy', 'images/tutorial/LanzarCappy.png');
+    this.game.load.image('rodar', 'images/tutorial/Rodar.png');
+    this.game.load.image('saltar', 'images/tutorial/Saltar.png');
+    this.game.load.image('t-rexTutorial', 'images/tutorial/T-Rex.png');
     //Objetos del mapa
     this.game.load.image('block', 'images/Bloque.png');
     this.game.load.spritesheet('superBlock', 'images/SuperBloque.png', 34, 32);
@@ -97,6 +109,7 @@ var PreloaderScene = {
 
 var Menu = {
   create: function () {
+    this.game.stage.backgroundColor = 0x4488aa;
     //Sonidos
     this.clicked = false;
     this.startSound = this.game.add.audio('start');
@@ -108,7 +121,7 @@ var Menu = {
     //Botón Start
     this.buttonPlay = this.game.add.button(0, 0, 'start', Play, this, 0, 2, 1);
     this.buttonPlay.scale.setTo(1.5, 1.5);
-    this.buttonPlay.anchor.setTo(-0.4, -3.4);
+    this.buttonPlay.anchor.setTo(-0.4, -4);
 
     function Play() {
       if (!this.clicked) {
@@ -123,7 +136,7 @@ var Menu = {
     //Botón Options
     this.buttonOptions = this.game.add.button(0, 0, 'options', Options, this, 0, 2, 1);
     this.buttonOptions.scale.setTo(1.5, 1.5);
-    this.buttonOptions.anchor.setTo(-0.4, -4.6);
+    this.buttonOptions.anchor.setTo(-0.4, -5.2);
 
     function Options() {
       if (!this.clicked) {
@@ -131,21 +144,6 @@ var Menu = {
         this.pressSound.play();
         this.pressSound.onStop.add(function () {
           this.game.state.start('options', true, false, 'menu');
-        }, this);
-      }
-      this.clicked = false;
-    }
-    //Botón Creditos
-    this.buttonCredits = this.game.add.button(0, 0, 'options', Creds, this, 0, 2, 1);
-    this.buttonCredits.scale.setTo(1.5, 1.5);
-    this.buttonCredits.anchor.setTo(-0.4, -5.8);
-
-    function Creds() {
-      if (!this.clicked) {
-        this.clicked = true;
-        this.pressSound.play();
-        this.pressSound.onStop.add(function () {
-          this.game.state.start('credits');
         }, this);
       }
       this.clicked = false;
@@ -213,57 +211,33 @@ var Options = {
   }
 };
 
+var Tutorial = {
+  create: function () {
+    this.agacharse = this.game.add.sprite(0, 0, 'agacharse');
+    this.andar = this.game.add.sprite(0, 0, 'andar');
+    this.chompTutorial = this.game.add.sprite(0, 0, 'chompTutorial');
+    this.chompTutorialCargado = this.game.add.sprite(0, 0, 'chompTutorialCargado');
+    this.goombaTutorial = this.game.add.sprite(0, 0, 'goombaTutorial');
+    this.goombaTutorialTorre = this.game.add.sprite(0, 0, 'goombaTutorialTorre');
+    this.impulso = this.game.add.sprite(0, 0, 'impulso');
+    this.lanzarCappy = this.game.add.sprite(0, 0, 'lanzarCappy');
+    this.rodar = this.game.add.sprite(0, 0, 'rodar');
+    this.saltar = this.game.add.sprite(0, 0, 'saltar');
+    this.trexTutorial = this.game.add.sprite(0, 0, 't-rexTutorial');
+  }
+}
+
 var Win = {
   create: function () {
-    //Sonidos
-    this.clicked = false;
-    this.pressSound = this.game.add.audio('press');
-    //Botón Exit
-    this.buttonExit = this.game.add.button(0, 0, 'exit', Exit, this, 0, 2, 1);
-    this.buttonExit.scale.setTo(1.5, 1.5);
-    this.buttonExit.anchor.setTo(-0.4, -5.2);
-
-    function Exit() {
-      if (!this.clicked) {
-        this.clicked = true;
-        this.pressSound.play();
-        this.pressSound.onStop.add(function () {
-          this.game.state.start('menu');
-        }, this);
-      }
-      this.clicked = false;
-    }
-    //Botón Creditos
-    this.buttonCredits = this.game.add.button(0, 0, 'options', Creds, this, 0, 2, 1);
-    this.buttonCredits.scale.setTo(1.5, 1.5);
-    this.buttonCredits.anchor.setTo(-0.4, -4);
-
-    function Creds() {
-      if (!this.clicked) {
-        this.clicked = true;
-        this.pressSound.play();
-        this.pressSound.onStop.add(function () {
-          this.game.state.start('credits');
-        }, this);
-      }
-      this.clicked = false;
-    }
-  }
-};
-
-var Credits = {
-  create: function () {
-    //Sonidos
-    this.clicked = false;
-    this.pressSound = this.game.add.audio('press');
-
     this.game.stage.backgroundColor = 0x000000;
     this.game.add.text(10, this.game.world.height, 'NOT NEW SUPER MARIO', { fill: 'white', font: '30px arial' });
     this.game.add.text(10, this.game.world.height + 50, 'Developed by Odyssey Studios', { fill: 'white', font: '30px arial' });
     this.game.add.text(10, this.game.world.height + 90, 'Ismael Fernández Pereira', { fill: 'white', font: '30px arial' });
     this.game.add.text(10, this.game.world.height + 120, 'Álvaro Poyatos Morate', { fill: 'white', font: '30px arial' });
     this.game.add.text(10, this.game.world.height + 170, '', { fill: 'white', font: '30px arial' });
-
+    //Sonidos
+    this.clicked = false;
+    this.pressSound = this.game.add.audio('press');
     //Botón Exit
     this.buttonExit = this.game.add.button(0, 0, 'exit', Exit, this, 0, 2, 1);
     this.buttonExit.scale.setTo(1.5, 1.5);
@@ -274,7 +248,6 @@ var Credits = {
         this.clicked = true;
         this.pressSound.play();
         this.pressSound.onStop.add(function () {
-          this.game.stage.backgroundColor = 0x4488aa;
           this.game.state.start('menu');
         }, this);
       }
@@ -287,7 +260,7 @@ var Credits = {
     });
     this.buttonExit.y += 0.5;
   }
-}
+};
 
 window.onload = function () {
   var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game');
@@ -296,9 +269,9 @@ window.onload = function () {
   game.state.add('preloader', PreloaderScene);
   game.state.add('menu', Menu);
   game.state.add('options', Options);
+  game.state.add('tutorial', Tutorial);
   game.state.add('play', PlayScene);
   game.state.add('win', Win);
-  game.state.add('credits', Credits);
 
   game.state.start('boot');
 };
