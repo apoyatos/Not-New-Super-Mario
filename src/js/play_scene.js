@@ -68,13 +68,13 @@ var PlayScene = {
     this.enemies = this.game.add.group();
     this.shots = this.game.add.group();
     //Mario
-    this.player = new Mario(this.game, 128, 2716, 'mario', 5, this);
+    this.player = new Mario(this.game, 5400, 0, 'mario', 5, this);
     this.game.camera.follow(this.player);
     this.maxMoons = 10;
     this.minMoons = 5;
     //Enemigos:
     //Boss
-    this.boss = new Boss(this.game, 5470, 446, 'boss', 0, 'chompBoss', 30, 3, this.player, this);
+    this.boss = new Boss(this.game, 5470, 446, 'boss', 0, 'chompBoss', 30, 1, this.player, this);
     this.enemies.add(this.boss);
     //T-Rex
     this.enemies.add(new TRex(this.game, 1408, 2080, 't-rex', 0, this.player));
@@ -219,7 +219,7 @@ var PlayScene = {
   update: function () {
     //Comprueba si se ha ganado
     if (this.win)
-      this.game.state.start('win', true, false);
+      this.game.state.start('win');
     else {
       //Menu pausa
       this.pausar.onDown.add(PauseMenu, this);

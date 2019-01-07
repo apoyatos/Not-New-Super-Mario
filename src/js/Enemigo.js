@@ -43,6 +43,10 @@ Enemy.prototype.Collision = function (player) {
 Enemy.prototype.GoombaCollision = function (player) {
   this.Collision(player);
 }
+//Reset de enemigo
+Enemy.prototype.Reset = function (x, y) {
+  this.reset(x, y);
+}
 //Recalcula la caja de colisión
 Enemy.prototype.Recalculate = function (player) {
   player.body.height = player.height;

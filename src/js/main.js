@@ -25,6 +25,7 @@ var PreloaderScene = {
 
     //Menu
     this.game.load.image('logo', 'images/Logo.png');
+    this.game.load.image('credits', 'images/Credits.png');
     this.game.load.spritesheet('start', 'images/Start.png', 306, 56);
     this.game.load.spritesheet('options', 'images/Options.png', 306, 56);
     //Menu pausa y opciones
@@ -75,6 +76,7 @@ var PreloaderScene = {
     //Menu
     this.game.load.audio('start', 'audio/Start.wav');
     this.game.load.audio('press', 'audio/Press.wav');
+    this.game.load.audio('thanks', 'audio/Thanks.wav');
     //Mario
     this.game.load.audio('jump', 'audio/Jump.wav');
     this.game.load.audio('swim', 'audio/Swim.wav');
@@ -229,15 +231,21 @@ var Tutorial = {
 
 var Win = {
   create: function () {
-    this.game.stage.backgroundColor = 0x000000;
-    this.game.add.text(10, this.game.world.height, 'NOT NEW SUPER MARIO', { fill: 'white', font: '30px arial' });
-    this.game.add.text(10, this.game.world.height + 50, 'Developed by Odyssey Studios', { fill: 'white', font: '30px arial' });
-    this.game.add.text(10, this.game.world.height + 90, 'Ismael Fernández Pereira', { fill: 'white', font: '30px arial' });
-    this.game.add.text(10, this.game.world.height + 120, 'Álvaro Poyatos Morate', { fill: 'white', font: '30px arial' });
-    this.game.add.text(10, this.game.world.height + 170, '', { fill: 'white', font: '30px arial' });
+    this.game.stage.backgroundColor = 0x4488aa;
+    //Logo del juego
+    this.logo = this.game.add.sprite(this.game.width/3, 600, 'logo');
+    this.logo.scale.setTo(2, 2);
+    this.game.add.text(this.game.width/4, 600 + this.logo.width + 50, 'Developed by Odyssey Studios', { fill: 'white', font: '30px arial' });
+    this.game.add.text(this.game.width/4, 600 + this.logo.width + 100, 'Ismael Fernández Pereira', { fill: 'white', font: '30px arial' });
+    this.game.add.text(this.game.width/4, 600 + this.logo.width + 140, 'Álvaro Poyatos Morate', { fill: 'white', font: '30px arial' });
+    this.game.add.text(this.game.width/4, 600 + this.logo.width + 190, 'Facultad de Informatica UCM', { fill: 'white', font: '30px arial' });
+    this.thanks = this.game.add.sprite(this.game.width/3, 600 + this.logo.width + 330, 'credits');
+    this.thanks.scale.setTo(2, 2);
     //Sonidos
     this.clicked = false;
+    this.played=false;
     this.pressSound = this.game.add.audio('press');
+    this.thanksSound = this.game.add.audio('thanks');
     //Botón Exit
     this.buttonExit = this.game.add.button(0, 0, 'exit', Exit, this, 0, 2, 1);
     this.buttonExit.scale.setTo(1.5, 1.5);
@@ -255,10 +263,14 @@ var Win = {
     }
   },
   update: function () {
-    this.game.world.forEach(element => {
-      element.y -= 0.5;
+    this.game.world.forEach(function (element) {
+      element.y -= 1;
     });
-    this.buttonExit.y += 0.5;
+    if (this.thanks.bottom < 600&&!this.played){
+      this.thanksSound.play();
+      this.played=true;
+    }
+    this.buttonExit.y += 1;
   }
 };
 
