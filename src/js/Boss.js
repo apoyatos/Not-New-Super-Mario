@@ -8,7 +8,7 @@ function Boss(game, x, y, sprite, frame, chompSprite, speed, life, player, scene
     //Mario
     this.player = player;
     //Chomp
-    this.chomp = new Chomp(this.game, this.x, this.y, chompSprite, 0, 50, 200, 300, 0, this.player, 0);
+    this.chomp = new Chomp(this.game, this.x, this.y, chompSprite, 0, 50, 200, 300, 0, this.player, 0, this.player.chompBossAnims);
     this.capture = false;
     //Movimiento
     this.speed = speed;

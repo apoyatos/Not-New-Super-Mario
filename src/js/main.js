@@ -108,7 +108,7 @@ var Menu = {
     //Botón Start
     this.buttonPlay = this.game.add.button(0, 0, 'start', Play, this, 0, 2, 1);
     this.buttonPlay.scale.setTo(1.5, 1.5);
-    this.buttonPlay.anchor.setTo(-0.4, -4);
+    this.buttonPlay.anchor.setTo(-0.4, -3.4);
 
     function Play() {
       if (!this.clicked) {
@@ -123,7 +123,7 @@ var Menu = {
     //Botón Options
     this.buttonOptions = this.game.add.button(0, 0, 'options', Options, this, 0, 2, 1);
     this.buttonOptions.scale.setTo(1.5, 1.5);
-    this.buttonOptions.anchor.setTo(-0.4, -5.2);
+    this.buttonOptions.anchor.setTo(-0.4, -4.6);
 
     function Options() {
       if (!this.clicked) {
@@ -131,6 +131,21 @@ var Menu = {
         this.pressSound.play();
         this.pressSound.onStop.add(function () {
           this.game.state.start('options', true, false, 'menu');
+        }, this);
+      }
+      this.clicked = false;
+    }
+    //Botón Creditos
+    this.buttonCredits = this.game.add.button(0, 0, 'options', Creds, this, 0, 2, 1);
+    this.buttonCredits.scale.setTo(1.5, 1.5);
+    this.buttonCredits.anchor.setTo(-0.4, -5.8);
+
+    function Creds() {
+      if (!this.clicked) {
+        this.clicked = true;
+        this.pressSound.play();
+        this.pressSound.onStop.add(function () {
+          this.game.state.start('credits');
         }, this);
       }
       this.clicked = false;
@@ -218,8 +233,61 @@ var Win = {
       }
       this.clicked = false;
     }
+    //Botón Creditos
+    this.buttonCredits = this.game.add.button(0, 0, 'options', Creds, this, 0, 2, 1);
+    this.buttonCredits.scale.setTo(1.5, 1.5);
+    this.buttonCredits.anchor.setTo(-0.4, -4);
+
+    function Creds() {
+      if (!this.clicked) {
+        this.clicked = true;
+        this.pressSound.play();
+        this.pressSound.onStop.add(function () {
+          this.game.state.start('credits');
+        }, this);
+      }
+      this.clicked = false;
+    }
   }
 };
+
+var Credits = {
+  create: function () {
+    //Sonidos
+    this.clicked = false;
+    this.pressSound = this.game.add.audio('press');
+
+    this.game.stage.backgroundColor = 0x000000;
+    this.game.add.text(10, this.game.world.height, 'NOT NEW SUPER MARIO', { fill: 'white', font: '30px arial' });
+    this.game.add.text(10, this.game.world.height + 50, 'Developed by Odyssey Studios', { fill: 'white', font: '30px arial' });
+    this.game.add.text(10, this.game.world.height + 90, 'Ismael Fernández Pereira', { fill: 'white', font: '30px arial' });
+    this.game.add.text(10, this.game.world.height + 120, 'Álvaro Poyatos Morate', { fill: 'white', font: '30px arial' });
+    this.game.add.text(10, this.game.world.height + 170, '', { fill: 'white', font: '30px arial' });
+
+    //Botón Exit
+    this.buttonExit = this.game.add.button(0, 0, 'exit', Exit, this, 0, 2, 1);
+    this.buttonExit.scale.setTo(1.5, 1.5);
+    this.buttonExit.anchor.setTo(-0.4, -5.2);
+
+    function Exit() {
+      if (!this.clicked) {
+        this.clicked = true;
+        this.pressSound.play();
+        this.pressSound.onStop.add(function () {
+          this.game.stage.backgroundColor = 0x4488aa;
+          this.game.state.start('menu');
+        }, this);
+      }
+      this.clicked = false;
+    }
+  },
+  update: function () {
+    this.game.world.forEach(element => {
+      element.y -= 0.5;
+    });
+    this.buttonExit.y += 0.5;
+  }
+}
 
 window.onload = function () {
   var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game');
@@ -230,6 +298,7 @@ window.onload = function () {
   game.state.add('options', Options);
   game.state.add('play', PlayScene);
   game.state.add('win', Win);
+  game.state.add('credits', Credits);
 
   game.state.start('boot');
 };

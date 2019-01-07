@@ -158,6 +158,7 @@ function Mario(game, x, y, sprite, frame, scene) {
     this.animations.add('chargeChompLeft', ['ChompChargeLeft'], 5, false);
     this.animations.add('hurtChargeChompRight', ['ChompChargeRight', 'hurt'], 5, true);
     this.animations.add('hurtChargeChompLeft', ['ChompChargeLeft', 'hurt'], 5, true);
+    this.chompAnims=['hurtChargeChompLeft','hurtChargeChompRight','hurtChompLeft', 'hurtChompRight','chargeChompLeft','chargeChompRight','walkChompLeft','walkChompRight'];
     //Animaciones del chomp dorado
     this.animations.add('walkChompBossLeft', Phaser.Animation.generateFrameNames('ChompBossLeft', 1, 3), 5, true);
     this.animations.add('walkChompBossRight', Phaser.Animation.generateFrameNames('ChompBossRight', 1, 3), 5, true);
@@ -167,6 +168,7 @@ function Mario(game, x, y, sprite, frame, scene) {
     this.animations.add('chargeChompBossLeft', ['ChompBossChargeLeft'], 5, false);
     this.animations.add('hurtChargeChompBossRight', ['ChompBossChargeRight', 'hurt'], 5, true);
     this.animations.add('hurtChargeChompBossLeft', ['ChompBossChargeLeft', 'hurt'], 5, true);
+    this.chompBossAnims=['hurtChargeChompBossLeft','hurtChargeChompBossRight','hurtChompBossLeft', 'hurtChompBossRight','chargeChompBossLeft','chargeChompBossRight','walkChompBossLeft','walkChompBossRight'];
     //Animaciones del T-Rex
     this.animations.add('walkDinoLeft', Phaser.Animation.generateFrameNames('DinoLeft', 1, 10), 5, true);
     this.animations.add('walkDinoRight', Phaser.Animation.generateFrameNames('DinoRight', 1, 10), 5, true);

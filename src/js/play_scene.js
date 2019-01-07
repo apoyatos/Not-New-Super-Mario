@@ -100,9 +100,9 @@ var PlayScene = {
     this.enemies.add(new Planta(this.game, 4736, 2688, 'plant', 5, 100, 5));
     this.enemies.add(new Planta(this.game, 5184, 1120, 'plant', 5, 100, 5));
     //Chomps
-    this.enemies.add(new Chomp(this.game, 2912, 2848, 'chomp', 0, 50, 150, 300, 1, this.player, 60));
-    this.enemies.add(new Chomp(this.game, 3968, 2382, 'chomp', 0, 50, 150, 300, 1, this.player, 120));
-    this.enemies.add(new Chomp(this.game, 4928, 1312, 'chomp', 0, 50, 90, 300, 1, this.player, 30));
+    this.enemies.add(new Chomp(this.game, 2912, 2848, 'chomp', 0, 50, 150, 300, 1, this.player, 60, this.player.chompAnims));
+    this.enemies.add(new Chomp(this.game, 3968, 2382, 'chomp', 0, 50, 150, 300, 1, this.player, 120, this.player.chompAnims));
+    this.enemies.add(new Chomp(this.game, 4928, 1312, 'chomp', 0, 50, 90, 300, 1, this.player, 30, this.player.chompAnims));
     this.enemies.add(this.boss.chomp);
     //Bloques y objetos
     this.blocksHandler = new Blocks(this.game);
