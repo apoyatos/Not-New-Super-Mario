@@ -130,7 +130,7 @@ var Menu = {
         this.clicked = true;
         this.pressSound.play();
         this.pressSound.onStop.add(function () {
-          this.game.state.start('options',true,false,'menu');
+          this.game.state.start('options', true, false, 'menu');
         }, this);
       }
       this.clicked = false;
@@ -139,8 +139,8 @@ var Menu = {
 };
 
 var Options = {
-  init: function(scene){
-    this.scene=scene;
+  init: function (scene) {
+    this.scene = scene;
   },
   create: function () {
     //Sonidos

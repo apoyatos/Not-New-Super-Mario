@@ -200,51 +200,102 @@ Chomp.prototype.EspecialBlockCollision = function (tile, spawner) {
 }
 //Animaciones de Mario chomp
 Chomp.prototype.handleAnimations = function (player) {
-    if (player.hurt) //Si se hace daño
-    {
-        if (this.charging) //Si está cargando
+    if (this.type == 'chomp') {
+        if (player.hurt) //Si se hace daño
         {
-            if (player.facing == -1)
-                player.animations.play('hurtChargeChompLeft');
-            else
-                player.animations.play('hurtChargeChompRight');
+            if (this.charging) //Si está cargando
+            {
+                if (player.facing == -1)
+                    player.animations.play('hurtChargeChompLeft');
+                else
+                    player.animations.play('hurtChargeChompRight');
+            }
+            else if (!this.charged) //Si no está atacando
+            {
+                if (player.facing == -1)
+                    player.animations.play('hurtChompLeft');
+                else
+                    player.animations.play('hurtChompRight');
+            }
+            else if (this.charged) //Si está atacando
+            {
+                if (player.facing == 1)
+                    player.animations.play('hurtChompLeft');
+                else
+                    player.animations.play('hurtChompRight');
+            }
         }
-        else if (!this.charged) //Si no está atacando
-        {
-            if (player.facing == -1)
-                player.animations.play('hurtChompLeft');
-            else
-                player.animations.play('hurtChompRight');
-        }
-        else if (this.charged) //Si está atacando
-        {
-            if (player.facing == 1)
-                player.animations.play('hurtChompLeft');
-            else
-                player.animations.play('hurtChompRight');
+        else {
+            if (this.charging) //Si está cargando
+            {
+                if (player.facing == -1)
+                    player.animations.play('chargeChompLeft');
+                else
+                    player.animations.play('chargeChompRight');
+            }
+            else if (!this.charged) //Si no está atacando
+            {
+                if (player.facing == -1)
+                    player.animations.play('walkChompLeft');
+                else
+                    player.animations.play('walkChompRight');
+            }
+            else if (this.charged) //Si está atacando
+            {
+                if (player.facing == 1)
+                    player.animations.play('walkChompLeft');
+                else
+                    player.animations.play('walkChompRight');
+            }
         }
     }
-    else {
-        if (this.charging) //Si está cargando
+    else if (this.type == 'chompBoss') {
+        if (player.hurt) //Si se hace daño
         {
-            if (player.facing == -1)
-                player.animations.play('chargeChompLeft');
-            else
-                player.animations.play('chargeChompRight');
+            if (this.charging) //Si está cargando
+            {
+                if (player.facing == -1)
+                    player.animations.play('hurtChargeChompBossLeft');
+                else
+                    player.animations.play('hurtChargeChompBossRight');
+            }
+            else if (!this.charged) //Si no está atacando
+            {
+                if (player.facing == -1)
+                    player.animations.play('hurtChompBossLeft');
+                else
+                    player.animations.play('hurtChompBossRight');
+            }
+            else if (this.charged) //Si está atacando
+            {
+                if (player.facing == 1)
+                    player.animations.play('hurtChompBossLeft');
+                else
+                    player.animations.play('hurtChompBossRight');
+            }
         }
-        else if (!this.charged) //Si no está atacando
-        {
-            if (player.facing == -1)
-                player.animations.play('walkChompLeft');
-            else
-                player.animations.play('walkChompRight');
-        }
-        else if (this.charged) //Si está atacando
-        {
-            if (player.facing == 1)
-                player.animations.play('walkChompLeft');
-            else
-                player.animations.play('walkChompRight');
+        else {
+            if (this.charging) //Si está cargando
+            {
+                if (player.facing == -1)
+                    player.animations.play('chargeChompBossLeft');
+                else
+                    player.animations.play('chargeChompBossRight');
+            }
+            else if (!this.charged) //Si no está atacando
+            {
+                if (player.facing == -1)
+                    player.animations.play('walkChompBossLeft');
+                else
+                    player.animations.play('walkChompBossRight');
+            }
+            else if (this.charged) //Si está atacando
+            {
+                if (player.facing == 1)
+                    player.animations.play('walkChompBossLeft');
+                else
+                    player.animations.play('walkChompBossRight');
+            }
         }
     }
 }

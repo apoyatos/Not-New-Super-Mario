@@ -158,6 +158,15 @@ function Mario(game, x, y, sprite, frame, scene) {
     this.animations.add('chargeChompLeft', ['ChompChargeLeft'], 5, false);
     this.animations.add('hurtChargeChompRight', ['ChompChargeRight', 'hurt'], 5, true);
     this.animations.add('hurtChargeChompLeft', ['ChompChargeLeft', 'hurt'], 5, true);
+    //Animaciones del chomp dorado
+    this.animations.add('walkChompBossLeft', Phaser.Animation.generateFrameNames('ChompBossLeft', 1, 3), 5, true);
+    this.animations.add('walkChompBossRight', Phaser.Animation.generateFrameNames('ChompBossRight', 1, 3), 5, true);
+    this.animations.add('hurtChompBossLeft', ['ChompBossLeft1', 'hurt', 'ChompBossLeft2', 'hurt', 'ChompBossLeft3', 'hurt'], 5, true);
+    this.animations.add('hurtChompBossRight', ['ChompBossRight1', 'hurt', 'ChompBossRight2', 'hurt', 'ChompBossRight3', 'hurt'], 5, true);
+    this.animations.add('chargeChompBossRight', ['ChompBossChargeRight'], 5, false);
+    this.animations.add('chargeChompBossLeft', ['ChompBossChargeLeft'], 5, false);
+    this.animations.add('hurtChargeChompBossRight', ['ChompBossChargeRight', 'hurt'], 5, true);
+    this.animations.add('hurtChargeChompBossLeft', ['ChompBossChargeLeft', 'hurt'], 5, true);
     //Animaciones del T-Rex
     this.animations.add('walkDinoLeft', Phaser.Animation.generateFrameNames('DinoLeft', 1, 10), 5, true);
     this.animations.add('walkDinoRight', Phaser.Animation.generateFrameNames('DinoRight', 1, 10), 5, true);
@@ -319,6 +328,7 @@ Mario.prototype.Hurt = function () {
 Mario.prototype.Die = function () {
     //Pausa el juego y la música
     this.kill();
+    this.hurt = true;
     this.scene.pause = true;
     this.scene.levelSound.pause();
     //Sonido de muerte
@@ -333,18 +343,19 @@ Mario.prototype.Die = function () {
         this.y = this.spawnY;
         this.revive();
         this.life = 3;
-        this.scene.boss.life = 3;
-        if (this.coins >= 5)
-            this.coins -= 5;
-        else
-            this.coins = 0;
-        this.scene.textCoins.setText(this.coins);
         this.scene.vidas.frame = this.life - 1;
         if (this.enemy != null) {
             this.scale.setTo(2, 2);
             this.recalculateBody();
             this.enemy.captured = false;
         }
+        //Cura al Boss y te resta monedas
+        this.scene.boss.life = 3;
+        if (this.coins >= 5)
+            this.coins -= 5;
+        else
+            this.coins = 0;
+        this.scene.textCoins.setText(this.coins);
         //Reinicia a Cappy
         if (this.cappy != null) {
             this.cappy.Reset();
@@ -359,6 +370,7 @@ Mario.prototype.Die = function () {
                     item.reset(item.spawnX, item.spawnY);
                 }
             }, this);
+        this.hurt = false;
     }
 }
 //Lanzamiento de Cappy

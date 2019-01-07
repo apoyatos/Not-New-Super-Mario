@@ -1597,6 +1597,174 @@
             }
         },
         {
+            "filename": "ChompBossLeft1",
+            "frame": {
+                "x": 458,
+                "y": 309,
+                "w": 29,
+                "h": 34
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 29,
+                "h": 34
+            },
+            "sourceSize": {
+                "w": 29,
+                "h": 34
+            }
+        },
+        {
+            "filename": "ChompBossRight1",
+            "frame": {
+                "x": 497,
+                "y": 309,
+                "w": 29,
+                "h": 34
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 29,
+                "h": 34
+            },
+            "sourceSize": {
+                "w": 29,
+                "h": 34
+            }
+        },
+        {
+            "filename": "ChompBossLeft3",
+            "frame": {
+                "x": 380,
+                "y": 307,
+                "w": 29,
+                "h": 34
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 29,
+                "h": 30
+            },
+            "sourceSize": {
+                "w": 29,
+                "h": 30
+            }
+        },
+        {
+            "filename": "ChompBossRight3",
+            "frame": {
+                "x": 575,
+                "y": 307,
+                "w": 29,
+                "h": 34
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 29,
+                "h": 30
+            },
+            "sourceSize": {
+                "w": 29,
+                "h": 30
+            }
+        },
+        {
+            "filename": "ChompBossChargeLeft",
+            "frame": {
+                "x": 341,
+                "y": 309,
+                "w": 29,
+                "h": 34
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 29,
+                "h": 30
+            },
+            "sourceSize": {
+                "w": 29,
+                "h": 30
+            }
+        },
+        {
+            "filename": "ChompBossLeft2",
+            "frame": {
+                "x": 419,
+                "y": 309,
+                "w": 29,
+                "h": 34
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 29,
+                "h": 30
+            },
+            "sourceSize": {
+                "w": 29,
+                "h": 30
+            }
+        },
+        {
+            "filename": "ChompBossRight2",
+            "frame": {
+                "x": 536,
+                "y": 309,
+                "w": 29,
+                "h": 34
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 29,
+                "h": 30
+            },
+            "sourceSize": {
+                "w": 29,
+                "h": 30
+            }
+        },
+        {
+            "filename": "ChompBossChargeRight",
+            "frame": {
+                "x": 614,
+                "y": 309,
+                "w": 29,
+                "h": 34
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 29,
+                "h": 30
+            },
+            "sourceSize": {
+                "w": 29,
+                "h": 30
+            }
+        },
+        {
             "filename": "DinoLeft10",
             "frame": {
                 "x": 0,

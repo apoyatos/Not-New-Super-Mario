@@ -52,7 +52,7 @@ Goomba.prototype.ChangeDir = function () {
 }
 //Colisión del goomba
 Goomba.prototype.Collision = function (player) {
-    if (player.bottom < this.y + 10)
+    if (player.bottom < this.y + 10 && !player.hurt)
         this.Killed();
     else
         Enemy.prototype.Collision(player);
@@ -65,7 +65,7 @@ Goomba.prototype.GoombaCollision = function (player) {
         this.kill();
         player.recalculateBody();
     }
-    else 
+    else
         Enemy.prototype.GoombaCollision(player);
 }
 //Mario pisa al goomba
