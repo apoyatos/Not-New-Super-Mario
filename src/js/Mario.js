@@ -136,6 +136,7 @@ function Mario(game, x, y, sprite, frame, scene) {
     this.animations.add('swimRightCappyHurt', ['swimRightCappy1', 'hurt', 'swimRightCappy2', 'hurt', 'swimRightCappy3'], 10, true);
     this.animations.add('bombLeftCappyHurt', ['bombLeftCappy', 'hurt'], 10, true);
     this.animations.add('bombRightCappyHurt', ['bombRightCappy', 'hurt'], 10, true);
+    this.animations.add('dead', ['hurt'], 10, false);
     //Animaciones del Goomba
     this.animations.add('walkGoomba1', ['goombaLeft1', 'goombaRight1'], 5, true);
     this.animations.add('idleGoomba1', ['goombaLeft1'], 5, false);
@@ -158,7 +159,7 @@ function Mario(game, x, y, sprite, frame, scene) {
     this.animations.add('chargeChompLeft', ['ChompChargeLeft'], 5, false);
     this.animations.add('hurtChargeChompRight', ['ChompChargeRight', 'hurt'], 5, true);
     this.animations.add('hurtChargeChompLeft', ['ChompChargeLeft', 'hurt'], 5, true);
-    this.chompAnims=['hurtChargeChompLeft','hurtChargeChompRight','hurtChompLeft', 'hurtChompRight','chargeChompLeft','chargeChompRight','walkChompLeft','walkChompRight'];
+    this.chompAnims = ['hurtChargeChompLeft', 'hurtChargeChompRight', 'hurtChompLeft', 'hurtChompRight', 'chargeChompLeft', 'chargeChompRight', 'walkChompLeft', 'walkChompRight'];
     //Animaciones del chomp dorado
     this.animations.add('walkChompBossLeft', Phaser.Animation.generateFrameNames('ChompBossLeft', 1, 3), 5, true);
     this.animations.add('walkChompBossRight', Phaser.Animation.generateFrameNames('ChompBossRight', 1, 3), 5, true);
@@ -168,7 +169,7 @@ function Mario(game, x, y, sprite, frame, scene) {
     this.animations.add('chargeChompBossLeft', ['ChompBossChargeLeft'], 5, false);
     this.animations.add('hurtChargeChompBossRight', ['ChompBossChargeRight', 'hurt'], 5, true);
     this.animations.add('hurtChargeChompBossLeft', ['ChompBossChargeLeft', 'hurt'], 5, true);
-    this.chompBossAnims=['hurtChargeChompBossLeft','hurtChargeChompBossRight','hurtChompBossLeft', 'hurtChompBossRight','chargeChompBossLeft','chargeChompBossRight','walkChompBossLeft','walkChompBossRight'];
+    this.chompBossAnims = ['hurtChargeChompBossLeft', 'hurtChargeChompBossRight', 'hurtChompBossLeft', 'hurtChompBossRight', 'chargeChompBossLeft', 'chargeChompBossRight', 'walkChompBossLeft', 'walkChompBossRight'];
     //Animaciones del T-Rex
     this.animations.add('walkDinoLeft', Phaser.Animation.generateFrameNames('DinoLeft', 1, 10), 5, true);
     this.animations.add('walkDinoRight', Phaser.Animation.generateFrameNames('DinoRight', 1, 10), 5, true);
@@ -324,13 +325,16 @@ Mario.prototype.Hurt = function () {
         this.scene.vidas.frame = this.life - 1;
     }
     else //Su vida es 0
+    {
+        this.x = this.spawnX;
+        this.y = this.spawnY;
+        this.animations.play('dead');
         this.Die();
+    }
 }
 //Muerte de Mario
 Mario.prototype.Die = function () {
     //Pausa el juego y la música
-    this.kill();
-    this.hurt = true;
     this.scene.pause = true;
     this.scene.levelSound.pause();
     //Sonido de muerte
@@ -341,16 +345,8 @@ Mario.prototype.Die = function () {
         this.scene.pause = false;
         this.scene.levelSound.resume();
         //Reinicia su posición, su vida, etc
-        this.x = this.spawnX;
-        this.y = this.spawnY;
-        this.revive();
         this.life = 3;
         this.scene.vidas.frame = this.life - 1;
-        if (this.enemy != null) {
-            this.scale.setTo(2, 2);
-            this.recalculateBody();
-            this.enemy.captured = false;
-        }
         //Cura al Boss y te resta monedas
         this.scene.boss.life = 3;
         if (this.coins >= 5)
@@ -364,15 +360,19 @@ Mario.prototype.Die = function () {
             this.capture = false;
             this.cappy.cappyCapture = false;
         }
+        if (this.enemy != null) {
+            this.scale.setTo(2, 2);
+            this.recalculateBody();
+            this.enemy.captured = false;
+        }
         //Revive a todos los enemigos
         this.scene.enemies.forEach(
             function (item) {
                 if (!item.alive) {
                     item.revive();
-                    item.reset(item.spawnX, item.spawnY);
+                    item.reset(item.spawnX, item.spawnY)
                 }
             }, this);
-        this.hurt = false;
     }
 }
 //Lanzamiento de Cappy
@@ -397,6 +397,7 @@ Mario.prototype.ThrowCappy = function () {
             this.cappy.cappyCapture = false;
             this.scale.setTo(2, 2);
             this.recalculateBody();
+            this.body.width = 30;
             this.enemy.captured = false;
             //El enemigo reaparece
             this.enemy.Reset(this.x + this.enemy.width * -this.facing, this.y, this.goombaCount);
@@ -422,12 +423,14 @@ Mario.prototype.MarioAnims = function (dir, cappy, hurt) //String con la direcci
             else
                 this.kicking = false;
         }
-        else if (!this.moving && this.crouching) //Animación cuando está agachado
-            this.animations.play('idleCrouch' + dir + cappy + hurt);
-        else if (this.crouching && this.running) //Animaciones cuando está rodando
-            this.animations.play('crouching' + dir + cappy + hurt);
-        else if (this.crouching) //Animaciones cuando está moviendose agachado
-            this.animations.play('crouch' + dir + cappy + hurt);
+        else if (this.crouching) {
+            if (!this.moving) //Animación cuando está agachado
+                this.animations.play('idleCrouch' + dir + cappy + hurt);
+            else if (this.running) //Animaciones cuando está rodando
+                this.animations.play('crouching' + dir + cappy + hurt);
+            else  //Animaciones cuando está moviendose agachado
+                this.animations.play('crouch' + dir + cappy + hurt);
+        }
         else if (this.moving) //Animaciones cuando está andando
             this.animations.play('run' + dir + cappy + hurt);
         else //Animación cuando está quieto
@@ -458,6 +461,8 @@ Mario.prototype.MarioAnims = function (dir, cappy, hurt) //String con la direcci
 Mario.prototype.handleAnimations = function () {
     if (!this.capture) //Animaciones de Mario
     {
+        this.body.width = 18;
+        this.body.offset.x = 2.5;
         if (this.facing == 1) //Animaciones derecha
         {
             if (!this.hurt) //Animaciones herido

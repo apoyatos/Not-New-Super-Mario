@@ -291,20 +291,22 @@ var PlayScene = {
             this.game.physics.arcade.collide(item, this.heartBlocks, function (enemy, tile) { enemy.EspecialBlockCollision(tile, enemy.player.scene.heartSpawner); });
             this.game.physics.arcade.collide(item, this.superheartBlocks, function (enemy, tile) { enemy.EspecialBlockCollision(tile, enemy.player.scene.superHeartSpawner); });
             //Comportamiento de los enemigos
-            item.Move();
-            item.ChangeDir();
-            item.Attack(this.player);
-            item.Hurt();
-            item.Capture(this.player.cappy);
-            if (item.inCamera && !this.pause && !this.pauseButton) {
-              var shot = item.Shoot(this.player);
-              if (shot != undefined)
-                this.shots.add(shot);
-            }
-            //Colisiones con Mario
-            this.player.EnemyCollision(item);
-            if (this.player.cappy != null) {
-              this.player.cappy.Stunn(item);
+            if (!this.pause && !this.pauseButton) {
+              item.Move();
+              item.ChangeDir();
+              item.Attack(this.player);
+              item.Hurt();
+              item.Capture(this.player.cappy);
+              if (item.inCamera && !this.pause && !this.pauseButton) {
+                var shot = item.Shoot(this.player);
+                if (shot != undefined)
+                  this.shots.add(shot);
+              }
+              //Colisiones con Mario
+              this.player.EnemyCollision(item);
+              if (this.player.cappy != null) {
+                this.player.cappy.Stunn(item);
+              }
             }
           }
         }, this);

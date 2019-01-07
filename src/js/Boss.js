@@ -61,10 +61,12 @@ Boss.prototype.Move = function () {
             this.chomp.originX = this.x;
             this.body.velocity.x = Math.sign(this.player.x - this.x) * this.speed;
             //Animaciones
-            if (this.body.velocity.x < 0)
-                this.animations.play('walkLeft');
-            else
-                this.animations.play('walkRight');
+            if (!this.hurt) {
+                if (this.body.velocity.x < 0)
+                    this.animations.play('walkLeft');
+                else
+                    this.animations.play('walkRight');
+            }
         }
     }
     else //Quieto

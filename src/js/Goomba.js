@@ -88,6 +88,7 @@ Goomba.prototype.Die = function () {
     this.kill();
     this.count = 1;
 }
+
 //Reset del goomba
 Goomba.prototype.Reset = function (x, y, count) {
     this.reset(x, y);

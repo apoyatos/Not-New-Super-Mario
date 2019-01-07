@@ -36,10 +36,6 @@ Enemy.prototype.EnemyShoot = function (target, sprite, enemy) {
 Enemy.prototype.Die = function () {
   this.kill();
 }
-//Reset de enemigo
-Enemy.prototype.Reset = function (x, y) {
-  this.reset(x, y);
-}
 //Daña a Mario con enemigo capturado
 Enemy.prototype.Collision = function (player) {
   player.Hurt();

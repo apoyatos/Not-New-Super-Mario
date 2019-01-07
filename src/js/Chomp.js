@@ -40,7 +40,6 @@ function Chomp(game, x, y, sprite, frame, speed, chain, distance, cooldown, play
     this.originalHeight = this.body.height * this.scale.x;
     //Tipo
     this.type = sprite;
-    console.log(this.anims)
 }
 Chomp.prototype = Object.create(Enemy.prototype);
 Chomp.constructor = Chomp
