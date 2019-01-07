@@ -6,8 +6,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 20px;
-  text-align: center;
+  font-size: 18px;
   background-image: url("images/WebBackground.png");
   background-position: center;
   background-repeat: no-repeat;
@@ -47,15 +46,41 @@ main {
   position: fixed;
 }
 
+.header{
+  text-align: center;
+}
+
 .container {
+  text-align: justify;
   margin-left: 10%;
   margin-right: 10%;
+  padding: 5px 10px;
   border: 3px solid burlywood;
   border-radius: 10px;
   background-color: burlywood;
 }
 
+.links{
+  padding: 10px;
+}
+
 #game {
   border: 5px solid rgb(0, 0, 0);
   border-radius: 10px;
+}
+
+#textDescription{
+  padding: 10px;
+}
+
+#textControls{
+  padding: 10px;
+}
+
+#textFeatures{
+  padding: 10px;
+}
+
+#textDevelopers{
+  padding: 10px;
 }

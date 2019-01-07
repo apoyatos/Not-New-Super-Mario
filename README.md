@@ -20,7 +20,7 @@ Did you ever think you could play Super Mario Odyssey in your browser? Now you c
 
 To make it look easier, imagine it as a SNES game with the new mechanics: throw Cappy, jump on it, capture enemies and take control over them acquiring new skills and more.
 
-You will be able to play the best worlds of the original game adapted to a 2D scroll aesthetic. Obviously, you need to collect all the power moons (not the 999 ones) and maybe you'll meet with unexpected boss enemys.
+You will be able to play the original game adapted to a 2D scroll aesthetic. Obviously, you need to collect all the power moons (not the 999 ones) and maybe you'll meet with unexpected enemys.
 
 Stop reading this and go turn into a dinosaur with moustache!
 
@@ -28,7 +28,7 @@ Stop reading this and go turn into a dinosaur with moustache!
 
 |Image|Character|Description|
 |-----|---------|-----------|
-|<img src=src/readme/Mario.png>|Mario|Our great protagonist. Run, jump and collect the power moos.|
+|<img src=src/readme/Mario.png>|Mario|Our great protagonist, this time with a new friend, Cappy. Run, jump, throw your hat and collect the power moos.|
 
 ## Kingdoms:
 
@@ -42,7 +42,7 @@ Stop reading this and go turn into a dinosaur with moustache!
 |-----|----|-----------|
 |<img src=src/readme/Moneda.png>|Coins|Try collecting them all.|
 |<img src=src/readme/SuperMoneda.png>|RegionalCoins|Rare ones. Find them if you can.|
-|<img src=src/readme/Corazon.png>|Heart|Restores one point of life.|
+|<img src=src/readme/Corazon.png>|Heart|Restores your life.|
 |<img src=src/readme/SuperCorazon.png>|Life-Up Heart|Special ones. Gives you 6 points of life.|
 
 ## Enemies:
@@ -51,13 +51,13 @@ Stop reading this and go turn into a dinosaur with moustache!
 
 |Image|Enemy|Description|Capturable|
 |-----|-----|-----------|----------|
-|<img src=src/readme/Goomba.png>|Goomba|A short enemy that tries to follow and ram into Mario after it notices him.|Yes|
-|<img src=src/readme/PlantaPiraña.png>|Pirahna Plant|A fire-spitting plant that always shoots in the direction of Mario.|No|
-|<img src=src/readme/Chomp.png>|Chain Chomp|A chain-linked enemy that tries to aggress Mario by lunging towards him.|Yes|
-|<img src=src/readme/T-Rex.png>|T-Rex|A prehistoric giant found either in very dark or sunny areas.|Yes|
+|<img src=src/readme/Goomba.png>|Goomba|A short enemy that tries to follow you.|Yes|
+|<img src=src/readme/PlantaPiraña.png>|Pirahna Plant|A fire-spitting plant that always shoots in your direction.|No|
+|<img src=src/readme/Chomp.png>|Chain Chomp|A chain-linked enemy that tries to aggress you.|Yes|
+|<img src=src/readme/T-Rex.png>|T-Rex|A prehistoric giant found in certain areas.|Yes|
 
 * Bosses
 
 |Image|Boss Name|Description|
 |-----|---------|-----------|
-|<img src=src/readme/MadameBroode.png>|Madame Broode|First boss. She have a golden chain chomp that attacks you.|
+|<img src=src/readme/MadameBroode.png>|Madame Broode|First boss. She is in the top of the Cascade Kingdom. Also, she have a golden chain chomp and attacks you.|
