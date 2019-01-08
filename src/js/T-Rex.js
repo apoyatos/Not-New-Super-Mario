@@ -108,7 +108,7 @@ TRex.prototype.handleAnimations = function (player) {
     this.Timer();
 }
 //Métodos polimórficos
-TRex.prototype.Reset=function(){}
+TRex.prototype.Reset = function () { }
 TRex.prototype.Recalculate = function () { }
 
 module.exports = TRex;

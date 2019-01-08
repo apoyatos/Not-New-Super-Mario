@@ -15,7 +15,7 @@ var BootScene = {
 var PreloaderScene = {
   preload: function () {
     //Color del fondo y volumen
-    this.game.stage.backgroundColor = 0x00000;
+    this.game.stage.backgroundColor = 0x4488aa;
     this.game.sound.volume = 0.5;
     //Imagen de carga
     this.odyssey = this.game.add.sprite(this.game.width / 2, this.game.height / 2, 'odyssey');
@@ -123,8 +123,6 @@ var Menu = {
     this.clicked = false;
     this.startSound = this.game.add.audio('start');
     this.pressSound = this.game.add.audio('press');
-    //Fondo del menu
-    this.Background = this.game.add.sprite(0, 0, 'pause');
     //Logo del juego
     this.logo = this.game.add.sprite(0, 0, 'logo');
     this.logo.scale.setTo(2, 2);
@@ -170,8 +168,6 @@ var Options = {
     //Sonidos
     this.clicked = false;
     this.pressSound = this.game.add.audio('press');
-    //Fondo del menu
-    this.Background = this.game.add.sprite(0, 0, 'pause');
     //Logo del juego
     this.logo = this.game.add.sprite(0, 0, 'logo');
     this.logo.scale.setTo(2, 2);
@@ -229,8 +225,6 @@ var Tutorial = {
     //Sonidos
     this.clicked = false;
     this.pressSound = this.game.add.audio('press');
-    //Fondo del menu
-    this.Background = this.game.add.sprite(0, 0, 'pause');
     //Movimientos de Mario
     this.imagenesMario = this.game.add.group();
     this.textoMario = this.game.add.group();
@@ -417,8 +411,6 @@ var Tutorial = {
 
 var Win = {
   create: function () {
-    //Fondo del menu
-    this.Background = this.game.add.sprite(0, 0, 'pause');
     //Logo del juego
     this.logo = this.game.add.sprite(this.game.width / 3, 600, 'logo');
     this.logo.scale.setTo(2, 2);
@@ -439,6 +431,7 @@ var Win = {
     this.buttonExit = this.game.add.button(0, 0, 'exit', Exit, this, 0, 2, 1);
     this.buttonExit.scale.setTo(1.5, 1.5);
     this.buttonExit.anchor.setTo(-0.4, -5.2);
+    this.buttonExit.visible = false;
 
     function Exit() {
       if (!this.clicked) {
@@ -457,10 +450,12 @@ var Win = {
     });
     if (this.thanks.bottom < 600 && !this.played) {
       this.thanksSound.play();
+      this.thanksSound.onStop.add(function () {
+        this.buttonExit.visible = true;
+      }, this);
       this.played = true;
     }
     this.buttonExit.y += 1;
-    this.Background+=1;
   }
 };
 

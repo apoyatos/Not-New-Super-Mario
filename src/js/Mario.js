@@ -326,6 +326,7 @@ Mario.prototype.Hurt = function () {
     }
     else //Su vida es 1
     {
+        //Reinicia su posición y lo mata
         this.x = this.spawnX;
         this.y = this.spawnY;
         this.animations.play('dead');
@@ -344,31 +345,41 @@ Mario.prototype.Die = function () {
     function Respawn() {
         this.scene.pause = false;
         this.scene.levelSound.resume();
-        //Reinicia su posición, su vida, etc
+        //Reinicia su vida y le resta 5 monedas
         this.life = 3;
         this.scene.vidas.frame = this.life - 1;
-        //Cura al Boss y te resta monedas
-        this.scene.boss.life = 3;
-        this.coins = 0;
+        if (this.coins >= 5)
+            this.coins -= 5;
+        else
+            this.coins = 0;
         this.scene.textCoins.setText(this.coins);
+        if (this.enemy != null) {
+            this.scale.setTo(2, 2);
+            this.recalculateBody();
+            this.enemy.captured = false;
+        }
         //Reinicia a Cappy
         if (this.cappy != null) {
             this.cappy.Reset();
             this.capture = false;
             this.cappy.cappyCapture = false;
         }
-        if (this.enemy != null) {
-            this.scale.setTo(2, 2);
-            this.recalculateBody();
-            this.enemy.captured = false;
+        //Cura al Boss y abre su zona
+        if (this.scene.bossZone.alive) {
+            this.scene.boss.life = 3;
+            this.scene.boss.startBattle = false;
+            this.scene.boss.musicOn = false;
+            this.scene.bossZone.kill();
+            this.scene.battleSound.stop();
+            this.scene.levelSound.play();
         }
-        //Revive a todos los enemigos
+        //Revive a todos los enemigos y los reposiciona
         this.scene.enemies.forEach(
             function (item) {
                 if (!item.alive) {
                     item.revive();
-                    item.reset(item.spawnX, item.spawnY);
                 }
+                item.reset(item.spawnX, item.spawnY);
             }, this);
     }
 }

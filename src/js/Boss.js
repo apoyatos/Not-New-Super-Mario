@@ -8,7 +8,8 @@ function Boss(game, x, y, sprite, frame, chompSprite, speed, life, player, scene
     //Mario
     this.player = player;
     //Chomp
-    this.chomp = new Chomp(this.game, this.x, this.y, chompSprite, 0, 50, 200, 300, 0, this.player, 0, this.player.chompBossAnims);
+    this.chomp = new Chomp(this.game, this.x, this.y, chompSprite, 0, 50, 180, 300, 0, this.player, 0, this.player.chompBossAnims);
+    this.chomp.originX = this.x + this.width / 4;
     this.capture = false;
     //Movimiento
     this.speed = speed;
@@ -44,21 +45,26 @@ Boss.constructor = Boss;
 
 //Movimiento del Boss
 Boss.prototype.Move = function () {
+    //Activa el inicio de la batalla contra el Boss
+    if (this.player.y + this.player.height < this.bottom)
+        this.startBattle = true;
+    //Cuando inicia la batalla contra el Boss
     if (this.startBattle && !this.musicOn) {
         //Cambia la música de fondo
         this.scene.levelSound.stop();
         this.scene.battleSound.play();
         this.scene.battleSound.loop = true;
+        //Cierra la zona del Boss
+        this.scene.bossZone.revive();
         this.musicOn = true;
     }
-    if (this.player.y < this.bottom) //Empieza a moverse cuando llega Mario
-    {
-        this.startBattle = true;
+    //El Boss empieza a moverse cuando llega Mario
+    if (this.player.y < this.bottom) {
         //Si Mario ha capturado al chomp y está a más de la mitad de distancia de la cadena el Boss no se mueve
         if (this.chomp.captured && (this.player.x > this.x + this.speed + this.chomp.chain / 2 || this.player.x < this.x - this.speed - this.chomp.chain / 2))
             this.body.velocity.x = 0;
         else {
-            this.chomp.originX = this.x;
+            this.chomp.originX = this.x + this.width / 4;
             this.body.velocity.x = Math.sign(this.player.x - this.x) * this.speed;
             //Animaciones
             if (!this.hurt) {

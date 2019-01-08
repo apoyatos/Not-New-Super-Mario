@@ -56,6 +56,9 @@ var PlayScene = {
     this.map.setCollisionByExclusion([], true, 'Colisiones');
     this.deathZone = this.map.createLayer('Muerte');
     this.map.setCollisionByExclusion([], true, 'Muerte');
+    this.bossZone = this.map.createLayer('Boss');
+    this.map.setCollisionByExclusion([], true, 'Boss');
+    this.bossZone.kill();
     this.blocks = this.map.createLayer('Bloques');
     this.map.setCollisionByExclusion([], true, 'Bloques');
     this.coinBlocks = this.map.createLayer('BloquesMonedas');
@@ -74,7 +77,7 @@ var PlayScene = {
     this.minMoons = 5;
     //Enemigos:
     //Boss
-    this.boss = new Boss(this.game, 5470, 446, 'boss', 0, 'chompBoss', 30, 3, this.player, this);
+    this.boss = new Boss(this.game, 5470, 446, 'boss', 0, 'chompBoss', 45, 3, this.player, this);
     this.enemies.add(this.boss);
     //T-Rex
     this.enemies.add(new TRex(this.game, 1408, 2080, 't-rex', 0, this.player));
@@ -251,7 +254,8 @@ var PlayScene = {
       //Colisiones de Mario con el mapa y los bloques
       if (this.player.alive) {
         this.game.physics.arcade.collide(this.player, this.collisions);
-        this.game.physics.arcade.collide(this.player, this.deathZone, function (player) { player.life=1; player.Hurt(); });
+        this.game.physics.arcade.collide(this.player, this.deathZone, function (player) { player.life = 1; player.Hurt(); });
+        this.game.physics.arcade.collide(this.player, this.bossZone);
         this.game.physics.arcade.collide(this.player, this.blocks, function (player, tile) { player.scene.blocksHandler.HitBlock(player, tile); });
         this.game.physics.arcade.collide(this.player, this.coinBlocks, function (player, tile) { player.scene.blocksHandler.HitEspecialBlock(player, tile, player.scene.coinSpawner); });
         this.game.physics.arcade.collide(this.player, this.heartBlocks, function (player, tile) { player.scene.blocksHandler.HitEspecialBlock(player, tile, player.scene.heartSpawner); });
@@ -259,6 +263,7 @@ var PlayScene = {
         //Colisiones de Cappy con el mapa
         if (this.player.cappy != null) {
           this.game.physics.arcade.collide(this.player.cappy, this.collisions);
+          this.game.physics.arcade.collide(this.player.cappy, this.bossZone);
           this.game.physics.arcade.collide(this.player.cappy, this.blocks);
           this.game.physics.arcade.collide(this.player.cappy, this.coinBlocks);
           this.game.physics.arcade.collide(this.player.cappy, this.heartBlocks);
@@ -273,6 +278,7 @@ var PlayScene = {
             this.player.ObjectCollision(item);
             //Colisiones con el mapa
             this.game.physics.arcade.collide(item, this.collisions);
+            this.game.physics.arcade.collide(item, this.bossZone);
             this.game.physics.arcade.collide(item, this.blocks);
             this.game.physics.arcade.collide(item, this.coinBlocks);
             this.game.physics.arcade.collide(item, this.heartBlocks);

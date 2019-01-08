@@ -14,9 +14,18 @@ Checkpoint.constructor = Checkpoint;
 
 //Guarda la posición de reaparición de Mario
 Checkpoint.prototype.Collision = function (player) {
+    //Cada vez que pasas por encima
+    player.spawnX = this.position.x;
+    player.spawnY = this.position.y - player.height;
+    //Solo una vez
     if (this.frame != 1) {
-        player.spawnX = this.position.x;
-        player.spawnY = this.position.y - player.height;
+        //Cura a Mario
+        if (player.life > 3)
+            player.life = 6;
+        else
+            player.life = 3;
+        player.scene.vidas.frame = player.life - 1;
+        //Sonido
         this.flagSound.play();
         this.frame = 1;
     }
