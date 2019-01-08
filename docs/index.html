@@ -4,102 +4,122 @@
 <head>
   <title>Not New Super Mario</title>
   <meta charset="utf-8">
-
-
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link href="styles.css" rel="stylesheet" type="text/css">
   <style>
     #game {
-      width: 1360px;
-      height: 768px;
+      width: 800px;
+      height: 600px;
     }
   </style>
 </head>
 
-<body style="background-image:url(images/Backgroundo.png);"height=200>
-  <header>
-    <a href="
-  https://www.github.com/apoyatos/Not-New-Super-Mario-Odyssey"> <img style="position: absolute; top: 0; right: 0; border: 0;"
-  src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub">
-  </a>
-  </header>
-
+<body>
   <main>
     <div class="background"></div>
+
+    <div class="bar">
+      <a href="#">Title</a>
+      <a href="#GameWindow">Game</a>
+      <a href="#Controls">Controls</a>
+      <a href="#Features">Features</a>
+      <a href="#Developers">Contact</a>
+    </div>
+
+    <div class="header">
+      <img id="titleIMG" src="images/Logo.png" height=300 />
+    </div>
+
     <div class="container">
-      <div>
-        <div class="header">
-          <img id="titlePhoto" src="images/logo.png" height=200 />
-          <div class="Info">
-            <hr class="divider2">
-            <div id="GeneralDescription">
-              <h2>General description</h2>
-              <p>
-                Did you ever think you could play Super Mario Odyssey in your browser? Now you can do it... and in a
-                retro version!
 
-                To make it look easier, imagine it as a SNES game with the new mechanics: throw Cappy, jump on it,
-                capture enemies and take control over them acquiring new skills and more.
-              </p> <br>
-              <a href="https://apoyatos.github.io/Not-New-Super-Mario">
-                <strong>Learn More</strong><br><br>
-              </a>
-            </div>
-          </div>
-          <div id="gameCont" align="center">
-            <iframe id="game" src="raw.html"></iframe>
-          </div>
-        </div>
-        <div id="howToPlay">
-          <h2>Controls</h2>
-          Move Mario with the <u>arrow keys</u> and jump with the <u>spacebar</u><br>
-          Press <u>Z</u> to throw cappy and capture enemies<br>
-          Jump on cappy to get higher or press <u>up arrow</u> in midair to tackle<br>
-          Crouch with the <u>down arrow</u> and turn into a ball by pressing <u>shift</u> while crouching<br><br>
-        </div>
-        <div id='Features'>
-          <h2>Features</h2>
-          Retro Plataformer <br>
-          Lateral Scroll<br>
-          Collect powermoons to stop Bowsers plan and rescue Peach <br>
-          The original switch game and mechanics with retro ascethics <br>
-          Stop reading and go try it already<br><br>
-          <sub><i>Game still in development some features might change</i></sub><br>
-        </div>
-
-        <div id="Developers">
-          <h2>Odyssey Studios</h2>
-          DEVELOPERS</br>
-          Ismael Fernández Pereira<br>
-          Álvaro Poyatos Morate<br><br>
+      <div id="Description">
+        <div id="textDescription">
+          <h2>Description</h2>
+          <p>
+            Did you ever think you could play Super Mario Odyssey in your browser? Now you can do it... and in a retro
+            version!<br>
+            To make it look easier, imagine it as a SNES game with the new mechanics: throw Cappy, jump on it, capture
+            enemies and take control over them acquiring new skills and more.
+            You will be able to play the original game adapted to a 2D scroll aesthetic. Obviously, you need to collect
+            all the power moons (not the 999 ones) and maybe you'll meet with unexpected enemys.<br>
+            Stop reading this and go turn into a dinosaur with moustache!<br>
+          </p> <br>
         </div>
       </div>
 
+      <div id="GameWindow" align="center">
+        <iframe id="game" src="raw.html"></iframe>
+      </div>
 
-      <footer id='contact'>
-        <hr class="footer-divider">
-        <div align="center">
+      <div id="Controls">
+        <div id="textControls">
+          <h2>Controls</h2>
+          Use the <b>right and left arrow keys</b> to move Mario.<br>
+          Use the <b>spacebar</b> to jump. If you press the <b>up arrow key</b> while you are in the air, you can make
+          one little jump.<br>
+          Use the <b>down arrow</b> to crouch. You can move while crouching. Also, if you press <b>shift</b> while
+          crouching and move, you will turn into a ball and go faster.<br>
+          Press <b>X</b> to open the pause menu.
+          Press <b>Z</b> to throw Cappy. You can jump on Cappy to go higher.<br>
+          If you hit the enemies with Cappy you can capture them. Press <b>Z</b> to be Mario again.<br>
+        </div>
+      </div>
+
+      <div id='Features'>
+        <div id="textFeatures">
+          <h2>Features</h2>
+          Retro Plataformer.<br>
+          Lateral Scroll.<br>
+          The original switch game and mechanics with retro ascethics.<br>
+          Stop reading and go try it already.<br>
+          <sub><i>Game still in development some features might change</i></sub><br>
+        </div>
+      </div>
+
+      <div id="Developers">
+        <div id="textDevelopers">
+          <h2>Odyssey Studios</h2>
+          Ismael Fernández Pereira<br>
+          Álvaro Poyatos Morate<br>
+
           <p>
+            <a href="https://informatica.ucm.es/">Facultad de Informática</a>·<a href="https://www.ucm.es/">UCM</a>
+          </p>
+
+        </div>
+      </div>
+
+      <div class='links'>
+        <div align="justify">
+          <p>
+            For more information about the game check this:<br>
             <a href="https://github.com/apoyatos/Not-New-Super-Mario">
               <strong>Not New Super Mario</strong><br>
             </a>
           </p>
-          <p class="license">Published under the <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative
-              Commons Attribution-NonCommercial-ShareAlike</a>
-            license.
-          </p>
+
           <p>
-            <a href="https://informatica.ucm.es/">Facultad de Informática</a>·<a href="https://www.ucm.es/">UCM</a>
-          </p>
-          <p>
-            <a href="#">Go up</a>
+            The game sprites and tilemaps are from Super Mario Bros. 3 and Super Mario World.<br>
+            We found them in the page below. They were modified and, also, a few ones were made by ourselves.<br>
+            <a href="http://www.mariouniverse.com/">
+              <strong>www.mariouniverse.com</strong><br>
+            </a>
           </p>
 
-          <br>
+          <p>
+            The game sounds are from Super Mario Bros, Super Mario World and Super Mario Odyssey.<br>
+            We found them in the page below and we downloaded some from youtube videos.<br>
+            <a href="https://themushroomkingdom.net/">
+              <strong>themushroomkingdom.net</strong><br>
+            </a>
+          </p>
 
         </div>
-      </footer>
+      </div>
 
     </div>
+
+  </main>
 </body>
 
 </html>
