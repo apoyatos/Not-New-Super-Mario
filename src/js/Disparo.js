@@ -43,8 +43,8 @@ Shot.prototype.Collision = function (player) {
   player.Hurt();
 }
 //Destrucción del disparo si choca con Mario goomba
-Shot.prototype.GoombaCollision = function () {
-  this.Collision();
+Shot.prototype.GoombaCollision = function (player) {
+  this.Collision(player);
 }
 
 module.exports = Shot;

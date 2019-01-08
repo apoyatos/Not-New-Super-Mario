@@ -339,7 +339,7 @@ var Tutorial = {
     //Texto
     this.textoCappy.add(this.textChomp1 = this.game.add.text(0, 0, 'Charge Chomp', { fill: 'white', font: '25px arial' }));
     this.textChomp1.anchor.setTo(-0.2, -12);
-    this.textoCappy.add(this.textChomp2 = this.game.add.text(0, 0, 'Move until reach one side', { fill: 'white', font: '25px arial' }));
+    this.textoCappy.add(this.textChomp2 = this.game.add.text(0, 0, 'Move until reaching one side', { fill: 'white', font: '25px arial' }));
     this.textChomp2.anchor.setTo(-1.5, -12);
 
     this.imagenesCappy.forEach(function (item) {

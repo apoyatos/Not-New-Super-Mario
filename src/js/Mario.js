@@ -353,16 +353,16 @@ Mario.prototype.Die = function () {
         else
             this.coins = 0;
         this.scene.textCoins.setText(this.coins);
-        if (this.enemy != null) {
-            this.scale.setTo(2, 2);
-            this.recalculateBody();
-            this.enemy.captured = false;
-        }
         //Reinicia a Cappy
         if (this.cappy != null) {
             this.cappy.Reset();
             this.capture = false;
             this.cappy.cappyCapture = false;
+        }
+        if (this.enemy != null) {
+            this.scale.setTo(2, 2);
+            this.recalculateBody();
+            this.enemy.captured = false;
         }
         //Cura al Boss y abre su zona
         if (this.scene.bossZone.alive) {
@@ -380,6 +380,7 @@ Mario.prototype.Die = function () {
                     item.revive();
                 }
                 item.reset(item.spawnX, item.spawnY);
+                item.count=1;
             }, this);
     }
 }
