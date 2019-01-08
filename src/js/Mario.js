@@ -345,13 +345,8 @@ Mario.prototype.Die = function () {
     function Respawn() {
         this.scene.pause = false;
         this.scene.levelSound.resume();
-        //Reinicia su vida y le resta 5 monedas
-        this.life = 3;
-        this.scene.vidas.frame = this.life - 1;
-        if (this.coins >= 5)
-            this.coins -= 5;
-        else
-            this.coins = 0;
+        //Reinicia su vida y le resta todas las monedas
+        this.coins = 0;
         this.scene.textCoins.setText(this.coins);
         //Reinicia a Cappy
         if (this.cappy != null) {
@@ -380,7 +375,7 @@ Mario.prototype.Die = function () {
                     item.revive();
                 }
                 item.reset(item.spawnX, item.spawnY);
-                item.count=1;
+                item.count = 1;
             }, this);
     }
 }

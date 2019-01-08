@@ -70,10 +70,10 @@ Cappy.prototype.Check = function () {
         {
             this.game.physics.arcade.moveToObject(this.player.cappy, this.player, 500);
             this.cappyReturning = true;
-            this.body.checkCollision.up=this.player.y>this.y;
-            this.body.checkCollision.left=false;
-            this.body.checkCollision.right=false;
-            this.body.checkCollision.down=this.player.y<this.y;
+            this.body.checkCollision.up = this.player.y > this.y;
+            this.body.checkCollision.left = false;
+            this.body.checkCollision.right = false;
+            this.body.checkCollision.down = this.player.y < this.y;
         }
     }
 }
@@ -95,10 +95,10 @@ Cappy.prototype.Reset = function () {
     this.player.thrown = false;
     this.cappyStopped = false;
     this.cappyReturning = false;
-    this.body.checkCollision.up=true;
-    this.body.checkCollision.left=true;
-    this.body.checkCollision.right=true;
-    this.body.checkCollision.down=true;;
+    this.body.checkCollision.up = true;
+    this.body.checkCollision.left = true;
+    this.body.checkCollision.right = true;
+    this.body.checkCollision.down = true;;
     //Mata a Cappy y para los sonidos
     this.player.cappy.kill();
     if (this.throwSound.isPlaying)
