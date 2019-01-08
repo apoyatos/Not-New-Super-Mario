@@ -315,7 +315,7 @@ Mario.prototype.EnemyCollision = function (enemy) {
 }
 //Daño de Mario
 Mario.prototype.Hurt = function () {
-    if (this.life > 1) //Su vida es 1 o más
+    if (this.life > 1) //Su vida es más de 1
     {
         //Reduce la vida en uno y reproduce el sonido
         this.life--;
@@ -324,7 +324,7 @@ Mario.prototype.Hurt = function () {
         this.hurtTimer = this.game.time.totalElapsedSeconds() + this.hurtTime;
         this.scene.vidas.frame = this.life - 1;
     }
-    else //Su vida es 0
+    else //Su vida es 1
     {
         this.x = this.spawnX;
         this.y = this.spawnY;
@@ -349,10 +349,7 @@ Mario.prototype.Die = function () {
         this.scene.vidas.frame = this.life - 1;
         //Cura al Boss y te resta monedas
         this.scene.boss.life = 3;
-        if (this.coins >= 5)
-            this.coins -= 5;
-        else
-            this.coins = 0;
+        this.coins = 0;
         this.scene.textCoins.setText(this.coins);
         //Reinicia a Cappy
         if (this.cappy != null) {

@@ -251,7 +251,7 @@ var PlayScene = {
       //Colisiones de Mario con el mapa y los bloques
       if (this.player.alive) {
         this.game.physics.arcade.collide(this.player, this.collisions);
-        this.game.physics.arcade.collide(this.player, this.deathZone, function (player) { player.Die(); });
+        this.game.physics.arcade.collide(this.player, this.deathZone, function (player) { player.life=1; player.Hurt(); });
         this.game.physics.arcade.collide(this.player, this.blocks, function (player, tile) { player.scene.blocksHandler.HitBlock(player, tile); });
         this.game.physics.arcade.collide(this.player, this.coinBlocks, function (player, tile) { player.scene.blocksHandler.HitEspecialBlock(player, tile, player.scene.coinSpawner); });
         this.game.physics.arcade.collide(this.player, this.heartBlocks, function (player, tile) { player.scene.blocksHandler.HitEspecialBlock(player, tile, player.scene.heartSpawner); });
