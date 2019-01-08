@@ -74,7 +74,7 @@ var PlayScene = {
     this.minMoons = 5;
     //Enemigos:
     //Boss
-    this.boss = new Boss(this.game, 5470, 446, 'boss', 0, 'chompBoss', 30, 1, this.player, this);
+    this.boss = new Boss(this.game, 5470, 446, 'boss', 0, 'chompBoss', 30, 3, this.player, this);
     this.enemies.add(this.boss);
     //T-Rex
     this.enemies.add(new TRex(this.game, 1408, 2080, 't-rex', 0, this.player));

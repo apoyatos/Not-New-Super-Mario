@@ -460,6 +460,7 @@ var Win = {
       this.played = true;
     }
     this.buttonExit.y += 1;
+    this.Background+=1;
   }
 };
 
