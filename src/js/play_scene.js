@@ -68,7 +68,7 @@ var PlayScene = {
     this.enemies = this.game.add.group();
     this.shots = this.game.add.group();
     //Mario
-    this.player = new Mario(this.game, 5400, 0, 'mario', 5, this);
+    this.player = new Mario(this.game, 128, 2716, 'mario', 5, this);
     this.game.camera.follow(this.player);
     this.maxMoons = 10;
     this.minMoons = 5;

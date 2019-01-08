@@ -370,7 +370,7 @@ Mario.prototype.Die = function () {
             function (item) {
                 if (!item.alive) {
                     item.revive();
-                    item.reset(item.spawnX, item.spawnY)
+                    item.reset(item.spawnX, item.spawnY);
                 }
             }, this);
     }
