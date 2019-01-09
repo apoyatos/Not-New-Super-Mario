@@ -346,13 +346,18 @@ Mario.prototype.Die = function () {
         this.scene.pause = false;
         this.scene.levelSound.resume();
         //Reinicia su vida y le resta todas las monedas
+        this.life = 3;
+        this.scene.vidas.frame = this.life - 1;
         this.coins = 0;
         this.scene.textCoins.setText(this.coins);
         //Reinicia a Cappy
         if (this.cappy != null) {
             this.cappy.Reset();
-            this.capture = false;
             this.cappy.cappyCapture = false;
+            this.capture = false;
+            this.cappyPlant = false;
+            this.cappy.x = this.x;
+            this.cappy.y = this.y;
         }
         if (this.enemy != null) {
             this.scale.setTo(2, 2);
